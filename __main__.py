@@ -1,5 +1,5 @@
 import sys
-from PyQt4 import QtGui
+from PyQt4 import QtGui, QtCore
 
 
 class PiHud(QtGui.QMainWindow):
@@ -7,7 +7,20 @@ class PiHud(QtGui.QMainWindow):
 		super(PiHud, self).__init__()
 
 		self.setWindowTitle("PiHud")
+
+		# define the color palette
+		palette = QtGui.QPalette()
+		palette.setColor(QtGui.QPalette.Background, QtCore.Qt.black)
+		self.setPalette(palette)
+
 		self.showFullScreen()
+
+	def keyPressEvent(self, event):
+		key = event.key()
+
+		if key == QtCore.Qt.Key_Escape:
+			quit()
+
 
 
 def main():
