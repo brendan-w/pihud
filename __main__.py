@@ -1,5 +1,6 @@
 import sys
 from PyQt4 import QtGui, QtCore
+import pyqtgraph as pg
 
 
 class PiHud(QtGui.QMainWindow):
@@ -13,6 +14,12 @@ class PiHud(QtGui.QMainWindow):
 		palette.setColor(QtGui.QPalette.Background, QtCore.Qt.black)
 		self.setPalette(palette)
 
+		p = pg.PlotWidget(x=[1,2], y=[3,4], name="asdf");
+		self.setCentralWidget(p)
+
+		#grid = QtGui.QGridLayout()
+		#self.setLayout(grid)
+
 		self.showFullScreen()
 
 	def keyPressEvent(self, event):
@@ -22,12 +29,11 @@ class PiHud(QtGui.QMainWindow):
 			quit()
 
 
-
 def main():
 	app = QtGui.QApplication(sys.argv)
 	pihud = PiHud()
 
-	# Start
+	# Start QT event loop, exit upon return
 	sys.exit(app.exec_())
 	
 
