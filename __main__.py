@@ -1,6 +1,6 @@
 import sys
 from PyQt4 import QtGui, QtCore
-import pyqtgraph as pg
+from layout import Example
 
 
 class PiHud(QtGui.QMainWindow):
@@ -14,11 +14,7 @@ class PiHud(QtGui.QMainWindow):
 		palette.setColor(QtGui.QPalette.Background, QtCore.Qt.black)
 		self.setPalette(palette)
 
-		p = pg.PlotWidget(x=[1,2], y=[3,4], name="asdf");
-		self.setCentralWidget(p)
-
-		#grid = QtGui.QGridLayout()
-		#self.setLayout(grid)
+		self.setCentralWidget(Example())
 
 		self.showFullScreen()
 
