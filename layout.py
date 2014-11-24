@@ -1,5 +1,6 @@
-from PyQt4 import QtCore, QtGui,QtSvg
+from PyQt4 import QtCore, QtGui, QtSvg
 import pygal
+
 
 class Button(QtGui.QPushButton):
   
@@ -8,16 +9,12 @@ class Button(QtGui.QPushButton):
 
     def mouseMoveEvent(self, e):
 
-        if e.buttons() != QtCore.Qt.RightButton:
-            return
+        if e.buttons() == QtCore.Qt.RightButton:
+            drag = QtGui.QDrag(self)
+            drag.setMimeData(QtCore.QMimeData())
+            drag.setHotSpot(e.pos() - self.rect().topLeft())
 
-        mimeData = QtCore.QMimeData()
-
-        drag = QtGui.QDrag(self)
-        drag.setMimeData(mimeData)
-        drag.setHotSpot(e.pos() - self.rect().topLeft())
-
-        dropAction = drag.start(QtCore.Qt.MoveAction)
+            dropAction = drag.start(QtCore.Qt.MoveAction)
 
     def mousePressEvent(self, e):
       
@@ -26,24 +23,21 @@ class Button(QtGui.QPushButton):
         if e.button() == QtCore.Qt.LeftButton:
             print 'press'
 
+
 class SVGWidget(QtSvg.QSvgWidget):
     
-    def __init__(self,parent, file):
+    def __init__(self, parent, byteArray):
         super(SVGWidget,self).__init__(parent)
-        super(SVGWidget,self).load(file)
+        super(SVGWidget,self).load(byteArray)
 
     def mouseMoveEvent(self, e):
 
-        if e.buttons() != QtCore.Qt.RightButton:
-            return
+        if e.buttons() == QtCore.Qt.RightButton:
+            drag = QtGui.QDrag(self)
+            drag.setMimeData(QtCore.QMimeData())
+            drag.setHotSpot(e.pos() - self.rect().topLeft())
 
-        mimeData = QtCore.QMimeData()
-
-        drag = QtGui.QDrag(self)
-        drag.setMimeData(mimeData)
-        drag.setHotSpot(e.pos() - self.rect().topLeft())
-
-        dropAction = drag.start(QtCore.Qt.MoveAction)
+            dropAction = drag.start(QtCore.Qt.MoveAction)
 
     def mousePressEvent(self, e):
       
@@ -52,8 +46,8 @@ class SVGWidget(QtSvg.QSvgWidget):
 
 class Example(QtGui.QWidget):
   
-    def __init__(self):
-        super(Example, self).__init__()
+    def __init__(self, parent=None):
+        super(Example, self).__init__(parent)
         self.draggables = []
 
         self.initUI()
@@ -68,15 +62,14 @@ class Example(QtGui.QWidget):
 
         bar_chart = pygal.Bar(width= 300 ,height = 200)                                
         bar_chart.add('Fibonacci', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]) 
-        chart = QtCore.QByteArray (bar_chart.render())
-        # bar_chart.render_to_file('bar_chart.svg') 
+        chart = QtCore.QByteArray(bar_chart.render())
 
-        svg1 =  SVGWidget(self,chart)
+        svg1 = SVGWidget(self, chart)
         self.draggables.append(svg1);
 
-        self.setWindowTitle('PyHud')
-        self.setGeometry(300, 300, 280, 150)
-        self.show()
+        # self.setWindowTitle('PyHud')
+        # self.setGeometry(300, 300, 280, 150)
+        # self.show()
 
     def dragEnterEvent(self, e):
       
@@ -90,6 +83,7 @@ class Example(QtGui.QWidget):
         e.setDropAction(QtCore.Qt.MoveAction)
         e.accept()
 
+'''
 if __name__ == '__main__':
 
     import sys
@@ -98,3 +92,4 @@ if __name__ == '__main__':
     ex = Example()
 
     sys.exit(app.exec_())
+'''

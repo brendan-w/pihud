@@ -14,7 +14,7 @@ class PiHud(QtGui.QMainWindow):
 		palette.setColor(QtGui.QPalette.Background, QtCore.Qt.black)
 		self.setPalette(palette)
 
-		self.setCentralWidget(Example())
+		self.setCentralWidget(Example(self))
 
 		self.showFullScreen()
 
