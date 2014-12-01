@@ -1,28 +1,9 @@
 
-from PyQt4 import QtCore, QtGui, QtSvg
-import pygal
+from PyQt4 import QtCore, QtGui
 import obd
-import time
 
+from Gauge import GaugeGraph
 
-class SVGWidget(QtSvg.QSvgWidget):
-
-    def __init__(self, parent, byteArray):
-        super(SVGWidget,self).__init__(parent)
-        super(SVGWidget,self).load(byteArray)
-
-    def mouseMoveEvent(self, e):
-
-        if e.buttons() == QtCore.Qt.RightButton:
-            drag = QtGui.QDrag(self)
-            drag.setMimeData(QtCore.QMimeData())
-            drag.setHotSpot(e.pos() - self.rect().topLeft())
-
-            dropAction = drag.start(QtCore.Qt.MoveAction)
-
-    def mousePressEvent(self, e):
-
-        super(SVGWidget, self).mousePressEvent(e)
 
 
 class Layout(QtGui.QWidget):
@@ -38,21 +19,21 @@ class Layout(QtGui.QWidget):
         self.timer = QtCore.QBasicTimer()
         self.timer.start(1000/30, self)
 
+        self.makeChart(obd.commands.RPM)
+
 
     def initUI(self):
 
         self.setAcceptDrops(True)
 
-        bar_chart = pygal.Bar(width= 300, height = 200)
-        bar_chart.add('Fibonacci', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])
-        chart = QtCore.QByteArray(bar_chart.render())
-
-        svg1 = SVGWidget(self, chart)
-        self.draggables.append(svg1)
+    def makeChart(self, command):
+        self.connection.watch(command)
+        self.draggables.append(GaugeGraph(self, command))
 
     def timerEvent(self, event):
-        pass
-        #print "asdf"
+        for w in self.draggables:
+            r = self.connection.query(w.get_command())
+            w.render(r)
 
 
     def dragEnterEvent(self, e):
