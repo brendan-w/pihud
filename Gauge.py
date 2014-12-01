@@ -24,4 +24,4 @@ class GaugeGraph(SVGWidget):
 
         gauge_chart.add(self.command.name, value)
         chart = QtCore.QByteArray(gauge_chart.render())
-        super(GaugeGraph,self).load(chart)
+        super(GaugeGraph, self).load(chart)

@@ -23,7 +23,6 @@ class Layout(QtGui.QWidget):
 
 
     def initUI(self):
-
         self.setAcceptDrops(True)
 
     def makeChart(self, command):
@@ -31,17 +30,16 @@ class Layout(QtGui.QWidget):
         self.draggables.append(GaugeGraph(self, command))
 
     def timerEvent(self, event):
+        """ main event loop """
         for w in self.draggables:
             r = self.connection.query(w.get_command())
             w.render(r)
 
 
     def dragEnterEvent(self, e):
-
         e.accept()
 
     def dropEvent(self, e):
-
         position = e.pos()
         e.source().move(position)
 
