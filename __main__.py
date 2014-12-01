@@ -1,6 +1,6 @@
 import sys
 from PyQt4 import QtGui, QtCore
-from layout import Example
+from layout import Layout
 
 
 class PiHud(QtGui.QMainWindow):
@@ -14,7 +14,7 @@ class PiHud(QtGui.QMainWindow):
 		palette.setColor(QtGui.QPalette.Background, QtCore.Qt.black)
 		self.setPalette(palette)
 
-		self.setCentralWidget(Example(self))
+		self.setCentralWidget(Layout(self))
 
 		self.showFullScreen()
 

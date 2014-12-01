@@ -1,5 +1,8 @@
+
 from PyQt4 import QtCore, QtGui, QtSvg
 import pygal
+import obd
+import time
 
 
 class SVGWidget(QtSvg.QSvgWidget):
@@ -22,24 +25,31 @@ class SVGWidget(QtSvg.QSvgWidget):
         super(SVGWidget, self).mousePressEvent(e)
 
 
-class Example(QtGui.QWidget):
+class Layout(QtGui.QWidget):
 
     def __init__(self, parent=None):
-        super(Example, self).__init__(parent)
+        super(Layout, self).__init__(parent)
         self.draggables = []
-
         self.initUI()
+        self.timer = QtCore.QBasicTimer()
+        self.timer.start(1000/30, self)
+
 
     def initUI(self):
 
         self.setAcceptDrops(True)
 
-        bar_chart = pygal.Bar(width= 300 ,height = 200)
+        bar_chart = pygal.Bar(width= 300, height = 200)
         bar_chart.add('Fibonacci', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])
         chart = QtCore.QByteArray(bar_chart.render())
 
         svg1 = SVGWidget(self, chart)
         self.draggables.append(svg1)
+
+    def timerEvent(self, event):
+        pass
+        #print "asdf"
+
 
     def dragEnterEvent(self, e):
 
