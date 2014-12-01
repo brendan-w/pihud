@@ -2,7 +2,7 @@
 from PyQt4 import QtCore, QtGui
 import obd
 
-from Gauge import GaugeGraph
+from widgets import Gauge
 
 
 
@@ -27,7 +27,7 @@ class Layout(QtGui.QWidget):
 
     def makeChart(self, command):
         self.connection.watch(command)
-        self.draggables.append(GaugeGraph(self, command))
+        self.draggables.append(Gauge(self, command))
 
     def timerEvent(self, event):
         """ main event loop """

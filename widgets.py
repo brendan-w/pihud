@@ -1,11 +1,14 @@
 from PyQt4 import QtCore, QtGui, QtSvg
-import pygal
 import obd
+import pygal
 from SVGWidget import SVGWidget
 
-class GaugeGraph(SVGWidget):
+class Gauge(SVGWidget):
     def __init__(self, parent, command):
-        super(GaugeGraph, self).__init__(parent)
+        super(Gauge, self).__init__(parent)
+        super(Gauge, self).setFixedWidth(500)
+        super(Gauge, self).setFixedHeight(400)
+
         self.command = command
 
     def get_command(self):
@@ -17,11 +20,11 @@ class GaugeGraph(SVGWidget):
         gauge_chart.range = [0, 8000]
 
         value = 0
-        if isinstance(response.value, int):
+        if isinstance(response.value, float):
             value = response.value
 
-        value = 30
+        print response.value
 
         gauge_chart.add(self.command.name, value)
         chart = QtCore.QByteArray(gauge_chart.render())
-        super(GaugeGraph, self).load(chart)
+        super(Gauge, self).load(chart)

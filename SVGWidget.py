@@ -6,8 +6,6 @@ class SVGWidget(QtSvg.QSvgWidget):
 
     def __init__(self, parent):
         super(SVGWidget,self).__init__(parent)
-        self.setFixedWidth(500)
-        self.setFixedHeight(400)
 
     def mouseMoveEvent(self, e):
 
