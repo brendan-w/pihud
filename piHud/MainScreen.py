@@ -1,20 +1,17 @@
 
-from PyQt4 import QtCore, QtGui
 import obd
+from widgets import *
+from PyQt4 import QtCore, QtGui
 
-from widgets import Gauge
 
+class MainScreen(QtGui.QWidget):
 
-
-class Layout(QtGui.QWidget):
-
-    def __init__(self, parent=None):
-        super(Layout, self).__init__(parent)
+    def __init__(self, parent, connection):
+        super(MainScreen, self).__init__(parent)
         self.draggables = []
         self.initUI()
 
-        obd.debug.console = True
-        self.connection = obd.Async()
+        self.connection = connection
 
         self.timer = QtCore.QBasicTimer()
         self.timer.start(1000/30, self)

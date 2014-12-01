@@ -1,6 +1,8 @@
+
 import sys
+import obd
+from MainScreen import MainScreen
 from PyQt4 import QtGui, QtCore
-from layout import Layout
 
 
 class PiHud(QtGui.QMainWindow):
@@ -14,7 +16,11 @@ class PiHud(QtGui.QMainWindow):
 		palette.setColor(QtGui.QPalette.Background, QtCore.Qt.black)
 		self.setPalette(palette)
 
-		self.setCentralWidget(Layout(self))
+		# init OBD conncetion
+		obd.debug.console = True
+		self.connection = obd.Async()
+
+		self.setCentralWidget(MainScreen(self, self.connection))
 
 		self.showFullScreen()
 
