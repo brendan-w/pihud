@@ -31,6 +31,10 @@ class Layout(QtGui.QWidget):
         super(Layout, self).__init__(parent)
         self.draggables = []
         self.initUI()
+
+        obd.debug.console = True
+        self.connection = obd.Async()
+
         self.timer = QtCore.QBasicTimer()
         self.timer.start(1000/30, self)
 
