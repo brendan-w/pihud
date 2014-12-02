@@ -3,6 +3,7 @@ import obd
 import pygal
 from SVGWidget import SVGWidget
 
+
 class Gauge(SVGWidget):
     def __init__(self, parent, command):
         super(Gauge, self).__init__(parent)
