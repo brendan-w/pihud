@@ -12,15 +12,15 @@ class MainScreen(QtGui.QWidget):
         self.setAcceptDrops(True)
         self.connection = connection
 
-        # make test chart
+        # make test widget
         self.makeChart(obd.commands.RPM)
 
 
     def makeChart(self, command):
-        chart = Gauge(self, command)
-        self.connection.watch(command, chart.render)
-        chart.render(self.connection.query(command))
-        self.draggables.append(chart)
+        widget = Gauge(self, command)
+        self.connection.watch(command, widget.render)
+        widget.render(self.connection.query(command)) # testing purposes only
+        self.draggables.append(widget)
 
 
     def dragEnterEvent(self, e):

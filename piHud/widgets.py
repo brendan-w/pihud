@@ -1,5 +1,3 @@
-from PyQt4 import QtCore, QtGui, QtSvg
-import obd
 import pygal
 from pygal.style import Style
 from SVGWidget import SVGWidget
