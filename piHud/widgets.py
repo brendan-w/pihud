@@ -8,7 +8,7 @@ class Gauge(SVGWidget):
         super(Gauge, self).__init__(parent, config)
 
         self.style = Style(
-            stroke_width=2.0,
+            stroke_width=3.0,
             background='transparent',
             plot_background='transparent',
             foreground=config.color,
@@ -30,9 +30,13 @@ class Gauge(SVGWidget):
         
         # styling
         chart.style = self.style
+        chart.margin = 20
+        chart.label_font_size = self.config.label_font_size
+        chart.title_font_size = self.config.title_font_size
         chart.human_readable = True
         chart.show_legend = False
-        chart.title = self.command.name
+        chart.print_values = False # the value number on top of the needle
+        chart.title = self.config.title
         chart.range = [self.config.min, self.config.max]
 
         value = 0

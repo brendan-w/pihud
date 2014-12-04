@@ -5,17 +5,19 @@
 		"config": {
 			"position":   { "x":30,  "y":40  },
 			"min": 0,
-			"max": 2000,
+			"max": 8000,
 			"redline": 6000,
-			"color":"#FF0000"
+			"color":"#FF0000",
+			"title":"Revolotions per Microsecond"
 		}
 	},
 	{
 		"sensor": "ENGINE_LOAD",
 		"type": "gauge",
 		"config": {
-			"position":   { "x":430, "y":440  },
-			"font-size": 14
+			"position":   { "x":330, "y":340  },
+			"label_font_size": 14,
+			"title_font_size": 14
 		}
 	}
 ]

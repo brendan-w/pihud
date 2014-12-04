@@ -8,14 +8,17 @@ class WidgetConfig():
 	""" the configuration for a single readout or command """
 
 	def __init__(self, min_=0, max_=100, redline_=100):
-		self.command = None
+		self.command    = None
 		self.class_name = "Gauge"
+		self.title      = "No title specified"
 
 		# user definable
 		self.min     = min_
 		self.max     = max_
 		self.redline = redline_
 		self.color   = "#53B9E8"
+		self.label_font_size = 20
+		self.title_font_size = 20
 
 		# these defaults are set by the widget at runtime
 		self.position = None
@@ -28,6 +31,9 @@ class WidgetConfig():
 		return clone
 
 	def load_user(self, config_props, command, class_name):
+
+		# set this first, so it can be overwritten by the config props
+		self.title = command.name
 
 		for key in config_props:
 			if self.__dict__.has_key(key):
