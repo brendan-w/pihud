@@ -1,0 +1,22 @@
+[
+	{
+		"sensor": "RPM",
+		"type": "gauge",
+		"config": {
+			"position":   { "x":30,  "y":40  },
+			"dimensions": { "w":100, "h":200 },
+			"min": 0,
+			"max": 8000,
+			"redline": 6000,
+		}
+	},
+	{
+		"sensor": "OBD_COMPLIANCE",
+		"type": "text",
+		"config": {
+			"position":   { "x":30,  "y":40  },
+			"dimensions": { "w":100, "h":200 },
+			"font-size": 14,
+		}
+	},
+]

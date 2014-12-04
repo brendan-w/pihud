@@ -19,6 +19,7 @@ class Gauge(SVGWidget):
             colors=('#53B9E8', '#53B9E8'))
 
     def render(self, response):
+        """ function called by python-OBD with new data to be rendered """
         gauge_chart = pygal.Gauge(human_readable=True, width=200, height=250, style=self.style)
         
         gauge_chart.show_legend = False
