@@ -50,6 +50,7 @@ yum install PyQt4:
 ```sudo yum install PyQt4-devel```
 
 symlink the PyQt4 and sip libraries into your virtual environment:
+
 ```ln -s /usr/lib64/python2.7/site-packages/PyQt4 /home/$USER/.virtualenvs/pihud/lib/python2.7/```
 
 ```ln -s /usr/lib64/python2.7/site-packages/sip.so /home/$USER/.virtualenvs/pihud/lib/python2.7/```
