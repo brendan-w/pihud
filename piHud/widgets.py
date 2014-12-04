@@ -19,14 +19,14 @@ class Gauge(SVGWidget):
 
     def auto_dimensions(self):
         """ override default size """
-        super(Gauge, self).setFixedWidth(400)
+        super(Gauge, self).setFixedWidth(375)
         super(Gauge, self).setFixedHeight(400)
 
 
     def render(self, response):
         """ function called by python-OBD with new data to be rendered """
         
-        chart = pygal.Gauge(width=200, height=300)
+        chart = pygal.Gauge()
         
         # styling
         chart.style = self.style

@@ -65,6 +65,11 @@ class SVGWidget(QtSvg.QSvgWidget):
         # so the ID is set to be as short as possible (to save memory)
         chart.uuid = ""
 
+        # match the SVG width to the Widget width
+        chart.width = self.width()
+        chart.height = self.height()
+
+        # render the SVG string
         svg = chart.render()
 
         # wrap in PyQt byteArray
