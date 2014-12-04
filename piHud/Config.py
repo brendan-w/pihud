@@ -15,6 +15,7 @@ class WidgetConfig():
 		self.min     = min_
 		self.max     = max_
 		self.redline = redline_
+		self.color   = "#53B9E8"
 
 		# these defaults are set by the widget at runtime
 		self.position = None

@@ -22,14 +22,12 @@ class SVGWidget(QtSvg.QSvgWidget):
 
 
     def auto_position(self):
-        """ should be overriden by subclass (abstract) """
         self.move(0, 0)
 
 
     def auto_dimensions(self):
-        """ should be overriden by subclass (abstract) """
-        self.setFixedWidth(400)
-        self.setFixedHeight(400)
+        self.setFixedWidth(200)
+        self.setFixedHeight(200)
 
 
     def mouseMoveEvent(self, e):
