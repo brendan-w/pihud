@@ -4,9 +4,32 @@ from PyQt4 import QtCore, QtGui, QtSvg
 
 class SVGWidget(QtSvg.QSvgWidget):
 
-    def __init__(self, parent, command):
+    def __init__(self, parent, config):
         super(SVGWidget,self).__init__(parent)
-        self.command = command
+        self.config = config
+        self.command = config.command
+
+        if config.position is not None:
+            self.move(config.position["x"], config.position["y"])
+        else:
+            self.auto_position()
+
+        if config.dimensions is not None:
+            self.setFixedWidth(config.dimensions['x'])
+            self.setFixedHeight(config.dimensions['y'])
+        else:
+            self.auto_dimensions()
+
+
+    def auto_position(self):
+        """ should be overriden by subclass (abstract) """
+        self.move(0, 0)
+
+
+    def auto_dimensions(self):
+        """ should be overriden by subclass (abstract) """
+        self.setFixedWidth(400)
+        self.setFixedHeight(400)
 
 
     def mouseMoveEvent(self, e):
@@ -28,8 +51,10 @@ class SVGWidget(QtSvg.QSvgWidget):
 
             drag.exec_(QtCore.Qt.MoveAction)
 
+
     def mousePressEvent(self, e):
         super(SVGWidget, self).mousePressEvent(e)
+
 
     def showChart(self, chart):
         """ handles loading of pygal SVGs """
@@ -43,11 +68,6 @@ class SVGWidget(QtSvg.QSvgWidget):
         chart.uuid = ""
 
         svg = chart.render()
-
-        # for debug
-        # text_file = open("output.svg", "w")
-        # text_file.write(svg)
-        # text_file.close()
 
         # wrap in PyQt byteArray
         byteArray = QtCore.QByteArray(svg)

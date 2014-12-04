@@ -1,16 +1,11 @@
 import pygal
 from pygal.style import Style
 from SVGWidget import SVGWidget
-from config import defaults
 
 
 class Gauge(SVGWidget):
-    def __init__(self, parent, command, user_config=None):
-        super(Gauge, self).__init__(parent, command)
-        super(Gauge, self).setFixedWidth(350)
-        super(Gauge, self).setFixedHeight(400)
-
-        default_config = defaults[command]
+    def __init__(self, parent, config):
+        super(Gauge, self).__init__(parent, config)
 
         self.style = Style(
             stroke_width=2.0,
@@ -36,6 +31,8 @@ class Gauge(SVGWidget):
         value = 0
         if isinstance(response.value, float):
             value = response.value
+
+        value = 30
 
         chart.add(self.command.name, value)
 

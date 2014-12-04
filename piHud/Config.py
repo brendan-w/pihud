@@ -8,6 +8,10 @@ class WidgetConfig():
 	""" the configuration for a single readout or command """
 
 	def __init__(self, min_=0, max_=100, redline_=100):
+		self.command = None
+		self.class_name = "Gauge"
+
+		# user definable
 		self.min     = min_
 		self.max     = max_
 		self.redline = redline_
@@ -22,13 +26,18 @@ class WidgetConfig():
 			clone.__dict__[key] = self.__dict__[key]
 		return clone
 
-	def load_user(self, user):
-		for key in user:
+	def load_user(self, config_props, command, class_name):
+
+		for key in config_props:
 			if self.__dict__.has_key(key):
-				self.__dict__[key] = user[key]
+				self.__dict__[key] = config_props[key]
+
+		self.command = command
+		self.class_name = class_name
 
 
 # dict of default configs where key=OBDCommand value=Config
+# user settings override default values
 defaults = {
 	c.PIDS_A            : WidgetConfig(),
 	c.STATUS            : WidgetConfig(),
@@ -66,13 +75,20 @@ defaults = {
 
 
 class Config():
-	""" factory for widgets """
+	""" class managing the config file and it's structure """
+	def __init__(self, file_=None):
+		self.widget_configs = []
+		
+		if file_ is not None:
+			self.load_config(file_)
 
-	def __init__(self, file_):
+
+	def load_config(self, file_):
 		file_configs = []
 
 		with open(file_, 'r') as f:
 			file_configs += json.loads(f.read())
+
 
 		for w in file_configs:
 
@@ -83,7 +99,6 @@ class Config():
 			sensor_name = w['sensor'].upper()
 			class_name  = w['type'].lower().capitalize()
 
-
 			if sensor_name not in c.__dict__:
 				print "sensor '%s' is not a valid OBD command" % sensor_name
 				continue
@@ -92,12 +107,16 @@ class Config():
 				print "widget '%s' is not a valid Widget type" % class_name
 				continue
 
-			command_ = c[sensor_name]
-			class_ = widgets.__dict__[class_name]
-
+			command = c[sensor_name]
 
 			# clone the default config for this command
-			widget_config = defaults[command_].clone()
+			widget_config = defaults[command].clone()
 
 			# overwrite properties with the user's settings
-			widget_config.load_user(w['config'])
+			widget_config.load_user(w['config'], command, class_name)
+
+			self.widget_configs.append(widget_config)
+
+
+	def save_config(self):
+		pass

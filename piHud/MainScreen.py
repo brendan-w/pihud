@@ -1,32 +1,36 @@
 
 import obd
-from widgets import *
-from config import Config
+import widgets
 from PyQt4 import QtCore, QtGui
+from Config import Config
 
 
 class MainScreen(QtGui.QWidget):
 
     def __init__(self, parent, connection):
         super(MainScreen, self).__init__(parent)
-
-        self.draggables = []
-        self.connection = connection
-
         self.setAcceptDrops(True)
 
+        self.widgets = []
+        self.connection = connection
         self.config = Config("piHud/config.json")
 
-        # make test widget
-        self.makeChart(obd.commands.RPM)
-        self.makeChart(obd.commands.ENGINE_LOAD)
+        for config in self.config.widget_configs:
+            self.createWidget(config)
+
+        # testing purposes only
+        for widget in self.widgets:
+            widget.render(self.connection.query(widget.command))
 
 
-    def makeChart(self, command):
-        widget = Gauge(self, command)
-        self.connection.watch(command, widget.render)
-        widget.render(self.connection.query(command)) # testing purposes only
-        self.draggables.append(widget)
+    def createWidget(self, config):
+        # create new widget of the correct type
+        widget = widgets.__dict__[config.class_name](self, config)
+        
+        # register the render function with python-OBD
+        self.connection.watch(config.command, widget.render)
+        
+        self.widgets.append(widget)
 
 
     def dragEnterEvent(self, e):
@@ -34,7 +38,6 @@ class MainScreen(QtGui.QWidget):
 
 
     def dropEvent(self, e):
-
         # get relative position of mouse from mimedata
         mime = e.mimeData().text()
         x, y = map(int, mime.split(','))
