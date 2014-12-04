@@ -16,12 +16,18 @@ class PiHud(QtGui.QMainWindow):
 		palette.setColor(QtGui.QPalette.Background, QtCore.Qt.black)
 		self.setPalette(palette)
 
+		# pygal optimizations
+		try:
+			from pygal.svg import Svg
+			Svg.add_scripts = lambda *args: None # completely disable the JS generator
+		except:
+			pass
+
 		# init OBD conncetion
 		obd.debug.console = True
 		self.connection = obd.Async()
 
 		self.setCentralWidget(MainScreen(self, self.connection))
-
 		self.showFullScreen()
 
 	def keyPressEvent(self, event):
@@ -31,13 +37,9 @@ class PiHud(QtGui.QMainWindow):
 			quit()
 
 
-def main():
+if __name__ == "__main__":
 	app = QtGui.QApplication(sys.argv)
 	pihud = PiHud()
 
 	# Start QT event loop, exit upon return
 	sys.exit(app.exec_())
-	
-
-if __name__ == "__main__":
-	main()

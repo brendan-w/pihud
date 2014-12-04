@@ -11,6 +11,7 @@ class Gauge(SVGWidget):
 
         self.command = command
         self.style = Style(
+            stroke_width=2.0,
             background='transparent',
             plot_background='transparent',
             foreground='#53B9E8',
@@ -20,16 +21,20 @@ class Gauge(SVGWidget):
 
     def render(self, response):
         """ function called by python-OBD with new data to be rendered """
-        gauge_chart = pygal.Gauge(human_readable=True, width=200, height=250, style=self.style)
         
-        gauge_chart.show_legend = False
-        gauge_chart.title = self.command.name
-        gauge_chart.range = [0, 8000]
+        chart = pygal.Gauge(width=200, height=250)
+        
+        # styling
+        chart.style = self.style
+        chart.human_readable = True
+        chart.show_legend = False
+        chart.title = self.command.name
+        chart.range = [0, 8000]
 
         value = 0
         if isinstance(response.value, float):
             value = response.value
 
-        gauge_chart.add(self.command.name, value)
+        chart.add(self.command.name, value)
 
-        self.load(gauge_chart.render())
+        self.showChart(chart)

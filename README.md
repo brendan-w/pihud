@@ -8,4 +8,4 @@ Running
 
 To run, simply execute the following command:
 
-	python __main__.py
+	python piHud/__main__.py

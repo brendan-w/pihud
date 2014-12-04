@@ -29,14 +29,24 @@ class SVGWidget(QtSvg.QSvgWidget):
     def mousePressEvent(self, e):
         super(SVGWidget, self).mousePressEvent(e)
 
-    def load(self, svg):
-        """ override the QT load function for ease of handling pygal SVGs """
+    def showChart(self, chart):
+        """ handles loading of pygal SVGs """
 
         # PyQt has a rendering issue with the following CSS
-        # delete it by replacing it with empty brackets
         # https://github.com/brendanwhitfield/piHud/issues/2
-        svg = svg.replace(" .series{stroke-width:1.0;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:0,0}", " .series{}")
+        chart.style.stroke_dasharray = ""
+
+        # they have a 'no_prefix' setting, but PyQt couldn't render the result,
+        # so the ID is set to be as short as possible (to save memory)
+        chart.uuid = ""
+
+        svg = chart.render()
+
+        # for debug
+        # text_file = open("output.svg", "w")
+        # text_file.write(svg)
+        # text_file.close()
 
         # wrap in PyQt byteArray
         byteArray = QtCore.QByteArray(svg)
-        super(SVGWidget, self).load(byteArray)
+        self.load(byteArray)
