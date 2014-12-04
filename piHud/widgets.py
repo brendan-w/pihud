@@ -14,11 +14,11 @@ class Gauge(SVGWidget):
             foreground=config.color,
             foreground_light=config.color,
             foreground_dark='transparent',
-            colors=(config.color, config.color))
+            colors=(config.color,))
 
 
-    def auto_dimensions(self):
-        """ override default size """
+    def default_dimensions(self):
+        """ override default size, called by superclass """
         super(Gauge, self).setFixedWidth(375)
         super(Gauge, self).setFixedHeight(400)
 
@@ -40,10 +40,8 @@ class Gauge(SVGWidget):
         chart.range = [self.config.min, self.config.max]
 
         value = 0
-        if isinstance(response.value, float):
+        if not response.is_null():
             value = response.value
-
-        value = 30
 
         chart.add(self.command.name, value)
 

@@ -11,8 +11,8 @@
             "redline": 6000, 
             "title_font_size": 25, 
             "position": {
-                "y": 40, 
-                "x": 30
+                "y": 34, 
+                "x": 32
             }
         }, 
         "sensor": "RPM"
@@ -29,8 +29,8 @@
             "redline": 90, 
             "title_font_size": 14, 
             "position": {
-                "y": 27, 
-                "x": 707
+                "y": 23, 
+                "x": 702
             }
         }, 
         "sensor": "ENGINE_LOAD"

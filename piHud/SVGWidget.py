@@ -12,20 +12,20 @@ class SVGWidget(QtSvg.QSvgWidget):
         if config.position is not None:
             self.move(config.position["x"], config.position["y"])
         else:
-            self.auto_position()
+            self.default_position()
 
         if config.dimensions is not None:
             self.setFixedWidth(config.dimensions['x'])
             self.setFixedHeight(config.dimensions['y'])
         else:
-            self.auto_dimensions()
+            self.default_dimensions()
 
 
-    def auto_position(self):
+    def default_position(self):
         self.move(0, 0)
 
 
-    def auto_dimensions(self):
+    def default_dimensions(self):
         self.setFixedWidth(200)
         self.setFixedHeight(200)
 
@@ -36,7 +36,7 @@ class SVGWidget(QtSvg.QSvgWidget):
 
 
     def mouseMoveEvent(self, e):
-        if e.buttons() == QtCore.Qt.RightButton:
+        if e.buttons() == QtCore.Qt.LeftButton:
 
             mimeData = QtCore.QMimeData()
             mimeData.setText('%d,%d' % (e.x(), e.y()))
