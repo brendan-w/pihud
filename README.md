@@ -8,8 +8,8 @@ Configurable heads up display fit for the Raspberry Pi
 ### Setting up your environment
 
 Before you can do anything with this (run the webserver locally, or any of
-the scripts) you'll need to setup and activate a python `virtualenv
-<http://pypi.python.org/pypi/virtualenv>`_.  Run the following at the command
+the scripts) you'll need to setup and activate a python [virtualenv]
+(http://pypi.python.org/pypi/virtualenv). Run the following at the command
 prompt...
 
 #### On Linux/Mac OS X
