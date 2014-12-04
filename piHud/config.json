@@ -1,23 +1,38 @@
 [
-	{
-		"sensor": "RPM",
-		"type": "gauge",
-		"config": {
-			"position":   { "x":30,  "y":40  },
-			"min": 0,
-			"max": 8000,
-			"redline": 6000,
-			"color":"#FF0000",
-			"title":"Revolotions per Microsecond"
-		}
-	},
-	{
-		"sensor": "ENGINE_LOAD",
-		"type": "gauge",
-		"config": {
-			"position":   { "x":330, "y":340  },
-			"label_font_size": 14,
-			"title_font_size": 14
-		}
-	}
+    {
+        "type": "Gauge", 
+        "config": {
+            "dimensions": null, 
+            "title": "Rev per uSec", 
+            "color": "#FF0000", 
+            "max": 8000, 
+            "min": 0, 
+            "label_font_size": 25, 
+            "redline": 6000, 
+            "title_font_size": 25, 
+            "position": {
+                "y": 40, 
+                "x": 30
+            }
+        }, 
+        "sensor": "RPM"
+    }, 
+    {
+        "type": "Gauge", 
+        "config": {
+            "dimensions": null, 
+            "title": "ENGINE_LOAD", 
+            "color": "#53B9E8", 
+            "max": 100, 
+            "min": 0, 
+            "label_font_size": 14, 
+            "redline": 90, 
+            "title_font_size": 14, 
+            "position": {
+                "y": 27, 
+                "x": 707
+            }
+        }, 
+        "sensor": "ENGINE_LOAD"
+    }
 ]

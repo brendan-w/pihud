@@ -2,7 +2,7 @@
 import obd
 import widgets
 from PyQt4 import QtCore, QtGui
-from Config import Config
+from Config import Config_File
 
 
 class MainScreen(QtGui.QWidget):
@@ -13,9 +13,9 @@ class MainScreen(QtGui.QWidget):
 
         self.widgets = []
         self.connection = connection
-        self.config = Config("piHud/config.json")
+        self.config_file = Config_File("piHud/config.json")
 
-        for config in self.config.widget_configs:
+        for config in self.config_file.widget_configs:
             self.createWidget(config)
 
         # testing purposes only
@@ -45,3 +45,5 @@ class MainScreen(QtGui.QWidget):
         e.source().move(e.pos() - QtCore.QPoint(x, y))
         e.setDropAction(QtCore.Qt.MoveAction)
         e.accept()
+
+        self.config_file.save()

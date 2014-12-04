@@ -17,8 +17,8 @@ class WidgetConfig():
 		self.max     = max_
 		self.redline = redline_
 		self.color   = "#53B9E8"
-		self.label_font_size = 20
-		self.title_font_size = 20
+		self.label_font_size = 25
+		self.title_font_size = 25
 
 		# these defaults are set by the widget at runtime
 		self.position = None
@@ -41,6 +41,23 @@ class WidgetConfig():
 
 		self.command = command
 		self.class_name = class_name
+
+	def to_JSON(self):
+
+		# copy all the keys except for the command and class name
+		watch = self.__dict__.keys()
+		watch.remove('command')
+		watch.remove('class_name')
+
+		props = {}
+		for key in watch:
+			props[key] = self.__dict__[key]
+
+		return {
+			"sensor": self.command.name,
+			"type": self.class_name,
+			"config": props
+		}
 
 
 # dict of default configs where key=OBDCommand value=Config
@@ -81,19 +98,15 @@ defaults = {
 }
 
 
-class Config():
+class Config_File():
 	""" class managing the config file and it's structure """
-	def __init__(self, file_=None):
+	def __init__(self, file_):
+		self.file = file_
 		self.widget_configs = []
-		
-		if file_ is not None:
-			self.load_config(file_)
 
 
-	def load_config(self, file_):
 		file_configs = []
-
-		with open(file_, 'r') as f:
+		with open(self.file, 'r') as f:
 			file_configs += json.loads(f.read())
 
 
@@ -125,5 +138,10 @@ class Config():
 			self.widget_configs.append(widget_config)
 
 
-	def save_config(self):
-		pass
+	def save(self):
+		output = []
+		for w in self.widget_configs:
+			output.append(w.to_JSON())
+
+		with open(self.file, 'w') as f:
+			f.write(json.dumps(output, indent=4))

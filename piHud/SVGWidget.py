@@ -30,6 +30,11 @@ class SVGWidget(QtSvg.QSvgWidget):
         self.setFixedHeight(200)
 
 
+    def moveEvent(self, e):
+        """ keep the position in the config up to date """
+        self.config.position = { 'x':e.pos().x(), 'y':e.pos().y() }
+
+
     def mouseMoveEvent(self, e):
         if e.buttons() == QtCore.Qt.RightButton:
 
