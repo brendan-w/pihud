@@ -4,8 +4,10 @@ from PyQt4 import QtCore, QtGui, QtSvg
 
 class SVGWidget(QtSvg.QSvgWidget):
 
-    def __init__(self, parent):
+    def __init__(self, parent, command):
         super(SVGWidget,self).__init__(parent)
+        self.command = command
+
 
     def mouseMoveEvent(self, e):
         if e.buttons() == QtCore.Qt.RightButton:

@@ -24,7 +24,7 @@ class PiHud(QtGui.QMainWindow):
 			pass
 
 		# init OBD conncetion
-		obd.debug.console = True
+		# obd.debug.console = True
 		self.connection = obd.Async()
 
 		self.setCentralWidget(MainScreen(self, self.connection))

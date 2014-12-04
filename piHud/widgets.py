@@ -1,21 +1,23 @@
 import pygal
 from pygal.style import Style
 from SVGWidget import SVGWidget
+from config import defaults
 
 
 class Gauge(SVGWidget):
-    def __init__(self, parent, command):
-        super(Gauge, self).__init__(parent)
+    def __init__(self, parent, command, user_config=None):
+        super(Gauge, self).__init__(parent, command)
         super(Gauge, self).setFixedWidth(350)
         super(Gauge, self).setFixedHeight(400)
 
-        self.command = command
+        default_config = defaults[command]
+
         self.style = Style(
             stroke_width=2.0,
             background='transparent',
             plot_background='transparent',
             foreground='#53B9E8',
-            foreground_light='#53A0E8',
+            foreground_light='#53B9E8',
             foreground_dark='transparent',
             colors=('#53B9E8', '#53B9E8'))
 

@@ -1,6 +1,7 @@
 
 import obd
 from widgets import *
+from config import Config
 from PyQt4 import QtCore, QtGui
 
 
@@ -14,8 +15,11 @@ class MainScreen(QtGui.QWidget):
 
         self.setAcceptDrops(True)
 
+        self.config = Config("piHud/config.json")
+
         # make test widget
         self.makeChart(obd.commands.RPM)
+        self.makeChart(obd.commands.ENGINE_LOAD)
 
 
     def makeChart(self, command):
