@@ -9,11 +9,22 @@ class SVGWidget(QtSvg.QSvgWidget):
 
     def mouseMoveEvent(self, e):
         if e.buttons() == QtCore.Qt.RightButton:
-            drag = QtGui.QDrag(self)
-            drag.setMimeData(QtCore.QMimeData())
-            drag.setHotSpot(e.pos() - self.rect().topLeft())
 
-            dropAction = drag.start(QtCore.Qt.MoveAction)
+            mimeData = QtCore.QMimeData()
+            mimeData.setText('%d,%d' % (e.x(), e.y()))
+
+            # show the ghost image while dragging
+            pixmap = QtGui.QPixmap.grabWidget(self)
+            painter = QtGui.QPainter(pixmap)
+            painter.fillRect(pixmap.rect(), QtGui.QColor(0, 0, 0, 127))
+            painter.end()
+
+            drag = QtGui.QDrag(self)
+            drag.setMimeData(mimeData)
+            drag.setPixmap(pixmap)
+            drag.setHotSpot(e.pos())
+
+            drag.exec_(QtCore.Qt.MoveAction)
 
     def mousePressEvent(self, e):
         super(SVGWidget, self).mousePressEvent(e)

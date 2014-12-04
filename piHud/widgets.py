@@ -11,7 +11,7 @@ class Gauge(SVGWidget):
 
         self.command = command
         self.style = Style(
-            background='black',
+            background='transparent',
             plot_background='transparent',
             foreground='#53B9E8',
             foreground_light='#53A0E8',

@@ -8,9 +8,11 @@ class MainScreen(QtGui.QWidget):
 
     def __init__(self, parent, connection):
         super(MainScreen, self).__init__(parent)
+
         self.draggables = []
-        self.setAcceptDrops(True)
         self.connection = connection
+
+        self.setAcceptDrops(True)
 
         # make test widget
         self.makeChart(obd.commands.RPM)
@@ -28,7 +30,11 @@ class MainScreen(QtGui.QWidget):
 
 
     def dropEvent(self, e):
-        position = e.pos()
-        e.source().move(position)
+
+        # get relative position of mouse from mimedata
+        mime = e.mimeData().text()
+        x, y = map(int, mime.split(','))
+
+        e.source().move(e.pos() - QtCore.QPoint(x, y))
         e.setDropAction(QtCore.Qt.MoveAction)
         e.accept()
