@@ -12,6 +12,34 @@ the scripts) you'll need to setup and activate a python [virtualenv]
 (http://pypi.python.org/pypi/virtualenv). Run the following at the command
 prompt...
 
+#### On Windows
+
+###Install Pip & PyGal
+
+If you do not have python installed, or are not sure, follow [these steps](http://docs.python-guide.org/en/latest/starting/install/win/) to install/check python.
+
+If you do have pip, go [here](https://pip.pypa.io/en/latest/installing.html) and follw the insturctions to install pip.
+
+If you have pip installed on your machine,
+
+```pip install pygal```
+
+###Install PyQt
+
+[Download the exe,](http://www.riverbankcomputing.com/software/pyqt/download) at the bottom of the page, of PyQt, make sure to have the Py2.7 and correct architecture (32- or 64-bit).
+
+###Install Python-ODB
+
+Clone the [repository](https://github.com/brendanwhitfield/python-OBD/tree/async) and run
+
+```python setup.py install```
+
+###Install PiHud
+
+Clone the [repository](https://github.com/brendanwhitfield/piHud) and run
+
+```python piHud/__main__.py```
+
 #### On Linux/Mac OS X
 
 
