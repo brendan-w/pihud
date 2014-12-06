@@ -45,18 +45,18 @@ class WidgetConfig():
 	def to_JSON(self):
 
 		# copy all the keys except for the command and class name
-		watch = self.__dict__.keys()
-		watch.remove('command')
-		watch.remove('class_name')
+		props = self.__dict__.keys()
+		props.remove('command')
+		props.remove('class_name')
 
-		props = {}
-		for key in watch:
-			props[key] = self.__dict__[key]
+		config = {}
+		for key in props:
+			config[key] = self.__dict__[key]
 
 		return {
 			"sensor": self.command.name,
 			"type": self.class_name,
-			"config": props
+			"config": config
 		}
 
 

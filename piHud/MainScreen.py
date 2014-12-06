@@ -18,10 +18,6 @@ class MainScreen(QtGui.QWidget):
         for config in self.config_file.widget_configs:
             self.createWidget(config)
 
-        # testing purposes only
-        # for widget in self.widgets:
-            # widget.render(self.connection.query(widget.command))
-
         # start python-OBDs event loop going
         self.connection.start()
 
