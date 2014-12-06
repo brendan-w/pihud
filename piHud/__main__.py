@@ -30,11 +30,18 @@ class PiHud(QtGui.QMainWindow):
 		self.setCentralWidget(MainScreen(self, self.connection))
 		self.showFullScreen()
 
+
+
 	def keyPressEvent(self, event):
 		key = event.key()
 
 		if key == QtCore.Qt.Key_Escape:
-			quit()
+			self.close()
+
+
+	def closeEvent(self, e):
+		self.connection.close()
+		quit()
 
 
 if __name__ == "__main__":

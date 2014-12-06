@@ -25,6 +25,7 @@ class MainScreen(QtGui.QWidget):
         # start python-OBDs event loop going
         self.connection.start()
 
+
     def createWidget(self, config):
         # create new widget of the correct type
         widget = widgets.__dict__[config.class_name](self, config)
