@@ -19,9 +19,11 @@ class MainScreen(QtGui.QWidget):
             self.createWidget(config)
 
         # testing purposes only
-        for widget in self.widgets:
-            widget.render(self.connection.query(widget.command))
+        # for widget in self.widgets:
+            # widget.render(self.connection.query(widget.command))
 
+        # start python-OBDs event loop going
+        self.connection.start()
 
     def createWidget(self, config):
         # create new widget of the correct type
