@@ -48,3 +48,18 @@ class MainScreen(QtGui.QWidget):
         e.accept()
 
         self.config.save()
+
+    def contextMenuEvent(self, e):
+        menu = QtGui.QMenu()
+
+        if len(self.connection.supported_commands) > 0:
+            for command in self.connection.supported_commands:
+                addAction = menu.addAction("New %s" % command.name)
+                addAction.setData(command)
+        else:
+            addAction = menu.addAction("No sensors available")
+            addAction.setDisabled(True)
+
+        action = menu.exec_(self.mapToGlobal(e.pos()))
+        if action is not None:
+            print "ACTION", action.data().toPyObject()
