@@ -3,7 +3,7 @@ import sys
 import obd
 from Gui import Gui
 from MainScreen import MainScreen
-from Config import Config_File
+from Config import Config
 from PyQt4 import QtGui, QtCore
 
 
@@ -25,21 +25,21 @@ class PiHud(QtGui.QMainWindow):
 		palette = QtGui.QPalette()
 		palette.setColor(QtGui.QPalette.Background, QtCore.Qt.black)
 		self.setPalette(palette)
+		
+		# read the config file
+		self.config = Config("piHud/config.json")
 
 		# init OBD conncetion
 		obd.debug.console = True
-		self.connection = obd.Async()
-
-		# read the config file
-		self.config_file = Config_File("piHud/config.json")
+		self.connection = obd.Async(self.config.port)
 
 		# make a screen stack
 		self.screenStack = QtGui.QStackedWidget(self)
 		self.setCentralWidget(self.screenStack)
 
 		# the various screens
-		mainScreen = MainScreen(self, self.connection, self.config_file)
-		guiScreen = Gui(self, self.connection, self.config_file)
+		mainScreen = MainScreen(self, self.connection, self.config)
+		guiScreen = Gui(self, self.connection, self.config)
 		
 		# add them to the stack
 		self.screenStack.addWidget(mainScreen)

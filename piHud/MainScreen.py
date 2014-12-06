@@ -2,21 +2,20 @@
 import obd
 import widgets
 from PyQt4 import QtCore, QtGui
-from Config import Config_File
 
 
 class MainScreen(QtGui.QWidget):
 
-    def __init__(self, parent, connection, config_file):
+    def __init__(self, parent, connection, config):
         super(MainScreen, self).__init__(parent)
         self.setAcceptDrops(True)
 
         self.widgets = []
         self.connection = connection
-        self.config_file = config_file
+        self.config = config
 
-        for config in self.config_file.widget_configs:
-            self.createWidget(config)
+        for widget_config in self.config.widget_configs:
+            self.createWidget(widget_config)
 
         # start python-OBDs event loop going
         self.connection.start()
@@ -48,4 +47,4 @@ class MainScreen(QtGui.QWidget):
         e.setDropAction(QtCore.Qt.MoveAction)
         e.accept()
 
-        self.config_file.save()
+        self.config.save()
