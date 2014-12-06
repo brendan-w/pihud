@@ -1,8 +1,18 @@
 
 import sys
 import obd
+from Gui import Gui
 from MainScreen import MainScreen
+from Config import Config_File
 from PyQt4 import QtGui, QtCore
+
+
+# pygal optimizations
+try:
+	from pygal.svg import Svg
+	Svg.add_scripts = lambda *args: None # completely disable the JS generator
+except:
+	pass
 
 
 class PiHud(QtGui.QMainWindow):
@@ -16,18 +26,27 @@ class PiHud(QtGui.QMainWindow):
 		palette.setColor(QtGui.QPalette.Background, QtCore.Qt.black)
 		self.setPalette(palette)
 
-		# pygal optimizations
-		try:
-			from pygal.svg import Svg
-			Svg.add_scripts = lambda *args: None # completely disable the JS generator
-		except:
-			pass
-
 		# init OBD conncetion
-		# obd.debug.console = True
+		obd.debug.console = True
 		self.connection = obd.Async()
 
-		self.setCentralWidget(MainScreen(self, self.connection))
+		# read the config file
+		self.config_file = Config_File("piHud/config.json")
+
+		# make a screen stack
+		self.screenStack = QtGui.QStackedWidget(self)
+		self.setCentralWidget(self.screenStack)
+
+		# the various screens
+		mainScreen = MainScreen(self, self.connection, self.config_file)
+		guiScreen = Gui(self, self.connection, self.config_file)
+		
+		# add them to the stack
+		self.screenStack.addWidget(mainScreen)
+		self.screenStack.addWidget(guiScreen)
+
+
+		self.screenStack.setCurrentWidget(mainScreen)
 		self.showFullScreen()
 
 
@@ -37,6 +56,11 @@ class PiHud(QtGui.QMainWindow):
 
 		if key == QtCore.Qt.Key_Escape:
 			self.close()
+
+		elif key == QtCore.Qt.Key_Tab:
+			# cycle through the screen stack
+			next_index = (self.screenStack.currentIndex() + 1) % len(self.screenStack)
+			self.screenStack.setCurrentIndex(next_index)
 
 
 	def closeEvent(self, e):

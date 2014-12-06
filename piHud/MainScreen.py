@@ -7,13 +7,13 @@ from Config import Config_File
 
 class MainScreen(QtGui.QWidget):
 
-    def __init__(self, parent, connection):
+    def __init__(self, parent, connection, config_file):
         super(MainScreen, self).__init__(parent)
         self.setAcceptDrops(True)
 
         self.widgets = []
         self.connection = connection
-        self.config_file = Config_File("piHud/config.json")
+        self.config_file = config_file
 
         for config in self.config_file.widget_configs:
             self.createWidget(config)
@@ -28,7 +28,10 @@ class MainScreen(QtGui.QWidget):
         
         # register the render function with python-OBD
         self.connection.watch(config.command, widget.render)
-        
+
+        # perform first render to ensure the widget gets displayed
+        widget.render(self.connection.query(config.command))
+
         self.widgets.append(widget)
 
 
