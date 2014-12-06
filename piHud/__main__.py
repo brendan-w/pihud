@@ -33,6 +33,17 @@ class PiHud(QtGui.QMainWindow):
 		obd.debug.console = True
 		self.connection = obd.Async(self.config.port)
 
+		# create the context menu
+		self.menu = QtGui.QMenu()
+
+		if len(self.connection.supported_commands) > 0:
+			for command in self.connection.supported_commands:
+				a = self.menu.addAction("New %s" % command.name)
+				a.setData(command)
+		else:
+			a = self.menu.addAction("No sensors available")
+			a.setDisabled(True)
+
 		# make a screen stack
 		self.screenStack = QtGui.QStackedWidget(self)
 		self.setCentralWidget(self.screenStack)
@@ -49,6 +60,11 @@ class PiHud(QtGui.QMainWindow):
 		self.screenStack.setCurrentWidget(mainScreen)
 		self.showFullScreen()
 
+
+	def contextMenuEvent(self, e):
+		action = self.menu.exec_(self.mapToGlobal(e.pos()))
+		if action is not None:
+			print "ACTION", action.data().toPyObject()
 
 
 	def keyPressEvent(self, event):
