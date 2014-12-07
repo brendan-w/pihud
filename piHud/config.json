@@ -5,7 +5,10 @@
             {
                 "type": "Gauge", 
                 "config": {
-                    "dimensions": null, 
+                    "dimensions": {
+                        "y": 400, 
+                        "x": 375
+                    }, 
                     "title": "Rev per uSec", 
                     "color": "#FF0000", 
                     "max": 8000, 
@@ -23,7 +26,10 @@
             {
                 "type": "Gauge", 
                 "config": {
-                    "dimensions": null, 
+                    "dimensions": {
+                        "y": 400, 
+                        "x": 375
+                    }, 
                     "title": "ENGINE_LOAD", 
                     "color": "#53B9E8", 
                     "max": 100, 
@@ -43,7 +49,10 @@
             {
                 "type": "Gauge", 
                 "config": {
-                    "dimensions": null, 
+                    "dimensions": {
+                        "y": 400, 
+                        "x": 375
+                    }, 
                     "title": "LONG_FUEL_TRIM_1", 
                     "color": "#53B9E8", 
                     "max": 100, 

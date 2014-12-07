@@ -14,16 +14,19 @@ class SVGWidget(QtSvg.QSvgWidget):
             self.move(config.position["x"], config.position["y"])
         else:
             self.default_position()
+            config.position = { "x":self.x(), "y":self.y() }
 
         if config.dimensions is not None:
             self.setFixedWidth(config.dimensions['x'])
             self.setFixedHeight(config.dimensions['y'])
         else:
             self.default_dimensions()
+            config.dimensions = { "x":self.width(), "y":self.height() }
+
 
         # make the context menu
         self.menu = QtGui.QMenu()
-        
+
         a = self.menu.addAction(self.config.command.name)
         a.setDisabled(True)
         self.menu.addAction("Delete Widget", self.delete)

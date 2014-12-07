@@ -52,7 +52,11 @@ class PiHud(QtGui.QMainWindow):
 			self.__add_empty_page()
 		self.__goto_page(0)
 
+		# create the context menu for adding widgets and pages
 		self.init_context_menu()
+
+		# save any default data that was missing when the config was imported
+		self.config.save()
 
 		# start python-OBDs event loop going
 		self.connection.start()
