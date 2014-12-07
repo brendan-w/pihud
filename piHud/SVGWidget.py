@@ -9,6 +9,7 @@ class SVGWidget(QtSvg.QSvgWidget):
         self.config = config
         self.command = config.command
 
+        # set size and position
         if config.position is not None:
             self.move(config.position["x"], config.position["y"])
         else:
@@ -19,6 +20,13 @@ class SVGWidget(QtSvg.QSvgWidget):
             self.setFixedHeight(config.dimensions['y'])
         else:
             self.default_dimensions()
+
+        # make the context menu
+        self.menu = QtGui.QMenu()
+        a = self.menu.addAction("Delete Widget")
+        a.triggered.connect(self.delete)
+
+        self.show()
 
 
     def default_position(self):
@@ -70,7 +78,7 @@ class SVGWidget(QtSvg.QSvgWidget):
         # so the ID is set to be as short as possible (to save memory)
         chart.uuid = ""
 
-        # match the SVG width to the Widget width
+        # match the SVG dimensions to the Widget dimensions
         chart.width = self.width()
         chart.height = self.height()
 
@@ -80,3 +88,11 @@ class SVGWidget(QtSvg.QSvgWidget):
         # wrap in PyQt byteArray
         byteArray = QtCore.QByteArray(svg)
         self.load(byteArray)
+
+
+    def contextMenuEvent(self, e):
+        action = self.menu.exec_(self.mapToGlobal(e.pos()))
+
+
+    def delete(self):
+        self.parent().delete_widget(self)

@@ -107,7 +107,7 @@ defaults = {
 
 
 class Config():
-	""" class managing the config file and it's structure """
+	""" class managing widget definitions and the structure of the config file """
 	def __init__(self, filename):
 		self.filename = filename
 		self.load()
@@ -154,12 +154,17 @@ class Config():
 
 
 	def add_widget(self, command):
-		""" constructs a default widget for the given command """
+		""" constructs a default widgetConfig for the given command """
 		# clone the default config for this command
 		widget_config = defaults[command].clone()
 		widget_config.set_command(command)
 		self.widget_configs.append(widget_config)
 		return widget_config
+
+
+	def delete_widget(self, widget_config):
+		""" deletes a widgetConfig """
+		self.widget_configs.remove(widget_config)
 
 
 	def save(self):
