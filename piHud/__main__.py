@@ -1,7 +1,6 @@
 
 import sys
 import obd
-from Gui import Gui
 from MainScreen import MainScreen
 from Config import Config
 from PyQt4 import QtGui, QtCore
@@ -41,11 +40,9 @@ class PiHud(QtGui.QMainWindow):
 
 		# the various screens
 		mainScreen = MainScreen(self, self.connection, self.config)
-		guiScreen = Gui(self, self.connection, self.config)
 		
 		# add them to the stack
 		self.screenStack.addWidget(mainScreen)
-		self.screenStack.addWidget(guiScreen)
 
 
 		self.screenStack.setCurrentWidget(mainScreen)
