@@ -32,8 +32,8 @@
                     "redline": 90, 
                     "title_font_size": 14, 
                     "position": {
-                        "y": 275, 
-                        "x": 538
+                        "y": 4, 
+                        "x": 346
                     }
                 }, 
                 "sensor": "ENGINE_LOAD"

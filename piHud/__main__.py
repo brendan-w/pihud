@@ -42,16 +42,16 @@ class PiHud(QtGui.QMainWindow):
 		# make a screen stack
 		self.stack = QtGui.QStackedWidget(self)
 		self.setCentralWidget(self.stack)
+		self.pageMarker = PageMarker(self)
 
 		# read the config and make pages
 		if len(self.config.pages) > 0:
 			for page in self.config.pages:
 				self.__add_page(page)
-			self.stack.setCurrentIndex(0)
 		else:
 			self.__add_empty_page()
+		self.__goto_page(0)
 
-		self.pageMarker = PageMarker(self)
 		self.init_context_menu()
 
 		# start python-OBDs event loop going
@@ -62,7 +62,7 @@ class PiHud(QtGui.QMainWindow):
 	def __add_page(self, page_config):
 		page = MainScreen(self, self.connection, page_config)
 		self.stack.addWidget(page)
-		self.stack.setCurrentWidget(page)
+		self.__goto_page(self.stack.count() - 1)
 
 
 	def __add_empty_page(self):
@@ -79,23 +79,25 @@ class PiHud(QtGui.QMainWindow):
 			page.deleteLater()
 			self.config.save()
 
+			self.__goto_page(self.stack.currentIndex())
+
+
+	def __goto_page(self, p):
+		self.stack.currentWidget().unwatch() # tell the current page to relinquish its sensors from python-OBD
+		self.stack.setCurrentIndex(p)
+		self.pageMarker.set(self.stack.count(), self.stack.currentIndex())
+		self.stack.currentWidget().rewatch() # tell the new page to re-watch its sensors
+
+
 	def __next_page(self):
 		# cycle through the screen stack
-		self.stack.currentWidget().unwatch() # tell the current page to relinquish its sensors from python-OBD
-
 		next_index = (self.stack.currentIndex() + 1) % len(self.stack)
-		self.stack.setCurrentIndex(next_index)
-
-		self.stack.currentWidget().rewatch() # tell the new page to re-watch its sensors
+		self.__goto_page(next_index)
 
 
 	def init_context_menu(self):
 		# create the context menu
 		self.menu = QtGui.QMenu()
-		self.menu.addAction("New Page", self.__add_empty_page)
-		self.menu.addAction("Delete Page", self.__delete_page)
-		self.menu.addSeparator()
-
 		subMenu = self.menu.addMenu("Add Widget")
 
 		if len(self.connection.supported_commands) > 0:
@@ -105,6 +107,12 @@ class PiHud(QtGui.QMainWindow):
 		else:
 			a = subMenu.addAction("No sensors available")
 			a.setDisabled(True)
+		
+		self.menu.addSeparator()
+
+		self.menu.addAction("New Page", self.__add_empty_page)
+		self.menu.addAction("Delete Page", self.__delete_page)
+
 
 
 	def contextMenuEvent(self, e):

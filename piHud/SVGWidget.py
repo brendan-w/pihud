@@ -23,6 +23,9 @@ class SVGWidget(QtSvg.QSvgWidget):
 
         # make the context menu
         self.menu = QtGui.QMenu()
+        
+        a = self.menu.addAction(self.config.command.name)
+        a.setDisabled(True)
         self.menu.addAction("Delete Widget", self.delete)
 
         self.show()
