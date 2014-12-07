@@ -38,6 +38,26 @@
                 }, 
                 "sensor": "ENGINE_LOAD"
             }
+        ], 
+        [
+            {
+                "type": "Gauge", 
+                "config": {
+                    "dimensions": null, 
+                    "title": "LONG_FUEL_TRIM_1", 
+                    "color": "#53B9E8", 
+                    "max": 100, 
+                    "min": 0, 
+                    "label_font_size": 25, 
+                    "redline": null, 
+                    "title_font_size": 25, 
+                    "position": {
+                        "y": 0, 
+                        "x": 0
+                    }
+                }, 
+                "sensor": "LONG_FUEL_TRIM_1"
+            }
         ]
     ]
 }

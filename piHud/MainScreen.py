@@ -21,9 +21,6 @@ class MainScreen(QtGui.QWidget):
         for widget_config in self.page_config.widget_configs:
             self.__make_widget(widget_config)
 
-        # start python-OBDs event loop going
-        self.connection.start()
-
 
     def __make_widget(self, config):
         """ produces a widget object from the given config """

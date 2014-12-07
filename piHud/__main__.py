@@ -33,8 +33,8 @@ class PiHud(QtGui.QMainWindow):
 		# init OBD conncetion
 		obd.debug.console = True
 		self.connection = obd.Async(self.config.port)
-		for i in range(16):
-			self.connection.supported_commands.append(obd.commands[1][i]) 
+		# for i in range(16):
+			# self.connection.supported_commands.append(obd.commands[1][i]) 
 
 		# make a screen stack
 		self.stack = QtGui.QStackedWidget(self)
@@ -49,6 +49,10 @@ class PiHud(QtGui.QMainWindow):
 			self.__add_empty_page()
 
 		self.init_context_menu()
+
+		# start python-OBDs event loop going
+		self.connection.start()
+
 		self.showFullScreen()
 
 
@@ -71,6 +75,15 @@ class PiHud(QtGui.QMainWindow):
 			self.config.delete_page(page.page_config)
 			page.deleteLater()
 			self.config.save()
+
+	def __next_page(self):
+		# cycle through the screen stack
+		self.stack.currentWidget().unwatch() # tell the current page to relinquish its sensors from python-OBD
+
+		next_index = (self.stack.currentIndex() + 1) % len(self.stack)
+		self.stack.setCurrentIndex(next_index)
+
+		self.stack.currentWidget().rewatch() # tell the new page to re-watch its sensors
 
 
 	def init_context_menu(self):
@@ -108,9 +121,7 @@ class PiHud(QtGui.QMainWindow):
 			self.close()
 
 		elif key == QtCore.Qt.Key_Tab:
-			# cycle through the screen stack
-			next_index = (self.stack.currentIndex() + 1) % len(self.stack)
-			self.stack.setCurrentIndex(next_index)
+			self.__next_page()
 
 
 	def closeEvent(self, e):
