@@ -3,6 +3,7 @@ import sys
 import obd
 from MainScreen import MainScreen
 from Config import Config
+from PageMarker import PageMarker
 from PyQt4 import QtGui, QtCore
 
 
@@ -16,6 +17,8 @@ except:
 	pass
 
 
+
+
 class PiHud(QtGui.QMainWindow):
 	def __init__(self):
 		super(PiHud, self).__init__()
@@ -23,8 +26,8 @@ class PiHud(QtGui.QMainWindow):
 		self.setWindowTitle("PiHud")
 
 		# define the color palette
-		palette = QtGui.QPalette()
-		palette.setColor(QtGui.QPalette.Background, QtCore.Qt.black)
+		palette = self.palette()
+		palette.setColor(self.backgroundRole(), QtCore.Qt.black)
 		self.setPalette(palette)
 		
 		# read the config file
@@ -48,11 +51,11 @@ class PiHud(QtGui.QMainWindow):
 		else:
 			self.__add_empty_page()
 
+		self.pageMarker = PageMarker(self)
 		self.init_context_menu()
 
 		# start python-OBDs event loop going
 		self.connection.start()
-
 		self.showFullScreen()
 
 
