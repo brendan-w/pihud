@@ -25,19 +25,6 @@ class MainScreen(QtGui.QWidget):
         self.connection.start()
 
 
-    def rewatch(self):
-        """ called when switching screens """
-        for widget in self.widgets:
-            command = widget.config.command
-            self.connection.watch(command, widget.render)
-            widget.render(self.connection.query(command))
-
-
-    def unwatch(self):
-        """ called when switching screens """
-        self.connection.unwatch_all()
-
-
     def __make_widget(self, config):
         """ produces a widget object from the given config """
         # create new widget of the correct type
@@ -50,6 +37,19 @@ class MainScreen(QtGui.QWidget):
         widget.render(self.connection.query(config.command))
 
         self.widgets.append(widget)
+
+
+    def rewatch(self):
+        """ called when switching screens """
+        for widget in self.widgets:
+            command = widget.config.command
+            self.connection.watch(command, widget.render)
+            widget.render(self.connection.query(command))
+
+
+    def unwatch(self):
+        """ called when switching screens """
+        self.connection.unwatch_all()
 
 
     def make_default_widget(self, command):
@@ -80,4 +80,4 @@ class MainScreen(QtGui.QWidget):
         e.setDropAction(QtCore.Qt.MoveAction)
         e.accept()
 
-        self.config.save()
+        self.page_config.save()

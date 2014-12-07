@@ -110,10 +110,10 @@ class PageConfig():
 	""" class managing widget definitions on a single page """
 
 	def __init__(self, config, page_json=None):
+		self.config = config
 		self.widget_configs = []
 
 		# process each widget definition
-		print page_json
 		if page_json is not None:
 			for w in page_json:
 				self.__process_widget(w)
@@ -138,13 +138,13 @@ class PageConfig():
 		command = c[sensor_name]
 
 		# construct the default widget for this command
-		widget_config = self.create_widget(p, command)
+		widget_config = self.add_widget(command)
 
 		# overwrite properties with the user's settings
 		widget_config.from_JSON(w['config'], class_name)
 
 
-	def create_widget(self, command):
+	def add_widget(self, command):
 		""" constructs a default widgetConfig for the given command """
 		
 		# try to clone the default config for this command
@@ -188,7 +188,7 @@ class Config():
 
 		# process each page definition
 		for page_json in config['pages']:
-			page = PageConfig(page_json)
+			page = PageConfig(self, page_json)
 			self.pages.append(page)
 
 
@@ -211,7 +211,7 @@ class Config():
 
 		for page in self.pages:
 			output_page = []
-			for w in self.widget_configs:
+			for w in page.widget_configs:
 				output_page.append(w.to_JSON())
 			output_pages.append(output_page)
 

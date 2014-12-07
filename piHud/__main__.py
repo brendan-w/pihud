@@ -41,8 +41,12 @@ class PiHud(QtGui.QMainWindow):
 		self.setCentralWidget(self.stack)
 
 		# read the config and make pages
-		for page in self.config.pages:
-			self.__add_page(page)
+		if len(self.config.pages) > 0:
+			for page in self.config.pages:
+				self.__add_page(page)
+			self.stack.setCurrentIndex(0)
+		else:
+			self.__add_empty_page()
 
 		self.init_context_menu()
 		self.showFullScreen()
@@ -54,17 +58,17 @@ class PiHud(QtGui.QMainWindow):
 		self.stack.setCurrentWidget(page)
 
 
-	def add_empty_page(self):
+	def __add_empty_page(self):
 		page_config = self.config.add_page()
 		self.__add_page(page_config)
 		self.config.save()
 
 
-	def delete_page(self):
+	def __delete_page(self):
 		if self.stack.count() > 1:
 			page = self.stack.currentWidget()
 			self.stack.removeWidget(page)
-			self.config.delete_page(page.config)
+			self.config.delete_page(page.page_config)
 			page.deleteLater()
 			self.config.save()
 
@@ -72,16 +76,18 @@ class PiHud(QtGui.QMainWindow):
 	def init_context_menu(self):
 		# create the context menu
 		self.menu = QtGui.QMenu()
-		self.menu.addAction("New Page", self.add_empty_page)
-		self.menu.addAction("Delete Page", self.delete_page)
+		self.menu.addAction("New Page", self.__add_empty_page)
+		self.menu.addAction("Delete Page", self.__delete_page)
 		self.menu.addSeparator()
+
+		subMenu = self.menu.addMenu("Add Widget")
 
 		if len(self.connection.supported_commands) > 0:
 			for command in self.connection.supported_commands:
-				a = self.menu.addAction("New %s" % command.name)
+				a = subMenu.addAction(command.name)
 				a.setData(command)
 		else:
-			a = self.menu.addAction("No sensors available")
+			a = subMenu.addAction("No sensors available")
 			a.setDisabled(True)
 
 

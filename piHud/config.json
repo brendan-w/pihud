@@ -1,5 +1,6 @@
 {
-    "pages":[
+    "port": null, 
+    "pages": [
         [
             {
                 "type": "Gauge", 
@@ -31,13 +32,12 @@
                     "redline": 90, 
                     "title_font_size": 14, 
                     "position": {
-                        "y": -2, 
-                        "x": 328
+                        "y": 0, 
+                        "x": 343
                     }
                 }, 
                 "sensor": "ENGINE_LOAD"
             }
         ]
-    ],
-    "port": null
+    ]
 }
