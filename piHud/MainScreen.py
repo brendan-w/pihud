@@ -7,7 +7,7 @@ from PyQt4 import QtCore, QtGui
 class MainScreen(QtGui.QWidget):
     """ manages (and is a factory for) SVGWidgets """
 
-    def __init__(self, parent, connection, config):
+    def __init__(self, parent, connection, page_config):
         super(MainScreen, self).__init__(parent)
         
         # enable dragging and dropping of widgets
@@ -15,27 +15,30 @@ class MainScreen(QtGui.QWidget):
 
         self.widgets = []
         self.connection = connection
-        self.config = config
+        self.page_config = page_config
 
         # create widgets based on the config file
-        for widget_config in self.config.widget_configs:
-            self.make_widget(widget_config)
-        
-        # create the context menu
-        self.menu = QtGui.QMenu()
-        if len(self.connection.supported_commands) > 0:
-            for command in self.connection.supported_commands:
-                a = self.menu.addAction("New %s" % command.name)
-                a.setData(command)
-        else:
-            a = self.menu.addAction("No sensors available")
-            a.setDisabled(True)
+        for widget_config in self.page_config.widget_configs:
+            self.__make_widget(widget_config)
 
         # start python-OBDs event loop going
         self.connection.start()
 
 
-    def make_widget(self, config):
+    def rewatch(self):
+        """ called when switching screens """
+        for widget in self.widgets:
+            command = widget.config.command
+            self.connection.watch(command, widget.render)
+            widget.render(self.connection.query(command))
+
+
+    def unwatch(self):
+        """ called when switching screens """
+        self.connection.unwatch_all()
+
+
+    def __make_widget(self, config):
         """ produces a widget object from the given config """
         # create new widget of the correct type
         widget = widgets.__dict__[config.class_name](self, config)
@@ -51,24 +54,17 @@ class MainScreen(QtGui.QWidget):
 
     def make_default_widget(self, command):
         """ creates a new widget with a default config """
-        widget_config = self.config.add_widget(command)
-        self.make_widget(widget_config)
-        self.config.save()
+        widget_config = self.page_config.add_widget(command)
+        self.__make_widget(widget_config)
+        self.page_config.save()
 
 
     def delete_widget(self, widget):
         """ deletes a widget object and its config entry """
         self.widgets.remove(widget)
-        self.config.delete_widget(widget.config)
+        self.page_config.delete_widget(widget.config)
         widget.deleteLater()
-        self.config.save()
-
-
-    def contextMenuEvent(self, e):
-        action = self.menu.exec_(self.mapToGlobal(e.pos()))
-        if action is not None:
-            command = action.data().toPyObject()
-            self.make_default_widget(command)
+        self.page_config.save()
 
 
     def dragEnterEvent(self, e):

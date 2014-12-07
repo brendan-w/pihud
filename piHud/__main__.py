@@ -33,20 +33,66 @@ class PiHud(QtGui.QMainWindow):
 		# init OBD conncetion
 		obd.debug.console = True
 		self.connection = obd.Async(self.config.port)
+		for i in range(16):
+			self.connection.supported_commands.append(obd.commands[1][i]) 
 
 		# make a screen stack
-		self.screenStack = QtGui.QStackedWidget(self)
-		self.setCentralWidget(self.screenStack)
+		self.stack = QtGui.QStackedWidget(self)
+		self.setCentralWidget(self.stack)
 
-		# the various screens
-		mainScreen = MainScreen(self, self.connection, self.config)
-		
-		# add them to the stack
-		self.screenStack.addWidget(mainScreen)
+		# read the config and make pages
+		for page in self.config.pages:
+			self.__add_page(page)
 
-
-		self.screenStack.setCurrentWidget(mainScreen)
+		self.init_context_menu()
 		self.showFullScreen()
+
+
+	def __add_page(self, page_config):
+		page = MainScreen(self, self.connection, page_config)
+		self.stack.addWidget(page)
+		self.stack.setCurrentWidget(page)
+
+
+	def add_empty_page(self):
+		page_config = self.config.add_page()
+		self.__add_page(page_config)
+		self.config.save()
+
+
+	def delete_page(self):
+		if self.stack.count() > 1:
+			page = self.stack.currentWidget()
+			self.stack.removeWidget(page)
+			self.config.delete_page(page.config)
+			page.deleteLater()
+			self.config.save()
+
+
+	def init_context_menu(self):
+		# create the context menu
+		self.menu = QtGui.QMenu()
+		self.menu.addAction("New Page", self.add_empty_page)
+		self.menu.addAction("Delete Page", self.delete_page)
+		self.menu.addSeparator()
+
+		if len(self.connection.supported_commands) > 0:
+			for command in self.connection.supported_commands:
+				a = self.menu.addAction("New %s" % command.name)
+				a.setData(command)
+		else:
+			a = self.menu.addAction("No sensors available")
+			a.setDisabled(True)
+
+
+	def contextMenuEvent(self, e):
+		action = self.menu.exec_(self.mapToGlobal(e.pos()))
+		if action is not None:
+			command = action.data().toPyObject()
+			# if this is a command creation action, make the new widget
+			# there's got to be a better way to do this...
+			if command is not None:
+				self.stack.currentWidget().make_default_widget(command)
 
 
 	def keyPressEvent(self, event):
@@ -57,13 +103,15 @@ class PiHud(QtGui.QMainWindow):
 
 		elif key == QtCore.Qt.Key_Tab:
 			# cycle through the screen stack
-			next_index = (self.screenStack.currentIndex() + 1) % len(self.screenStack)
-			self.screenStack.setCurrentIndex(next_index)
+			next_index = (self.stack.currentIndex() + 1) % len(self.stack)
+			self.stack.setCurrentIndex(next_index)
 
 
 	def closeEvent(self, e):
 		self.connection.close()
 		quit()
+
+
 
 
 if __name__ == "__main__":
