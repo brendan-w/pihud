@@ -175,6 +175,7 @@ class Config():
 		self.filename = filename
 
 		self.port = None
+		self.page_adv_pin = 18
 		self.pages = []
 
 		# read the file
@@ -185,6 +186,12 @@ class Config():
 		# check for the required root keys
 		if not all(k in config for k in ['pages']):
 			print "Config is missing the 'pages' array"
+
+		if 'port' in config:
+			self.port = config['port']
+
+		if 'page_adv_pin' in config:
+			self.page_adv_pin = config['page_adv_pin']
 
 		# process each page definition
 		for page_json in config['pages']:
@@ -217,6 +224,7 @@ class Config():
 
 		output = {
 			"port": self.port,
+			"page_adv_pin": self.page_adv_pin,
 			"pages": output_pages,
 		}
 

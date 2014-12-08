@@ -41,9 +41,10 @@ class PiHud(QtGui.QMainWindow):
 		self.config = Config("piHud/config.json")
 
 		try:
+			pin = self.config.page_adv_pin
 			GPIO.setmode(GPIO.BCM)
-			GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-			GIO.add_event_detect(18, GPIO.FALLING, callback=self.__next_page, bouncetime=200)
+			GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+			GIO.add_event_detect(pin, GPIO.FALLING, callback=self.__next_page, bouncetime=200)
 		except:
 			pass
 
