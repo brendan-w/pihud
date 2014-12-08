@@ -8,7 +8,7 @@ from obd import commands as c
 class WidgetConfig():
 	""" the configuration for a single readout or command """
 
-	def __init__(self, class_name="Gauge", min_=0, max_=100, redline_=None):
+	def __init__(self, class_name="Text", min_=0, max_=100, redline_=None):
 
 		self.command    = None
 		self.class_name = class_name
@@ -70,38 +70,38 @@ class WidgetConfig():
 # dict of default configs where key=OBDCommand value=Config
 # user settings in the config will override these default values
 defaults = {
-	c.PIDS_A            : WidgetConfig(),
-	c.STATUS            : WidgetConfig(),
-	c.FREEZE_DTC        : WidgetConfig(),
-	c.FUEL_STATUS       : WidgetConfig(),
+	#c.PIDS_A            : WidgetConfig(),
+	#c.STATUS            : WidgetConfig(),
+	#c.FREEZE_DTC        : WidgetConfig(),
+	c.FUEL_STATUS       : WidgetConfig("Text"),
 	c.ENGINE_LOAD       : WidgetConfig("Gauge", 0, 100, 90),
-	c.COOLANT_TEMP      : WidgetConfig(),
-	c.SHORT_FUEL_TRIM_1 : WidgetConfig(),
-	c.LONG_FUEL_TRIM_1  : WidgetConfig(),
-	c.SHORT_FUEL_TRIM_2 : WidgetConfig(),
-	c.LONG_FUEL_TRIM_2  : WidgetConfig(),
-	c.FUEL_PRESSURE     : WidgetConfig(),
-	c.INTAKE_PRESSURE   : WidgetConfig(),
+	c.COOLANT_TEMP      : WidgetConfig("BarH", -40, 215),
+	c.SHORT_FUEL_TRIM_1 : WidgetConfig("Gauge", -100, 100),
+	c.LONG_FUEL_TRIM_1  : WidgetConfig("Gauge", -100, 100),
+	c.SHORT_FUEL_TRIM_2 : WidgetConfig("Gauge", -100, 100),
+	c.LONG_FUEL_TRIM_2  : WidgetConfig("Gauge", -100, 100),
+	c.FUEL_PRESSURE     : WidgetConfig("BarH", 0, 765),
+	c.INTAKE_PRESSURE   : WidgetConfig("BarH", 0, 255),
 	c.RPM               : WidgetConfig("Gauge", 0, 8000, 6750),
 	c.SPEED             : WidgetConfig("Gauge", 0, 180),
-	c.TIMING_ADVANCE    : WidgetConfig(),
-	c.INTAKE_TEMP       : WidgetConfig(),
-	c.MAF               : WidgetConfig(),
-	c.THROTTLE_POS      : WidgetConfig("Bar", 0, 100),
-	c.AIR_STATUS        : WidgetConfig(),
-	c.O2_SENSORS        : WidgetConfig(),
-	c.O2_B1S1           : WidgetConfig(),
-	c.O2_B1S2           : WidgetConfig(),
-	c.O2_B1S3           : WidgetConfig(),
-	c.O2_B1S4           : WidgetConfig(),
-	c.O2_B2S1           : WidgetConfig(),
-	c.O2_B2S2           : WidgetConfig(),
-	c.O2_B2S3           : WidgetConfig(),
-	c.O2_B2S4           : WidgetConfig(),
-	c.OBD_COMPLIANCE    : WidgetConfig(),
-	c.O2_SENSORS_ALT    : WidgetConfig(),
-	c.AUX_INPUT_STATUS  : WidgetConfig(),
-	c.RUN_TIME          : WidgetConfig(),
+	c.TIMING_ADVANCE    : WidgetConfig("Gauge", -64, 64),
+	c.INTAKE_TEMP       : WidgetConfig("BarH", -40, 215),
+	c.MAF               : WidgetConfig("Gauge", 0, 655.35),
+	c.THROTTLE_POS      : WidgetConfig("BarV", 0, 100),
+	c.AIR_STATUS        : WidgetConfig("Text"),
+	#c.O2_SENSORS        : WidgetConfig(),
+	c.O2_B1S1           : WidgetConfig("BarV", 0, 1.275),
+	c.O2_B1S2           : WidgetConfig("BarV", 0, 1.275),
+	c.O2_B1S3           : WidgetConfig("BarV", 0, 1.275),
+	c.O2_B1S4           : WidgetConfig("BarV", 0, 1.275),
+	c.O2_B2S1           : WidgetConfig("BarV", 0, 1.275),
+	c.O2_B2S2           : WidgetConfig("BarV", 0, 1.275),
+	c.O2_B2S3           : WidgetConfig("BarV", 0, 1.275),
+	c.O2_B2S4           : WidgetConfig("BarV", 0, 1.275),
+	c.OBD_COMPLIANCE    : WidgetConfig("Text"),
+	#c.O2_SENSORS_ALT    : WidgetConfig(),
+	#c.AUX_INPUT_STATUS  : WidgetConfig(),
+	c.RUN_TIME          : WidgetConfig("Text"),
 }
 
 
