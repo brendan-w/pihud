@@ -7,6 +7,13 @@ from PageMarker import PageMarker
 from PyQt4 import QtGui, QtCore
 
 
+# RPi GPIO 
+try:
+	import RPi.GPIO as GPIO
+except:
+	pass
+
+
 # pygal optimizations
 try:
 	from pygal.svg import Svg
@@ -32,6 +39,14 @@ class PiHud(QtGui.QMainWindow):
 		
 		# read the config file
 		self.config = Config("piHud/config.json")
+
+		try:
+			GPIO.setmode(GPIO.BCM)
+			GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+			GIO.add_event_detect(18, GPIO.FALLING, callback=self.__next_page, bouncetime=200)
+		except:
+			pass
+
 
 		# init OBD conncetion
 		obd.debug.console = True
