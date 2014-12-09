@@ -50,12 +50,12 @@ class Gauge(SVGWidget):
 
 
 
-class Horizontal_Bar(SVGWidget):
+class Bar_h(SVGWidget):
     def __init__(self, parent, config):
-        super(Horizontal_Bar, self).__init__(parent, config)
+        super(Bar_h, self).__init__(parent, config)
 
         self.style = Style(
-            stroke_width=3.0,
+            stroke_width=1.0,
             background='transparent',
             plot_background='transparent',
             foreground=config.color,
@@ -66,8 +66,8 @@ class Horizontal_Bar(SVGWidget):
 
     def default_dimensions(self):
         """ override default size, called by superclass """
-        super(Horizontal_Bar, self).setFixedWidth(375)
-        super(Horizontal_Bar, self).setFixedHeight(400)
+        super(Bar_h, self).setFixedWidth(375)
+        super(Bar_h, self).setFixedHeight(400)
 
 
     def render(self, response):

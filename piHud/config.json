@@ -66,6 +66,27 @@
                     }
                 }, 
                 "sensor": "FUEL_STATUS"
+            }, 
+            {
+                "type": "Bar_h", 
+                "config": {
+                    "dimensions": {
+                        "y": 400, 
+                        "x": 375
+                    }, 
+                    "title": "INTAKE_TEMP", 
+                    "color": "#53B9E8", 
+                    "max": 215, 
+                    "min": -40, 
+                    "label_font_size": 25, 
+                    "redline": null, 
+                    "title_font_size": 25, 
+                    "position": {
+                        "y": 268, 
+                        "x": 923
+                    }
+                }, 
+                "sensor": "INTAKE_TEMP"
             }
         ], 
         [
