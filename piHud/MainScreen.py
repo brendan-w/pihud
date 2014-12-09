@@ -3,6 +3,9 @@ import obd
 import widgets
 from PyQt4 import QtCore, QtGui
 
+import math # used got demo mode
+from obd.utils import Response # used got demo mode
+
 
 class MainScreen(QtGui.QWidget):
     """ manages (and is a factory for) SVGWidgets """
@@ -20,6 +23,31 @@ class MainScreen(QtGui.QWidget):
         # create widgets based on the config file
         for widget_config in self.page_config.widget_configs:
             self.__make_widget(widget_config)
+
+        # if in demo mode, start a timer to push values to each widget
+        if page_config.config.demo:
+            self.theta = 0
+            self.timer = QtCore.QBasicTimer()
+            self.timer.start(1000/30, self)
+
+
+    def timerEvent(self, event):
+        """ event loop for demo mode """
+        for widget in self.widgets:
+            self.theta += 0.01
+
+            min_ = widget.config.min
+            max_ = widget.config.max
+
+            # value mapping
+            value = (math.cos(self.theta) + 1) * (max_ - min_) / 2 + min_
+
+            r = Response()
+            r.raw_data = "00 00 00 00"
+            r.value = int(value)
+            r.unit = "unit"
+
+            widget.render(r)
 
 
     def __make_widget(self, config):

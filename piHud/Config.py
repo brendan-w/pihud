@@ -8,7 +8,7 @@ from obd import commands as c
 class WidgetConfig():
 	""" the configuration for a single readout or command """
 
-	def __init__(self, class_name="Text", min_=0, max_=100, redline_=None):
+	def __init__(self, class_name="Text", min_=0, max_=100, redline_=None, label_font_size=25, title_font_size=25):
 
 		self.command    = None
 		self.class_name = class_name
@@ -19,8 +19,8 @@ class WidgetConfig():
 		self.max     = max_
 		self.redline = redline_
 		self.color   = "#53B9E8"
-		self.label_font_size = 25
-		self.title_font_size = 25
+		self.label_font_size = label_font_size
+		self.title_font_size = title_font_size
 
 		# these defaults are set by the widget at runtime
 		self.position = None
@@ -73,7 +73,7 @@ defaults = {
 	#c.PIDS_A            : WidgetConfig(),
 	#c.STATUS            : WidgetConfig(),
 	#c.FREEZE_DTC        : WidgetConfig(),
-	c.FUEL_STATUS       : WidgetConfig("Text"),
+	c.FUEL_STATUS       : WidgetConfig("Text", label_font_size=50),
 	c.ENGINE_LOAD       : WidgetConfig("Gauge", 0, 100, 90),
 	c.COOLANT_TEMP      : WidgetConfig("BarH", -40, 215),
 	c.SHORT_FUEL_TRIM_1 : WidgetConfig("Gauge", -100, 100),
@@ -88,7 +88,7 @@ defaults = {
 	c.INTAKE_TEMP       : WidgetConfig("BarH", -40, 215),
 	c.MAF               : WidgetConfig("Gauge", 0, 655.35),
 	c.THROTTLE_POS      : WidgetConfig("BarV", 0, 100),
-	c.AIR_STATUS        : WidgetConfig("Text"),
+	c.AIR_STATUS        : WidgetConfig("Text", label_font_size=50),
 	#c.O2_SENSORS        : WidgetConfig(),
 	c.O2_B1S1           : WidgetConfig("BarV", 0, 1.275),
 	c.O2_B1S2           : WidgetConfig("BarV", 0, 1.275),
@@ -98,10 +98,10 @@ defaults = {
 	c.O2_B2S2           : WidgetConfig("BarV", 0, 1.275),
 	c.O2_B2S3           : WidgetConfig("BarV", 0, 1.275),
 	c.O2_B2S4           : WidgetConfig("BarV", 0, 1.275),
-	c.OBD_COMPLIANCE    : WidgetConfig("Text"),
+	c.OBD_COMPLIANCE    : WidgetConfig("Text", label_font_size=50),
 	#c.O2_SENSORS_ALT    : WidgetConfig(),
 	#c.AUX_INPUT_STATUS  : WidgetConfig(),
-	c.RUN_TIME          : WidgetConfig("Text"),
+	c.RUN_TIME          : WidgetConfig("Text", label_font_size=50),
 }
 
 
@@ -176,6 +176,7 @@ class Config():
 
 		self.port = None
 		self.page_adv_pin = 18
+		self.demo = False
 		self.pages = []
 
 		# read the file
@@ -192,6 +193,9 @@ class Config():
 
 		if 'page_adv_pin' in config:
 			self.page_adv_pin = config['page_adv_pin']
+
+		if 'demo' in config:
+			self.demo = config['demo']
 
 		# process each page definition
 		for page_json in config['pages']:
@@ -225,6 +229,7 @@ class Config():
 		output = {
 			"port": self.port,
 			"page_adv_pin": self.page_adv_pin,
+			"demo": self.demo,
 			"pages": output_pages,
 		}
 

@@ -1,5 +1,6 @@
 {
-    "page_adv_pin": 18, 
+    "demo": true, 
+    "page_adv_pin": false, 
     "port": null, 
     "pages": [
         [
@@ -44,6 +45,27 @@
                     }
                 }, 
                 "sensor": "ENGINE_LOAD"
+            }, 
+            {
+                "type": "Text", 
+                "config": {
+                    "dimensions": {
+                        "y": 75, 
+                        "x": 200
+                    }, 
+                    "title": "FUEL_STATUS", 
+                    "color": "#53B9E8", 
+                    "max": 100, 
+                    "min": 0, 
+                    "label_font_size": 40, 
+                    "redline": null, 
+                    "title_font_size": 25, 
+                    "position": {
+                        "y": 159, 
+                        "x": 794
+                    }
+                }, 
+                "sensor": "FUEL_STATUS"
             }
         ], 
         [

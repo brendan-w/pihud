@@ -52,8 +52,8 @@ class PiHud(QtGui.QMainWindow):
 		# init OBD conncetion
 		obd.debug.console = True
 		self.connection = obd.Async(self.config.port)
-		# for i in range(16):
-			# self.connection.supported_commands.append(obd.commands[1][i]) 
+		for i in range(16):
+			self.connection.supported_commands.append(obd.commands[1][i]) 
 
 		# make a screen stack
 		self.stack = QtGui.QStackedWidget(self)

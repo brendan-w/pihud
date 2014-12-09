@@ -1,6 +1,7 @@
 import pygal
 from pygal.style import Style
 from SVGWidget import SVGWidget
+from PyQt4 import QtCore, QtGui
 
 
 class Gauge(SVGWidget):
@@ -46,3 +47,37 @@ class Gauge(SVGWidget):
         chart.add(self.command.name, value)
 
         self.showChart(chart)
+
+
+
+
+class Text(SVGWidget):
+    def __init__(self, parent, config):
+        super(Text, self).__init__(parent, config)
+
+        self.label = QtGui.QLabel(self)
+        self.label.setText("Label")
+
+        css = """
+            font-size: %ipt;
+            color: %s;
+        """ % (config.label_font_size, config.color)
+
+        self.label.setStyleSheet(css)
+
+
+    def default_dimensions(self):
+        """ override default size, called by superclass """
+        super(Text, self).setFixedWidth(200)
+        super(Text, self).setFixedHeight(75)
+
+
+    def render(self, response):
+        """ function called by python-OBD with new data to be rendered """
+
+        value = 0
+        if not response.is_null():
+            value = response.value
+
+        self.label.setText(str(value) + str(response.unit))
+

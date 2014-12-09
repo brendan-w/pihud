@@ -101,3 +101,7 @@ class SVGWidget(QtSvg.QSvgWidget):
 
     def delete(self):
         self.parent().delete_widget(self)
+
+    def render(self, response):
+        """ this function should be overriden in subclass """
+        pass
