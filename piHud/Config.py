@@ -8,7 +8,7 @@ from obd import commands as c
 class WidgetConfig():
 	""" the configuration for a single readout or command """
 
-	def __init__(self, class_name="Text", min_=0, max_=100, redline_=None, label_font_size=25, title_font_size=25):
+	def __init__(self, class_name="Text", min_=0, max_=100, redline_=None, label_font_size=25, title_font_size=25, buffer_size=30):
 
 		self.command    = None
 		self.class_name = class_name
@@ -21,6 +21,7 @@ class WidgetConfig():
 		self.color   = "#53B9E8"
 		self.label_font_size = label_font_size
 		self.title_font_size = title_font_size
+		self.buffer_size = buffer_size
 
 		# these defaults are set by the widget at runtime
 		self.position = None
@@ -85,7 +86,7 @@ defaults = {
 	c.RPM               : WidgetConfig("Gauge", 0, 8000, 6750),
 	c.SPEED             : WidgetConfig("Gauge", 0, 180),
 	c.TIMING_ADVANCE    : WidgetConfig("Gauge", -64, 64),
-	c.INTAKE_TEMP       : WidgetConfig("Bar_h", -40, 215),
+	c.INTAKE_TEMP       : WidgetConfig("Graph", -40, 215),
 	c.MAF               : WidgetConfig("Gauge", 0, 655.35),
 	c.THROTTLE_POS      : WidgetConfig("Bar_v", 0, 100),
 	c.AIR_STATUS        : WidgetConfig("Text", label_font_size=50),

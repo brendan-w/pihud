@@ -83,6 +83,17 @@ class SVGWidget(QtSvg.QSvgWidget):
         # so the ID is set to be as short as possible (to save memory)
         chart.uuid = ""
 
+        # we don't need this
+        chart.show_legend = False
+
+        # set font sizes
+        chart.major_label_font_size = self.config.label_font_size
+        chart.label_font_size       = self.config.label_font_size
+        chart.title_font_size       = self.config.title_font_size
+
+        # format decimal values appropriatley
+        chart.human_readable = True
+
         # match the SVG dimensions to the Widget dimensions
         chart.width = self.width()
         chart.height = self.height()

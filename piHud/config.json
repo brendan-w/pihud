@@ -18,6 +18,7 @@
                     "label_font_size": 25, 
                     "redline": 6000, 
                     "title_font_size": 25, 
+                    "buffer_size": 30, 
                     "position": {
                         "y": -4, 
                         "x": -17
@@ -39,6 +40,7 @@
                     "label_font_size": 14, 
                     "redline": 90, 
                     "title_font_size": 14, 
+                    "buffer_size": 30, 
                     "position": {
                         "y": 4, 
                         "x": 346
@@ -47,32 +49,11 @@
                 "sensor": "ENGINE_LOAD"
             }, 
             {
-                "type": "Text", 
+                "type": "Graph", 
                 "config": {
                     "dimensions": {
-                        "y": 75, 
-                        "x": 200
-                    }, 
-                    "title": "FUEL_STATUS", 
-                    "color": "#53B9E8", 
-                    "max": 100, 
-                    "min": 0, 
-                    "label_font_size": 40, 
-                    "redline": null, 
-                    "title_font_size": 25, 
-                    "position": {
-                        "y": 159, 
-                        "x": 794
-                    }
-                }, 
-                "sensor": "FUEL_STATUS"
-            }, 
-            {
-                "type": "Bar_h", 
-                "config": {
-                    "dimensions": {
-                        "y": 400, 
-                        "x": 375
+                        "y": 300, 
+                        "x": 400
                     }, 
                     "title": "INTAKE_TEMP", 
                     "color": "#53B9E8", 
@@ -81,9 +62,10 @@
                     "label_font_size": 25, 
                     "redline": null, 
                     "title_font_size": 25, 
+                    "buffer_size": 30, 
                     "position": {
-                        "y": 268, 
-                        "x": 923
+                        "y": 11, 
+                        "x": 766
                     }
                 }, 
                 "sensor": "INTAKE_TEMP"
@@ -104,6 +86,7 @@
                     "label_font_size": 25, 
                     "redline": null, 
                     "title_font_size": 25, 
+                    "buffer_size": 30, 
                     "position": {
                         "y": 0, 
                         "x": 0

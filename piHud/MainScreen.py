@@ -44,7 +44,7 @@ class MainScreen(QtGui.QWidget):
 
             r = Response()
             r.raw_data = "00 00 00 00"
-            r.value = int(value) + 1
+            r.value = int(value)
             r.unit = "unit"
 
             widget.render(r)
