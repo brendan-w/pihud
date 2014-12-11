@@ -15,9 +15,9 @@
                     "color": "#FF0000", 
                     "max": 8000, 
                     "min": 0, 
-                    "label_font_size": 25, 
+                    "label_font_size": 20, 
                     "redline": 6000, 
-                    "title_font_size": 25, 
+                    "title_font_size": 20, 
                     "buffer_size": 30, 
                     "position": {
                         "y": -4, 
@@ -37,9 +37,9 @@
                     "color": "#53B9E8", 
                     "max": 100, 
                     "min": 0, 
-                    "label_font_size": 14, 
+                    "label_font_size": 20, 
                     "redline": 90, 
-                    "title_font_size": 14, 
+                    "title_font_size": 20, 
                     "buffer_size": 30, 
                     "position": {
                         "y": 4, 
@@ -59,16 +59,38 @@
                     "color": "#53B9E8", 
                     "max": 215, 
                     "min": -40, 
-                    "label_font_size": 25, 
+                    "label_font_size": 20, 
                     "redline": null, 
-                    "title_font_size": 25, 
-                    "buffer_size": 30, 
+                    "title_font_size": 20, 
+                    "buffer_size": 100, 
                     "position": {
                         "y": 11, 
                         "x": 766
                     }
                 }, 
                 "sensor": "INTAKE_TEMP"
+            }, 
+            {
+                "type": "Bar_h", 
+                "config": {
+                    "dimensions": {
+                        "y": 400, 
+                        "x": 200
+                    }, 
+                    "title": "FUEL_PRESSURE", 
+                    "color": "#53B9E8", 
+                    "max": 765, 
+                    "min": 0, 
+                    "label_font_size": 20, 
+                    "redline": null, 
+                    "title_font_size": 20, 
+                    "buffer_size": 60, 
+                    "position": {
+                        "y": 328, 
+                        "x": 995
+                    }
+                }, 
+                "sensor": "FUEL_PRESSURE"
             }
         ], 
         [
@@ -83,9 +105,9 @@
                     "color": "#53B9E8", 
                     "max": 100, 
                     "min": 0, 
-                    "label_font_size": 25, 
+                    "label_font_size": 20, 
                     "redline": null, 
-                    "title_font_size": 25, 
+                    "title_font_size": 20, 
                     "buffer_size": 30, 
                     "position": {
                         "y": 0, 

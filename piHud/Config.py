@@ -8,7 +8,14 @@ from obd import commands as c
 class WidgetConfig():
 	""" the configuration for a single readout or command """
 
-	def __init__(self, class_name="Text", min_=0, max_=100, redline_=None, label_font_size=25, title_font_size=25, buffer_size=30):
+	def __init__(self,
+				class_name="Text",
+				min_=0,
+				max_=100,
+				redline_=None,
+				label_font_size=20,
+				title_font_size=20,
+				buffer_size=60):
 
 		self.command    = None
 		self.class_name = class_name

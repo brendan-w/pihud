@@ -32,9 +32,7 @@ class Gauge(SVGWidget):
         # styling
         chart.style = self.style
         chart.margin = 20
-        chart.show_legend = False
         chart.print_values = False # the value number on top of the needle
-        chart.title = self.config.title
         chart.range = [self.config.min, self.config.max]
 
         value = 0
@@ -75,10 +73,10 @@ class Bar_h(SVGWidget):
         # styling
         chart.style = self.style
 
-        chart.margin = 30
+        chart.spacing = 0
+        chart.margin  = 0
 
-        #chart.print_values = False # the value number on top of the needle
-        chart.title = self.config.title
+        chart.print_values = False # the value number on top of the needle
         chart.range = [self.config.min, self.config.max]
 
         value = 0
@@ -97,6 +95,7 @@ class Graph(SVGWidget):
     def __init__(self, parent, config):
         super(Graph, self).__init__(parent, config)
 
+        # initialize an empty buffer 
         self.buffer = [0] * config.buffer_size
 
         self.style = Style(
@@ -117,17 +116,13 @@ class Graph(SVGWidget):
 
     def render(self, response):
         """ function called by python-OBD with new data to be rendered """
-        
 
-        chart = pygal.Line(fill=False)
+        chart = pygal.Line()
         
         # styling
-        chart.style = self.style
+        chart.style     = self.style
         chart.show_dots = False
-        # chart.y_labels = [0,50,100,150]
-        chart.fill = False
-        chart.title = self.config.title
-        chart.range = [self.config.min, self.config.max]
+        chart.range     = [self.config.min, self.config.max]
 
         value = 0
         if not response.is_null():
@@ -139,8 +134,6 @@ class Graph(SVGWidget):
         chart.add(self.command.name, self.buffer)
 
         self.showChart(chart)
-
-
 
 
 

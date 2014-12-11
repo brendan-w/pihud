@@ -86,6 +86,12 @@ class SVGWidget(QtSvg.QSvgWidget):
         # we don't need this
         chart.show_legend = False
 
+        # set the title
+        chart.title = self.config.title
+
+        # disable the no data text
+        chart.no_data_text = ""
+
         # set font sizes
         chart.major_label_font_size = self.config.label_font_size
         chart.label_font_size       = self.config.label_font_size
