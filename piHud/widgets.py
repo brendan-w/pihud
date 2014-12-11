@@ -88,6 +88,50 @@ class Bar_h(SVGWidget):
 
 
 
+class Bar_v(SVGWidget):
+    def __init__(self, parent, config):
+        super(Bar_v, self).__init__(parent, config)
+
+        self.style = Style(
+            stroke_width=1.0,
+            background='transparent',
+            plot_background='transparent',
+            foreground=config.color,
+            foreground_light=config.color,
+            foreground_dark='transparent',
+            colors=(config.color,))
+
+
+    def default_dimensions(self):
+        """ override default size, called by superclass """
+        super(Bar_v, self).setFixedWidth(400)
+        super(Bar_v, self).setFixedHeight(180)
+
+
+    def render(self, response):
+        """ function called by python-OBD with new data to be rendered """
+        
+        chart = pygal.HorizontalBar()
+        
+        # styling
+        chart.style = self.style
+
+        chart.spacing = 0
+        chart.margin  = 0
+
+        chart.print_values = False # the value number on top of the needle
+
+        value = 0
+        if not response.is_null():
+            value = response.value
+
+        chart.add(self.command.name, value)
+
+        self.showChart(chart)
+
+
+
+
 
 class Graph(SVGWidget):
     def __init__(self, parent, config):
