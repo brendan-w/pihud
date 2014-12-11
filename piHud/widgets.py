@@ -33,7 +33,6 @@ class Gauge(SVGWidget):
         chart.style = self.style
         chart.margin = 20
         chart.print_values = False # the value number on top of the needle
-        chart.range = [self.config.min, self.config.max]
 
         value = 0
         if not response.is_null():
@@ -61,7 +60,7 @@ class Bar_h(SVGWidget):
 
     def default_dimensions(self):
         """ override default size, called by superclass """
-        super(Bar_h, self).setFixedWidth(100)
+        super(Bar_h, self).setFixedWidth(180)
         super(Bar_h, self).setFixedHeight(400)
 
 
@@ -77,7 +76,6 @@ class Bar_h(SVGWidget):
         chart.margin  = 0
 
         chart.print_values = False # the value number on top of the needle
-        chart.range = [self.config.min, self.config.max]
 
         value = 0
         if not response.is_null():
@@ -122,7 +120,6 @@ class Graph(SVGWidget):
         # styling
         chart.style     = self.style
         chart.show_dots = False
-        chart.range     = [self.config.min, self.config.max]
 
         value = 0
         if not response.is_null():
@@ -166,4 +163,3 @@ class Text(SVGWidget):
             value = response.value
 
         self.label.setText(str(value) + str(response.unit))
-

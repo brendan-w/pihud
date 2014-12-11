@@ -75,7 +75,7 @@
                 "config": {
                     "dimensions": {
                         "y": 400, 
-                        "x": 200
+                        "x": 180
                     }, 
                     "title": "FUEL_PRESSURE", 
                     "color": "#53B9E8", 

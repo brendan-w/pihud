@@ -97,6 +97,9 @@ class SVGWidget(QtSvg.QSvgWidget):
         chart.label_font_size       = self.config.label_font_size
         chart.title_font_size       = self.config.title_font_size
 
+        # set the range
+        chart.range = [self.config.min, self.config.max]
+
         # format decimal values appropriatley
         chart.human_readable = True
 
