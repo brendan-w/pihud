@@ -9,7 +9,7 @@
                 "config": {
                     "dimensions": {
                         "y": 400, 
-                        "x": 375
+                        "x": 360
                     }, 
                     "title": "Rev per uSec", 
                     "color": "#FF0000", 
@@ -31,7 +31,7 @@
                 "config": {
                     "dimensions": {
                         "y": 400, 
-                        "x": 375
+                        "x": 360
                     }, 
                     "title": "ENGINE_LOAD", 
                     "color": "#53B9E8", 
@@ -49,11 +49,11 @@
                 "sensor": "ENGINE_LOAD"
             }, 
             {
-                "type": "Graph", 
+                "type": "Gauge", 
                 "config": {
                     "dimensions": {
-                        "y": 300, 
-                        "x": 400
+                        "y": 400, 
+                        "x": 360
                     }, 
                     "title": "INTAKE_TEMP", 
                     "color": "#53B9E8", 
@@ -64,8 +64,8 @@
                     "title_font_size": 20, 
                     "buffer_size": 100, 
                     "position": {
-                        "y": 11, 
-                        "x": 766
+                        "y": 288, 
+                        "x": 561
                     }
                 }, 
                 "sensor": "INTAKE_TEMP"
@@ -99,7 +99,7 @@
                 "config": {
                     "dimensions": {
                         "y": 400, 
-                        "x": 375
+                        "x": 360
                     }, 
                     "title": "LONG_FUEL_TRIM_1", 
                     "color": "#53B9E8", 

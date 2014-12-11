@@ -20,7 +20,7 @@ class Gauge(SVGWidget):
 
     def default_dimensions(self):
         """ override default size, called by superclass """
-        super(Gauge, self).setFixedWidth(375)
+        super(Gauge, self).setFixedWidth(360)
         super(Gauge, self).setFixedHeight(400)
 
 
