@@ -44,9 +44,9 @@ class Gauge(SVGWidget):
 
 
 
-class Bar_h(SVGWidget):
+class Bar_v(SVGWidget):
     def __init__(self, parent, config):
-        super(Bar_h, self).__init__(parent, config)
+        super(Bar_v, self).__init__(parent, config)
 
         self.style = Style(
             stroke_width=1.0,
@@ -60,8 +60,8 @@ class Bar_h(SVGWidget):
 
     def default_dimensions(self):
         """ override default size, called by superclass """
-        super(Bar_h, self).setFixedWidth(180)
-        super(Bar_h, self).setFixedHeight(400)
+        super(Bar_v, self).setFixedWidth(180)
+        super(Bar_v, self).setFixedHeight(400)
 
 
     def render(self, response):
@@ -87,10 +87,9 @@ class Bar_h(SVGWidget):
 
 
 
-
-class Bar_v(SVGWidget):
+class Bar_h(SVGWidget):
     def __init__(self, parent, config):
-        super(Bar_v, self).__init__(parent, config)
+        super(Bar_h, self).__init__(parent, config)
 
         self.style = Style(
             stroke_width=1.0,
@@ -104,8 +103,8 @@ class Bar_v(SVGWidget):
 
     def default_dimensions(self):
         """ override default size, called by superclass """
-        super(Bar_v, self).setFixedWidth(400)
-        super(Bar_v, self).setFixedHeight(180)
+        super(Bar_h, self).setFixedWidth(400)
+        super(Bar_h, self).setFixedHeight(100)
 
 
     def render(self, response):
@@ -128,8 +127,6 @@ class Bar_v(SVGWidget):
         chart.add(self.command.name, value)
 
         self.showChart(chart)
-
-
 
 
 
