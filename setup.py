@@ -9,7 +9,7 @@ setup(
     description=("Configurable heads up display for the Raspberry Pi using a car's OBD port"),
     classifiers=[
         "Operating System :: POSIX :: Linux",
-        "License :: OSI Approved :: GNU Lesser General Public License v2 (GPLv2.1)",
+        "License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)",
         "Topic :: System :: Monitoring",
         "Programming Language :: Python :: 2 :: Only",
         "Development Status :: 3 - Alpha",
