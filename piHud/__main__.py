@@ -74,9 +74,18 @@ class PiHud(QtGui.QMainWindow):
 		self.config.save()
 
 		# start python-OBDs event loop going
-		# self.connection.start()
+		self.connection.start()
 		self.__goto_page(0)
+
+		if not self.config.demo: # this is ugly, but I have a deadline
+			self.timer = QtCore.QBasicTimer()
+			self.timer.start(1000/20, self)
+
 		self.showFullScreen()
+
+
+	def timerEvent(self, event):
+		self.stack.currentWidget().render()
 
 
 	def __add_page(self, page_config):
@@ -104,18 +113,9 @@ class PiHud(QtGui.QMainWindow):
 
 
 	def __goto_page(self, p):
-		print "======== Goto page %i" % p
-
 		if p != self.stack.currentIndex:
-			self.connection.stop()
-			self.connection.unwatch_all()
-
 			self.stack.setCurrentIndex(p)
 			self.pageMarker.set(self.stack.count(), self.stack.currentIndex())
-
-			self.stack.currentWidget().rewatch() # tell the new page to re-watch its sensors
-			self.connection.start()
-
 
 
 	def __next_page(self):

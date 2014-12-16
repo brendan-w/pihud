@@ -11,9 +11,9 @@
                         "y": 60, 
                         "x": 250
                     }, 
-                    "title": "ENGINE_LOAD", 
+                    "title": "RPM", 
                     "color": "#53B9E8", 
-                    "max": 100, 
+                    "max": 8000, 
                     "min": 0, 
                     "label_font_size": 60, 
                     "redline": 90, 
@@ -24,7 +24,7 @@
                         "x": 430
                     }
                 }, 
-                "sensor": "ENGINE_LOAD"
+                "sensor": "RPM"
             }, 
             {
                 "type": "Bar_h", 
@@ -33,12 +33,12 @@
                         "y": 80, 
                         "x": 400
                     }, 
-                    "title": "ENGINE_LOAD", 
+                    "title": "RPM", 
                     "color": "#53B9E8", 
-                    "max": 765, 
+                    "max": 8000, 
                     "min": 0, 
                     "label_font_size": 30, 
-                    "redline": null, 
+                    "redline": 6000, 
                     "title_font_size": 20, 
                     "buffer_size": 60, 
                     "position": {
@@ -46,75 +46,7 @@
                         "x": 22
                     }
                 }, 
-                "sensor": "ENGINE_LOAD"
-            }
-        ], 
-        [
-            {
-                "type": "Text", 
-                "config": {
-                    "dimensions": {
-                        "y": 75, 
-                        "x": 200
-                    }, 
-                    "title": "FUEL_STATUS", 
-                    "color": "#53B9E8", 
-                    "max": 100, 
-                    "min": 0, 
-                    "label_font_size": 50, 
-                    "redline": null, 
-                    "title_font_size": 20, 
-                    "buffer_size": 60, 
-                    "position": {
-                        "y": 0, 
-                        "x": 0
-                    }
-                }, 
-                "sensor": "FUEL_STATUS"
-            }, 
-            {
-                "type": "Graph", 
-                "config": {
-                    "dimensions": {
-                        "y": 300, 
-                        "x": 400
-                    }, 
-                    "title": "INTAKE_TEMP", 
-                    "color": "#53B9E8", 
-                    "max": 215, 
-                    "min": -40, 
-                    "label_font_size": 20, 
-                    "redline": null, 
-                    "title_font_size": 20, 
-                    "buffer_size": 60, 
-                    "position": {
-                        "y": 8, 
-                        "x": 670
-                    }
-                }, 
-                "sensor": "INTAKE_TEMP"
-            }, 
-            {
-                "type": "Gauge", 
-                "config": {
-                    "dimensions": {
-                        "y": 400, 
-                        "x": 360
-                    }, 
-                    "title": "SPEED", 
-                    "color": "#53B9E8", 
-                    "max": 180, 
-                    "min": 0, 
-                    "label_font_size": 20, 
-                    "redline": null, 
-                    "title_font_size": 20, 
-                    "buffer_size": 60, 
-                    "position": {
-                        "y": 149, 
-                        "x": 90
-                    }
-                }, 
-                "sensor": "SPEED"
+                "sensor": "RPM"
             }
         ]
     ]

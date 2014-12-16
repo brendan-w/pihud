@@ -92,15 +92,14 @@ class Bar_h(SVGWidget):
     def __init__(self, parent, config):
         super(Bar_h, self).__init__(parent, config)
 
-        # this should really be done with the QT drawing tools, but I have a deadline, and no time to learn
+        # this should really be done with the QPainter, but I have a deadline, and no time to learn
 
-        self.border_size = 1
+        self.border_size = 2
 
         self.bar_x = 0
         self.bar_y = config.label_font_size
         self.bar_width = self.width() - (self.border_size * 2)
         self.bar_height = (self.height() - config.label_font_size) - (self.border_size * 2)
-
 
         # create a widget for the background, and make it the same size as the parent
         self.background = QtGui.QWidget(self)
@@ -108,6 +107,17 @@ class Bar_h(SVGWidget):
         self.background.setFixedWidth(self.width())
         self.background.setFixedHeight(self.height() - self.bar_y)
         self.background.move(self.bar_x, self.bar_y)
+
+        # make the redline
+        if config.redline is not None:
+            self.redline = QtGui.QWidget(self)
+            self.redline.setStyleSheet("background-color: red;")
+            
+            offset = map_value(config.redline, self.config.min, self.config.max, 0, self.bar_width)
+            self.redline.setFixedWidth(self.bar_width - offset + self.border_size)
+            
+            self.redline.setFixedHeight(self.height() - self.bar_y)
+            self.redline.move(offset + self.border_size, self.bar_y)
 
         # the bar is made by setting the size of a black cover over the background color
         self.cover = QtGui.QWidget(self)
@@ -139,6 +149,12 @@ class Bar_h(SVGWidget):
         value = 0
         if not response.is_null():
             value = response.value
+
+            if value > self.config.max:
+                value = self.config.max
+            elif value < self.config.min:
+                value = self.config.min
+
             
         value = map_value(value, self.config.min, self.config.max, 0, self.bar_width)
 

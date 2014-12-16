@@ -5,6 +5,7 @@ from PyQt4 import QtCore, QtGui
 
 import math # used got demo mode
 from obd.utils import Response # used got demo mode
+from util import map_value
 
 
 class MainScreen(QtGui.QWidget):
@@ -40,7 +41,7 @@ class MainScreen(QtGui.QWidget):
             max_ = widget.config.max
 
             # value mapping
-            value = (math.cos(self.theta) + 1) * (max_ - min_) / 2 + min_
+            value = map_value(math.cos(self.theta), -1, 1, min_, max_)
 
             r = Response()
             r.raw_data = "00 00 00 00"
@@ -50,10 +51,17 @@ class MainScreen(QtGui.QWidget):
             widget.render(r)
 
 
+    def render(self):
+        for widget in self.widgets:
+            r = self.connection.query(widget.config.command)
+            widget.render(r)
+
+
     def __make_widget(self, config):
         """ produces a widget object from the given config """
         # create new widget of the correct type
         widget = widgets.__dict__[config.class_name](self, config)
+        self.connection.watch(config.command)
         self.widgets.append(widget)
 
 
@@ -76,7 +84,7 @@ class MainScreen(QtGui.QWidget):
         """ deletes a widget object and its config entry """
         
         # unwatch the command by submitting the command and the callback to be removed
-        self.connection.unwatch(widget.config.command, widget.render)
+        # self.connection.unwatch(widget.config.command)
 
         self.widgets.remove(widget)
         self.page_config.delete_widget(widget.config)
