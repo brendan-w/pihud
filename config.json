@@ -8,42 +8,20 @@
                 "type": "Text", 
                 "config": {
                     "dimensions": {
-                        "y": 400, 
-                        "x": 360
-                    }, 
-                    "title": "Rev per uSec", 
-                    "color": "#FF0000", 
-                    "max": 8000, 
-                    "min": 0, 
-                    "label_font_size": 40, 
-                    "redline": 6000, 
-                    "title_font_size": 20, 
-                    "buffer_size": 30, 
-                    "position": {
-                        "y": 88, 
-                        "x": 69
-                    }
-                }, 
-                "sensor": "RPM"
-            }, 
-            {
-                "type": "Text", 
-                "config": {
-                    "dimensions": {
-                        "y": 400, 
-                        "x": 360
+                        "y": 60, 
+                        "x": 250
                     }, 
                     "title": "ENGINE_LOAD", 
                     "color": "#53B9E8", 
                     "max": 100, 
                     "min": 0, 
-                    "label_font_size": 40, 
+                    "label_font_size": 60, 
                     "redline": 90, 
                     "title_font_size": 20, 
                     "buffer_size": 30, 
                     "position": {
-                        "y": 133, 
-                        "x": 407
+                        "y": 53, 
+                        "x": 430
                     }
                 }, 
                 "sensor": "ENGINE_LOAD"
@@ -55,7 +33,7 @@
                         "y": 80, 
                         "x": 400
                     }, 
-                    "title": "FUEL_PRESSURE", 
+                    "title": "ENGINE_LOAD", 
                     "color": "#53B9E8", 
                     "max": 765, 
                     "min": 0, 
@@ -64,11 +42,11 @@
                     "title_font_size": 20, 
                     "buffer_size": 60, 
                     "position": {
-                        "y": 338, 
-                        "x": 200
+                        "y": 32, 
+                        "x": 22
                     }
                 }, 
-                "sensor": "FUEL_PRESSURE"
+                "sensor": "ENGINE_LOAD"
             }
         ]
     ]

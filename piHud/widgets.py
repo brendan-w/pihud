@@ -200,7 +200,7 @@ class Text(SVGWidget):
         self.label.setText("Label")
 
         css = """
-            font-size: %ipt;
+            font-size: %ipx;
             color: %s;
         """ % (config.label_font_size, config.color)
 
@@ -220,4 +220,4 @@ class Text(SVGWidget):
         if not response.is_null():
             value = response.value
 
-        self.label.setText(str(value) + str(response.unit))
+        self.label.setText(str(value) + " " + str(response.unit))
