@@ -66,7 +66,6 @@ class PiHud(QtGui.QMainWindow):
 				self.__add_page(page)
 		else:
 			self.__add_empty_page()
-		self.__goto_page(0)
 
 		# create the context menu for adding widgets and pages
 		self.init_context_menu()
@@ -75,19 +74,20 @@ class PiHud(QtGui.QMainWindow):
 		self.config.save()
 
 		# start python-OBDs event loop going
-		self.connection.start()
+		# self.connection.start()
+		self.__goto_page(0)
 		self.showFullScreen()
 
 
 	def __add_page(self, page_config):
 		page = MainScreen(self, self.connection, page_config)
 		self.stack.addWidget(page)
-		self.__goto_page(self.stack.count() - 1)
 
 
 	def __add_empty_page(self):
 		page_config = self.config.add_page()
 		self.__add_page(page_config)
+		self.__goto_page(self.stack.count() - 1)
 		self.config.save()
 
 
@@ -104,10 +104,18 @@ class PiHud(QtGui.QMainWindow):
 
 
 	def __goto_page(self, p):
-		self.stack.currentWidget().unwatch() # tell the current page to relinquish its sensors from python-OBD
-		self.stack.setCurrentIndex(p)
-		self.pageMarker.set(self.stack.count(), self.stack.currentIndex())
-		self.stack.currentWidget().rewatch() # tell the new page to re-watch its sensors
+		print "======== Goto page %i" % p
+
+		if p != self.stack.currentIndex:
+			self.connection.stop()
+			self.connection.unwatch_all()
+
+			self.stack.setCurrentIndex(p)
+			self.pageMarker.set(self.stack.count(), self.stack.currentIndex())
+
+			self.stack.currentWidget().rewatch() # tell the new page to re-watch its sensors
+			self.connection.start()
+
 
 
 	def __next_page(self):

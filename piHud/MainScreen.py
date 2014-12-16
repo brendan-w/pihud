@@ -54,13 +54,6 @@ class MainScreen(QtGui.QWidget):
         """ produces a widget object from the given config """
         # create new widget of the correct type
         widget = widgets.__dict__[config.class_name](self, config)
-        
-        # register the render function with python-OBD
-        self.connection.watch(config.command, widget.render)
-
-        # perform first render to ensure the widget gets displayed
-        widget.render(self.connection.query(config.command))
-
         self.widgets.append(widget)
 
 
@@ -69,12 +62,7 @@ class MainScreen(QtGui.QWidget):
         for widget in self.widgets:
             command = widget.config.command
             self.connection.watch(command, widget.render)
-            widget.render(self.connection.query(command))
-
-
-    def unwatch(self):
-        """ called when switching screens """
-        self.connection.unwatch_all()
+            widget.render(self.connection.query(command)) # perform initial render
 
 
     def make_default_widget(self, command):
