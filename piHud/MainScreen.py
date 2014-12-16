@@ -86,10 +86,19 @@ class MainScreen(QtGui.QWidget):
 
     def delete_widget(self, widget):
         """ deletes a widget object and its config entry """
+        
+        # unwatch the command by submitting the command and the callback to be removed
+        self.connection.unwatch(widget.config.command, widget.render)
+
         self.widgets.remove(widget)
         self.page_config.delete_widget(widget.config)
         widget.deleteLater()
         self.page_config.save()
+
+
+    def delete_all_widgets(self):
+        for widget in self.widgets:
+            self.delete_widget(widget)
 
 
     def dragEnterEvent(self, e):

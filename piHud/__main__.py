@@ -94,6 +94,7 @@ class PiHud(QtGui.QMainWindow):
 	def __delete_page(self):
 		if self.stack.count() > 1:
 			page = self.stack.currentWidget()
+			page.delete_all_widgets()
 			self.stack.removeWidget(page)
 			self.config.delete_page(page.page_config)
 			page.deleteLater()
