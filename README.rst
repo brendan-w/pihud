@@ -16,6 +16,8 @@ First, it is recommended that you start with a clean install of `Raspbian <http:
 
 In this option, make sure to select the console only option, in order to prevent the Pi from starting its desktop environment on boot
 
+::
+
 	Console Text console, requiring login
 
 You can now click finish, and boot your Pi. After loging in, you will be presented with a terminal. Please install the following dependencies
