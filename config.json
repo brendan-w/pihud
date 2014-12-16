@@ -52,20 +52,20 @@
                 "type": "Bar_h", 
                 "config": {
                     "dimensions": {
-                        "y": 50, 
+                        "y": 80, 
                         "x": 400
                     }, 
                     "title": "FUEL_PRESSURE", 
                     "color": "#53B9E8", 
                     "max": 765, 
                     "min": 0, 
-                    "label_font_size": 20, 
+                    "label_font_size": 30, 
                     "redline": null, 
                     "title_font_size": 20, 
                     "buffer_size": 60, 
                     "position": {
-                        "y": 256, 
-                        "x": 30
+                        "y": 338, 
+                        "x": 200
                     }
                 }, 
                 "sensor": "FUEL_PRESSURE"
