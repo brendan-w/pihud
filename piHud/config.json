@@ -5,7 +5,7 @@
     "pages": [
         [
             {
-                "type": "Gauge", 
+                "type": "Text", 
                 "config": {
                     "dimensions": {
                         "y": 400, 
@@ -15,19 +15,19 @@
                     "color": "#FF0000", 
                     "max": 8000, 
                     "min": 0, 
-                    "label_font_size": 20, 
+                    "label_font_size": 40, 
                     "redline": 6000, 
                     "title_font_size": 20, 
                     "buffer_size": 30, 
                     "position": {
-                        "y": -4, 
-                        "x": -17
+                        "y": 88, 
+                        "x": 69
                     }
                 }, 
                 "sensor": "RPM"
             }, 
             {
-                "type": "Gauge", 
+                "type": "Text", 
                 "config": {
                     "dimensions": {
                         "y": 400, 
@@ -37,13 +37,13 @@
                     "color": "#53B9E8", 
                     "max": 100, 
                     "min": 0, 
-                    "label_font_size": 20, 
+                    "label_font_size": 40, 
                     "redline": 90, 
                     "title_font_size": 20, 
                     "buffer_size": 30, 
                     "position": {
-                        "y": 4, 
-                        "x": 346
+                        "y": 133, 
+                        "x": 407
                     }
                 }, 
                 "sensor": "ENGINE_LOAD"
