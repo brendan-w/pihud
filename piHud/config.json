@@ -1,5 +1,5 @@
 {
-    "demo": true, 
+    "demo": false, 
     "page_adv_pin": false, 
     "port": null, 
     "pages": [
@@ -11,66 +11,44 @@
                         "y": 400, 
                         "x": 360
                     }, 
-                    "title": "Rev per uSec", 
-                    "color": "#FF0000", 
+                    "title": "SPEED", 
+                    "color": "#53B9E8", 
+                    "max": 180, 
+                    "min": 0, 
+                    "label_font_size": 20, 
+                    "redline": null, 
+                    "title_font_size": 20, 
+                    "buffer_size": 60, 
+                    "position": {
+                        "y": 9, 
+                        "x": -16
+                    }
+                }, 
+                "sensor": "SPEED"
+            }, 
+            {
+                "type": "Gauge", 
+                "config": {
+                    "dimensions": {
+                        "y": 400, 
+                        "x": 360
+                    }, 
+                    "title": "RPM", 
+                    "color": "#53B9E8", 
                     "max": 8000, 
                     "min": 0, 
                     "label_font_size": 20, 
-                    "redline": 6000, 
+                    "redline": 6750, 
                     "title_font_size": 20, 
-                    "buffer_size": 30, 
+                    "buffer_size": 60, 
                     "position": {
-                        "y": -4, 
-                        "x": -17
+                        "y": 10, 
+                        "x": 341
                     }
                 }, 
                 "sensor": "RPM"
             }, 
             {
-                "type": "Gauge", 
-                "config": {
-                    "dimensions": {
-                        "y": 400, 
-                        "x": 360
-                    }, 
-                    "title": "ENGINE_LOAD", 
-                    "color": "#53B9E8", 
-                    "max": 100, 
-                    "min": 0, 
-                    "label_font_size": 20, 
-                    "redline": 90, 
-                    "title_font_size": 20, 
-                    "buffer_size": 30, 
-                    "position": {
-                        "y": 4, 
-                        "x": 346
-                    }
-                }, 
-                "sensor": "ENGINE_LOAD"
-            }, 
-            {
-                "type": "Bar_h", 
-                "config": {
-                    "dimensions": {
-                        "y": 100, 
-                        "x": 400
-                    }, 
-                    "title": "FUEL_PRESSURE", 
-                    "color": "#53B9E8", 
-                    "max": 765, 
-                    "min": 0, 
-                    "label_font_size": 20, 
-                    "redline": null, 
-                    "title_font_size": 20, 
-                    "buffer_size": 60, 
-                    "position": {
-                        "y": 366, 
-                        "x": 14
-                    }
-                }, 
-                "sensor": "FUEL_PRESSURE"
-            }, 
-            {
                 "type": "Bar_v", 
                 "config": {
                     "dimensions": {
@@ -86,143 +64,11 @@
                     "title_font_size": 20, 
                     "buffer_size": 60, 
                     "position": {
-                        "y": 18, 
-                        "x": 1146
+                        "y": 12, 
+                        "x": 711
                     }
                 }, 
                 "sensor": "THROTTLE_POS"
-            }, 
-            {
-                "type": "Text", 
-                "config": {
-                    "dimensions": {
-                        "y": 75, 
-                        "x": 200
-                    }, 
-                    "title": "AIR_STATUS", 
-                    "color": "#53B9E8", 
-                    "max": 100, 
-                    "min": 0, 
-                    "label_font_size": 50, 
-                    "redline": null, 
-                    "title_font_size": 20, 
-                    "buffer_size": 60, 
-                    "position": {
-                        "y": 374, 
-                        "x": 460
-                    }
-                }, 
-                "sensor": "AIR_STATUS"
-            }, 
-            {
-                "type": "Bar_h", 
-                "config": {
-                    "dimensions": {
-                        "y": 100, 
-                        "x": 400
-                    }, 
-                    "title": "FUEL_PRESSURE", 
-                    "color": "#53B9E8", 
-                    "max": 765, 
-                    "min": 0, 
-                    "label_font_size": 20, 
-                    "redline": null, 
-                    "title_font_size": 20, 
-                    "buffer_size": 60, 
-                    "position": {
-                        "y": 484, 
-                        "x": 13
-                    }
-                }, 
-                "sensor": "FUEL_PRESSURE"
-            }, 
-            {
-                "type": "Bar_v", 
-                "config": {
-                    "dimensions": {
-                        "y": 400, 
-                        "x": 180
-                    }, 
-                    "title": "THROTTLE_POS", 
-                    "color": "#53B9E8", 
-                    "max": 100, 
-                    "min": 0, 
-                    "label_font_size": 20, 
-                    "redline": null, 
-                    "title_font_size": 20, 
-                    "buffer_size": 60, 
-                    "position": {
-                        "y": 18, 
-                        "x": 938
-                    }
-                }, 
-                "sensor": "THROTTLE_POS"
-            }, 
-            {
-                "type": "Bar_v", 
-                "config": {
-                    "dimensions": {
-                        "y": 400, 
-                        "x": 180
-                    }, 
-                    "title": "THROTTLE_POS", 
-                    "color": "#53B9E8", 
-                    "max": 100, 
-                    "min": 0, 
-                    "label_font_size": 20, 
-                    "redline": null, 
-                    "title_font_size": 20, 
-                    "buffer_size": 60, 
-                    "position": {
-                        "y": 18, 
-                        "x": 739
-                    }
-                }, 
-                "sensor": "THROTTLE_POS"
-            }, 
-            {
-                "type": "Bar_h", 
-                "config": {
-                    "dimensions": {
-                        "y": 100, 
-                        "x": 400
-                    }, 
-                    "title": "FUEL_PRESSURE", 
-                    "color": "#53B9E8", 
-                    "max": 765, 
-                    "min": 0, 
-                    "label_font_size": 20, 
-                    "redline": null, 
-                    "title_font_size": 20, 
-                    "buffer_size": 60, 
-                    "position": {
-                        "y": 602, 
-                        "x": 13
-                    }
-                }, 
-                "sensor": "FUEL_PRESSURE"
-            }, 
-            {
-                "type": "Gauge", 
-                "config": {
-                    "dimensions": {
-                        "y": 400, 
-                        "x": 360
-                    }, 
-                    "title": "MAF", 
-                    "color": "#53B9E8", 
-                    "max": 655.35, 
-                    "min": 0, 
-                    "label_font_size": 20, 
-                    "redline": null, 
-                    "title_font_size": 20, 
-                    "buffer_size": 60, 
-                    "position": {
-                        "y": 415, 
-                        "x": 961
-                    }
-                }, 
-                "sensor": "MAF"
             }
         ], 
         [
