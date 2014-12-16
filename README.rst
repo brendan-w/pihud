@@ -3,6 +3,8 @@ piHud
 
 Configurable heads up display fit for the Raspberry Pi
 
+Warning: This project is still in the very early stages of development.
+
 Turning you Pi into a PiHud
 ---------------------------
 
