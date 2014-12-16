@@ -95,7 +95,7 @@ defaults = {
 	c.TIMING_ADVANCE    : WidgetConfig("Gauge", -64, 64),
 	c.INTAKE_TEMP       : WidgetConfig("Graph", -40, 215),
 	c.MAF               : WidgetConfig("Gauge", 0, 655.35),
-	c.THROTTLE_POS      : WidgetConfig("Bar_v", 0, 100),
+	c.THROTTLE_POS      : WidgetConfig("Text", 0, 100),
 	c.AIR_STATUS        : WidgetConfig("Text", label_font_size=50),
 	#c.O2_SENSORS        : WidgetConfig(),
 	c.O2_B1S1           : WidgetConfig("Bar_v", 0, 1.275),
