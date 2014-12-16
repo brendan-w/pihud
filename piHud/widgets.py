@@ -2,6 +2,7 @@ import pygal
 from pygal.style import Style
 from SVGWidget import SVGWidget
 from PyQt4 import QtCore, QtGui
+from util import map_value
 
 
 class Gauge(SVGWidget):
@@ -91,14 +92,23 @@ class Bar_h(SVGWidget):
     def __init__(self, parent, config):
         super(Bar_h, self).__init__(parent, config)
 
-        self.style = Style(
-            stroke_width=1.0,
-            background='transparent',
-            plot_background='transparent',
-            foreground=config.color,
-            foreground_light=config.color,
-            foreground_dark='transparent',
-            colors=(config.color,))
+        self.border_size = 1
+        self.bar_width = self.width() - (self.border_size * 2)
+        self.bar_height = self.height() - (self.border_size * 2)
+
+
+        # create a widget for the background, and make it the same size as the parent
+        self.background = QtGui.QWidget(self)
+        self.background.setStyleSheet("background-color: %s;" % config.color)
+        self.background.setFixedWidth(self.width())
+        self.background.setFixedHeight(self.height())
+
+        # the bar is made by setting the size of a black cover over the background color
+        self.cover = QtGui.QWidget(self)
+        self.cover.setStyleSheet("background-color: black;")
+        self.cover.setFixedWidth(self.bar_width)
+        self.cover.setFixedHeight(self.bar_height)
+        self.cover.move(1, 1)
 
 
     def default_dimensions(self):
@@ -109,24 +119,16 @@ class Bar_h(SVGWidget):
 
     def render(self, response):
         """ function called by python-OBD with new data to be rendered """
-        
-        chart = pygal.HorizontalBar()
-        
-        # styling
-        chart.style = self.style
-
-        chart.spacing = 0
-        chart.margin  = 0
-
-        chart.print_values = False # the value number on top of the needle
 
         value = 0
         if not response.is_null():
             value = response.value
+            
+        value = map_value(value, self.config.min, self.config.max, 0, self.bar_width)
 
-        chart.add(self.command.name, value)
 
-        self.showChart(chart)
+        self.cover.move(value + 1, self.border_size)
+        self.cover.setFixedWidth(self.bar_width - value)
 
 
 

@@ -47,6 +47,28 @@
                     }
                 }, 
                 "sensor": "ENGINE_LOAD"
+            }, 
+            {
+                "type": "Bar_h", 
+                "config": {
+                    "dimensions": {
+                        "y": 100, 
+                        "x": 400
+                    }, 
+                    "title": "FUEL_PRESSURE", 
+                    "color": "#53B9E8", 
+                    "max": 765, 
+                    "min": 0, 
+                    "label_font_size": 20, 
+                    "redline": null, 
+                    "title_font_size": 20, 
+                    "buffer_size": 60, 
+                    "position": {
+                        "y": 320, 
+                        "x": 60
+                    }
+                }, 
+                "sensor": "FUEL_PRESSURE"
             }
         ]
     ]
