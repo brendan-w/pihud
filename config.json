@@ -52,7 +52,7 @@
                 "type": "Bar_h", 
                 "config": {
                     "dimensions": {
-                        "y": 100, 
+                        "y": 50, 
                         "x": 400
                     }, 
                     "title": "FUEL_PRESSURE", 
@@ -64,8 +64,8 @@
                     "title_font_size": 20, 
                     "buffer_size": 60, 
                     "position": {
-                        "y": 320, 
-                        "x": 60
+                        "y": 256, 
+                        "x": 30
                     }
                 }, 
                 "sensor": "FUEL_PRESSURE"

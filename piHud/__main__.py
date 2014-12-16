@@ -38,7 +38,7 @@ class PiHud(QtGui.QMainWindow):
 		self.setPalette(palette)
 		
 		# read the config file
-		self.config = Config("piHud/config.json")
+		self.config = Config("config.json")
 
 		try:
 			pin = self.config.page_adv_pin

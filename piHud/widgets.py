@@ -108,7 +108,7 @@ class Bar_h(SVGWidget):
         self.cover.setStyleSheet("background-color: black;")
         self.cover.setFixedWidth(self.bar_width)
         self.cover.setFixedHeight(self.bar_height)
-        self.cover.move(1, 1)
+        self.cover.move(self.border_size, self.border_size)
 
 
     def default_dimensions(self):
@@ -127,7 +127,7 @@ class Bar_h(SVGWidget):
         value = map_value(value, self.config.min, self.config.max, 0, self.bar_width)
 
 
-        self.cover.move(value + 1, self.border_size)
+        self.cover.move(value + self.border_size, self.border_size)
         self.cover.setFixedWidth(self.bar_width - value)
 
 
