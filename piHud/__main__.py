@@ -1,4 +1,5 @@
 
+import os
 import sys
 import obd
 from MainScreen import MainScreen
@@ -38,7 +39,9 @@ class PiHud(QtGui.QMainWindow):
 		self.setPalette(palette)
 		
 		# read the config file
-		self.config = Config("config.json")
+		config_path = os.path.join(os.path.expanduser("~"), "pihud.rc")
+		self.config = Config(config_path)
+
 
 		try:
 			pin = self.config.page_adv_pin

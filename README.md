@@ -3,90 +3,23 @@ piHud
 
 Configurable heads up display fit for the Raspberry Pi
 
-## Installation
+## Turning you Pi into a PiHud
 
-### Setting up your environment
+For installation instructions on different platforms, see the [GitHub wiki](https://github.com/brendanwhitfield/piHud/wiki/Installation)
 
-Before you can do anything with this (run the webserver locally, or any of
-the scripts) you'll need to setup and activate a python [virtualenv]
-(http://pypi.python.org/pypi/virtualenv). Run the following at the command
-prompt...
+First, it is recommended that you start with a clean install of [Raspbian](http://www.raspberrypi.org/downloads/). On first boot, it will prompt you with a setup screen. After you have expanded the filesystem and set your password, enter the listing named:
 
-#### On Windows
+	Enable Boot to Desktop/Scratch
 
-###Install Pip & PyGal
+In this option, make sure to select the console only option, in order to prevent the Pi from starting its desktop environment on boot.
 
-If you do not have python installed, or are not sure, follow [these steps](http://docs.python-guide.org/en/latest/starting/install/win/) to install/check python.
+	Console Text console, requiring login
 
-If you do have pip, go [here](https://pip.pypa.io/en/latest/installing.html) and follw the insturctions to install pip.
+You can now click finish, and boot your Pi. After loging in, you will be presented with a terminal. Please install the following dependencies:
 
-If you have pip installed on your machine,
+	$ sudo apt-get install python-qt4
+	$ sudo apt-get install python-pip
+	$ sudo pip install pihud
 
-```pip install pygal```
+In order to run PiHud on boot, you will need to tweak a few config files
 
-###Install PyQt
-
-[Download the exe,](http://www.riverbankcomputing.com/software/pyqt/download) at the bottom of the page, of PyQt, make sure to have the Py2.7 and correct architecture (32- or 64-bit).
-
-###Install Python-ODB
-
-Clone the [repository](https://github.com/brendanwhitfield/python-OBD/tree/async) and run
-
-```python setup.py install```
-
-###Install PiHud
-
-Clone the [repository](https://github.com/brendanwhitfield/piHud) and run
-
-```python piHud/__main__.py```
-
-#### On Linux/Mac OS X
-
-
-If you don't have virtualenv installed yet, try:
-
-```$ sudo easy_install virtualenv virtualenvwrapper```
-
-If you're using a distro like Fedora or Ubuntu, you should try this instead::
-
- Fedora:
- ```$ sudo yum install python-virtualenv!```
-
- Ubuntu/Debian:
- ```$ sudo apt-get install python-virtualenv```
-
-### Activating your enivronment
-
-```mkvirtualenv pihud```
-
-If you do have virtualenv installed, just run:
-
-```workon pihud```
-
-## Then install the Python dependencies from Pypi
-
-```pip install -r requirements.txt```
-
-
-### In Fedora:
-
-```sudo yum install PyQt4```
-
-### Dealing with PyQt4 Packaging
-
-yum install PyQt4:
-```sudo yum install PyQt4-devel```
-
-symlink the PyQt4 and sip libraries into your virtual environment:
-
-```ln -s /usr/lib64/python2.7/site-packages/PyQt4 /home/$USER/.virtualenvs/pihud/lib/python2.7/```
-
-```ln -s /usr/lib64/python2.7/site-packages/sip.so /home/$USER/.virtualenvs/pihud/lib/python2.7/```
-
-
-Running
--------
-
-To run, simply execute the following command:
-
-    python piHud/__main__.py

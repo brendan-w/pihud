@@ -1,4 +1,5 @@
 
+import os
 import json
 import widgets
 from obd import commands as c
@@ -187,10 +188,66 @@ class Config():
 		self.demo = False
 		self.pages = []
 
+		# default config, if all else fails
+		config = {
+				"demo": False, 
+				"page_adv_pin": 18, 
+				"port": None, 
+				"pages": [
+					[
+						{
+							"type": "Text", 
+							"config": {
+								"dimensions": {
+									"y": 60, 
+									"x": 250
+								}, 
+								"title": "RPM", 
+								"color": "#53B9E8", 
+								"max": 8000, 
+								"min": 0, 
+								"label_font_size": 60, 
+								"redline": 90, 
+								"title_font_size": 20, 
+								"buffer_size": 30, 
+								"position": {
+									"y": 53, 
+									"x": 430
+								}
+							}, 
+							"sensor": "RPM"
+						}, 
+						{
+							"type": "Bar_h", 
+							"config": {
+								"dimensions": {
+									"y": 80, 
+									"x": 400
+								}, 
+								"title": "RPM", 
+								"color": "#53B9E8", 
+								"max": 8000, 
+								"min": 0, 
+								"label_font_size": 30, 
+								"redline": 6000, 
+								"title_font_size": 20, 
+								"buffer_size": 60, 
+								"position": {
+									"y": 32, 
+									"x": 22
+								}
+							}, 
+							"sensor": "RPM"
+						}
+					]
+				]
+			}
+
 		# read the file
-		config = {}
-		with open(self.filename, 'r') as f:
-			config = json.loads(f.read())
+		if os.path.isfile(filename):
+			with open(self.filename, 'r') as f:
+				config = json.loads(f.read())
+
 
 		# check for the required root keys
 		if not all(k in config for k in ['pages']):
