@@ -15,16 +15,6 @@ except:
 	pass
 
 
-# pygal optimizations
-try:
-	from pygal.svg import Svg
-	# pygal always dumps its configs to JS and embeds them in the SVGs
-	# we don't need that...
-	Svg.add_scripts = lambda *args: None # completely disable the JS generator
-except:
-	pass
-
-
 
 
 class PiHud(QtGui.QMainWindow):
