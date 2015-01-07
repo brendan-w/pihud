@@ -5,7 +5,7 @@ from collections import OrderedDict
 
 import obd
 from widgets import widgets
-from defaults import new_config
+from defaults import default_config
 
 
 class ConfigFile():
@@ -100,8 +100,8 @@ class ConfigFile():
 			return None
 
 		# Make a default config for this command
-		config = new_config(obd.commands[sensor_name],
-		                    class_name)
+		config = default_config(obd.commands[sensor_name])
+		config.post_init(self, class_name)
 
 		# Overwrite default values with user values
 		for key in json_config:

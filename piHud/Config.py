@@ -3,6 +3,7 @@
 class Config():
 	""" the configuration for a single readout or command """
 
+	# constructor for defining defaults
 	def __init__(self,
 	             class_name_      = None,
 	             min_             = None,
@@ -28,6 +29,16 @@ class Config():
 		self.position        = None
 		self.dimensions      = None
 
+		# private properties
+		self.__config_file   = None
+
+
+	# secondary constructor for loading non-default params
+	def post_init(self, config_file, class_name=None):
+		self.__config_file = config_file
+		if class_name is not None:
+			self.class_name = class_name
+
 
 	def clone(self):
 		clone = Config()
@@ -35,6 +46,10 @@ class Config():
 		for key in self:
 			clone[key] = self[key]
 		return clone
+
+
+	def save(self):
+		self.__config_file.save();
 
 
 	def __getitem__(self, key):
@@ -55,7 +70,7 @@ class Config():
 		if len(key) <= 0:
 			return False
 
-		if len(key) >= 2 and key[-2:] == '__':
+		if len(key) >= 1 and key[0] == '_':
 			return False
 
 		if key not in dir(self):

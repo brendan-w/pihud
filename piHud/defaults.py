@@ -8,9 +8,13 @@ from obd import commands as c
 __fallback_default__ = Config("Text",     0,   100, None,    "#53B9E8", 20,         20,         60)
 
 
+for key in __fallback_default__:
+	pass
+
+
 # dict of default configs where key=OBDCommand value=Config
 # all 'Nones's will be filled with values from __fallback_default__
-# user settings in the config will override these default values
+# user settings in the config file will override these default values
 __defaults__ = {
 
 	# c.PIDS_A            : Config(),
@@ -58,7 +62,7 @@ for command in __defaults__:
 			config[key] = __fallback_default__[key]
 
 
-def new_config(command, class_name=None):
+def default_config(command):
 	""" function for constructing new config objects based on the desired command """
 
 	if command in __defaults__:
@@ -68,8 +72,5 @@ def new_config(command, class_name=None):
 
 	config.command = command
 	config.title   = command.name
-
-	if class_name is not None:
-		config.class_name = class_name
 
 	return config
