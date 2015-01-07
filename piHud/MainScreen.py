@@ -1,6 +1,6 @@
 
 import obd
-import widgets
+from widgets import widgets
 from PyQt4 import QtCore, QtGui
 
 import math # used got demo mode
@@ -60,7 +60,7 @@ class MainScreen(QtGui.QWidget):
     def __make_widget(self, config):
         """ produces a widget object from the given config """
         # create new widget of the correct type
-        widget = widgets.__dict__[config.class_name](self, config)
+        widget = widgets[config.class_name](self, config)
         self.connection.watch(config.command)
         self.widgets.append(widget)
 

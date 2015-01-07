@@ -1,4 +1,1 @@
-obd==0.1.0
-pygal==1.6.1
-pyserial==2.7
-wsgiref==0.1.2
+obd>=0.2.0

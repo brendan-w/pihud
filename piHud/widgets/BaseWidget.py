@@ -2,10 +2,10 @@
 from PyQt4 import QtCore, QtGui, QtSvg
 
 
-class SVGWidget(QtSvg.QSvgWidget):
+class BaseWidget(QtSvg.QSvgWidget):
 
     def __init__(self, parent, config):
-        super(SVGWidget,self).__init__(parent)
+        super(BaseWidget,self).__init__(parent)
         self.config = config
         self.command = config.command
 
@@ -69,7 +69,7 @@ class SVGWidget(QtSvg.QSvgWidget):
 
 
     def mousePressEvent(self, e):
-        super(SVGWidget, self).mousePressEvent(e)
+        super(BaseWidget, self).mousePressEvent(e)
 
 
     def showChart(self, chart):

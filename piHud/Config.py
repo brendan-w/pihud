@@ -1,7 +1,7 @@
 
 import os
 import json
-import widgets
+from widgets import widgets
 from obd import commands as c
 
 
@@ -140,7 +140,7 @@ class PageConfig():
 			print "sensor '%s' is not a valid OBD command" % sensor_name
 			return
 
-		if class_name not in widgets.__dict__:
+		if class_name not in widgets:
 			print "widget '%s' is not a valid Widget type" % class_name
 			return
 
