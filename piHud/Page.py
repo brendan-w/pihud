@@ -8,11 +8,11 @@ from obd.utils import Response # used got demo mode
 from util import map_value
 
 
-class MainScreen(QtGui.QWidget):
+class Page(QtGui.QWidget):
     """ manages (and is a factory for) SVGWidgets """
 
     def __init__(self, parent, connection, page_config):
-        super(MainScreen, self).__init__(parent)
+        super(Page, self).__init__(parent)
         
         # enable dragging and dropping of widgets
         self.setAcceptDrops(True)

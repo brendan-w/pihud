@@ -1,7 +1,7 @@
 
 import os
 import obd
-from MainScreen import MainScreen
+from Page import Page
 from Config import Config
 from PageMarker import PageMarker
 from PyQt4 import QtGui, QtCore
@@ -81,7 +81,7 @@ class PiHud(QtGui.QMainWindow):
 
 
 	def __add_page(self, page_config):
-		page = MainScreen(self, self.connection, page_config)
+		page = Page(self, self.connection, page_config)
 		self.stack.addWidget(page)
 
 
