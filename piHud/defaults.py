@@ -58,7 +58,7 @@ for command in __defaults__:
 			config[key] = __fallback_default__[key]
 
 
-def new_config(self, command, class_name=None):
+def new_config(command, class_name=None):
 	""" function for constructing new config objects based on the desired command """
 
 	if command in __defaults__:

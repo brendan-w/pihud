@@ -4,19 +4,19 @@ class Config():
 	""" the configuration for a single readout or command """
 
 	def __init__(self,
-	             class_name_,
-	             min_,
-	             max_,
-	             redline_,
-	             color_,
-	             label_font_size_,
-	             title_font_size_,
-	             buffer_size_):
+	             class_name_      = None,
+	             min_             = None,
+	             max_             = None,
+	             redline_         = None,
+	             color_           = None,
+	             label_font_size_ = None,
+	             title_font_size_ = None,
+	             buffer_size_     = None):
 
 		# user definable properties:
 		self.command         = None
+		self.title           = None
 		self.class_name      = class_name_
-		self.title           = "No title specified"
 		self.min             = min_
 		self.max             = max_
 		self.redline         = redline_
