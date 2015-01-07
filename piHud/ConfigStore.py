@@ -11,7 +11,10 @@ class ConfigStore():
 	""" manages the structure of the config file """
 	def __init__(self, filename):
 		self.filename = filename
+		self.load()
 
+
+	def load(self):
 		self.port = None
 		self.page_adv_pin = 18
 		self.debug = False
@@ -20,7 +23,7 @@ class ConfigStore():
 		config = {}
 
 		# read the file
-		if os.path.isfile(filename):
+		if os.path.isfile(self.filename):
 			with open(self.filename, 'r') as f:
 				config = json.loads(f.read())
 
@@ -42,6 +45,7 @@ class ConfigStore():
 		for page_json in config['pages']:
 			page = PageConfig(self, page_json)
 			self.pages.append(page)
+
 
 
 	def add_page(self):
@@ -72,6 +76,7 @@ class ConfigStore():
 			('config', config)
 		])
 
+
 	def __json_to_config(self, json_):
 		""" Constructs a Config out of a JSON structure """
 
@@ -100,7 +105,7 @@ class ConfigStore():
 		# Overwrite default values with user values
 		for key in config_props:
 
-			# skip keys with special handling
+			# prevent the 'config' section from overriding keys with special handling
 			if key in ['command', 'class_name']:
 				continue
 

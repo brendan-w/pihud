@@ -5,19 +5,20 @@ from obd import commands as c
 
 
 #                         class_name  min  max  redline  color      label_size  title_size  buffer_size
-fallback_default = Config("Text",     0,   100, None,    "#53B9E8", 20,         20,         60)
+__fallback_default__ = Config("Text",     0,   100, None,    "#53B9E8", 20,         20,         60)
 
 
 # dict of default configs where key=OBDCommand value=Config
+# all 'Nones's will be filled with values from the __fallback_default__
 # user settings in the config will override these default values
-defaults = {
+__defaults__ = {
 
 	# c.PIDS_A            : Config(),
 	# c.STATUS            : Config(),
 	# c.FREEZE_DTC        : Config(),
 	#                            class_name  min   max     redline  color      label_size  title_size  buffer_size
 	c.FUEL_STATUS       : Config("Text",     None, None,   None,    None,      50,         None,       None),
-	c.ENGINE_LOAD       : Config("Bar_h",    0,    100,    90),     None,      None,       None,       None),
+	c.ENGINE_LOAD       : Config("Bar_h",    0,    100,    90,      None,      None,       None,       None),
 	c.COOLANT_TEMP      : Config("Bar_h",    -40,  215,    None,    None,      None,       None,       None),
 	c.SHORT_FUEL_TRIM_1 : Config("Bar_h",    -100, 100,    None,    None,      None,       None,       None),
 	c.LONG_FUEL_TRIM_1  : Config("Bar_h",    -100, 100,    None,    None,      None,       None,       None),
@@ -47,5 +48,21 @@ defaults = {
 	c.RUN_TIME          : Config("Text",     None, None,   None,    None,      50,         None,       None),
 }
 
-for command in defaults:
-	pass
+
+# replace all 'None's with values from the __fallback_default__
+for command in __defaults__:
+	config = __defaults__[command]
+
+	for key in config:
+		print key
+
+
+
+
+
+def new_config(self, command):
+	""" function for constructing new config objects based on the desired command """
+	if command in __defaults__:
+		return __defaults__[command].clone()
+	else:
+		return __fallback_default__.clone()

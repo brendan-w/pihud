@@ -34,6 +34,39 @@ class Config():
 
 	def clone(self):
 		clone = Config()
-		for key in self.__dict__:
-			clone.__dict__[key] = self.__dict__[key]
+		# note: this clone is SHALLOW
+		for key in self:
+			clone[key] = self[key]
 		return clone
+
+
+	def __getitem__(self, key):
+		return getattr(self, key, None)
+
+
+	def __contains__(self, key):
+		""" tests whether the given key is a valid attribute of the config """
+
+		if not isinstance(key, basestring):
+			return False
+
+		if len(key) <= 0:
+			return False
+
+		if len(key) >= 2 and key[-2:] == '__':
+			return False
+
+		if key not in dir(self):
+			return False
+
+		if hasattr(self[key], '__call__'):
+			return False
+
+		return True
+
+
+	def __iter__(self):
+		""" iterate over attribute names """
+		for key in dir(self):
+			if key in self: # skip keys that aren't config properties
+				yield key
