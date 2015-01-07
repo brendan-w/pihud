@@ -44,6 +44,11 @@ class Config():
 		return getattr(self, key, None)
 
 
+	def __setitem__(self, key, value):
+		if key in self:
+			setattr(self, key, value);
+
+
 	def __contains__(self, key):
 		""" tests whether the given key is a valid attribute of the config """
 

@@ -54,10 +54,8 @@ for command in __defaults__:
 	config = __defaults__[command]
 
 	for key in config:
-		print key
-
-
-
+		if config[key] is None:
+			config[key] = __fallback_default__[key]
 
 
 def new_config(self, command):
