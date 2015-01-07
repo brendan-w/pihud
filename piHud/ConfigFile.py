@@ -4,10 +4,10 @@ import json
 from collections import OrderedDict
 
 import obd
-from defaults import defaults, fallback_default
+from defaults import new_config
 
 
-class ConfigStore():
+class ConfigFile():
 	""" manages the structure of the config file """
 	def __init__(self, filename):
 		self.filename = filename
@@ -47,36 +47,6 @@ class ConfigStore():
 			self.pages.append(page)
 
 
-
-	def add_page(self):
-		""" constructs a empty page """
-		page = PageConfig(self)
-		self.pages.append(page)
-		return page
-
-
-	def delete_page(self, page):
-		""" deletes a widgetConfig """
-		self.pages.remove(page)
-
-
-	def __config_to_json(self, config):
-		""" Constructs a JSON output structure for an existing Config """
-		
-		config = {}
-
-		# copy all the keys except for the command and class name		
-		for key in config.__dict__.keys():
-			if key not in ['command', 'class_name']:
-				config[key] = config.__dict__[key]
-
-		return OrderedDict([
-			('sensor', config.command.name),
-			('type', config.class_name),
-			('config', config)
-		])
-
-
 	def __json_to_config(self, json_):
 		""" Constructs a Config out of a JSON structure """
 
@@ -86,6 +56,7 @@ class ConfigStore():
 
 		sensor_name = json_['sensor'].upper()
 		class_name  = json_['type']
+		json_config = json_['config']
 
 		if sensor_name not in obd.commands:
 			print "sensor '%s' is not a valid OBD command" % sensor_name
@@ -96,22 +67,38 @@ class ConfigStore():
 			return None
 
 		# Make a default config for this command
-		config = Config(obd.commands[sensor_name])
-
-		config.command    = obd.commands[sensor_name]
-		config.title      = config.command.name
-		config.class_name = class_name
+		config = defaults.new_config(obd.commands[sensor_name],
+		                             class_name)
 
 		# Overwrite default values with user values
-		for key in config_props:
+		for key in json_config:
 
 			# prevent the 'config' section from overriding keys with special handling
 			if key in ['command', 'class_name']:
 				continue
 
-			if self.__dict__.has_key(key):
-				self.__dict__[key] = config_props[key]
+			# overwrite the default config with the user's settings
+			if key in config:
+				config[key] = json_config[key]
 
+		return config
+
+
+	def __config_to_json(self, config):
+		""" Constructs a JSON output structure for an existing Config """
+		
+		config = {}
+
+		# copy all the keys except for the command and class name		
+		for key in config:
+			if key not in ['command', 'class_name']:
+				config[key] = config.__dict__[key]
+
+		return OrderedDict([
+			('sensor', config.command.name),
+			('type', config.class_name),
+			('config', config)
+		])
 
 
 	def save(self):

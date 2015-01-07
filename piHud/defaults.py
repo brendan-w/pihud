@@ -9,7 +9,7 @@ __fallback_default__ = Config("Text",     0,   100, None,    "#53B9E8", 20,     
 
 
 # dict of default configs where key=OBDCommand value=Config
-# all 'Nones's will be filled with values from the __fallback_default__
+# all 'Nones's will be filled with values from __fallback_default__
 # user settings in the config will override these default values
 __defaults__ = {
 
@@ -58,9 +58,18 @@ for command in __defaults__:
 			config[key] = __fallback_default__[key]
 
 
-def new_config(self, command):
+def new_config(self, command, class_name=None):
 	""" function for constructing new config objects based on the desired command """
+
 	if command in __defaults__:
-		return __defaults__[command].clone()
+		config = __defaults__[command].clone()
 	else:
-		return __fallback_default__.clone()
+		config = __fallback_default__.clone()
+
+	config.command = command
+	config.title   = command.name
+
+	if class_name is not None:
+		config.class_name = class_name
+
+	return config

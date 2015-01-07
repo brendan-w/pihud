@@ -13,12 +13,10 @@ class Config():
 	             title_font_size_,
 	             buffer_size_):
 
-		# specially handled by ConfigStore
-		self.command    = None
-		self.class_name = class_name_
-		self.title      = "No title specified"
-
-		# user definable properties
+		# user definable properties:
+		self.command         = None
+		self.class_name      = class_name_
+		self.title           = "No title specified"
 		self.min             = min_
 		self.max             = max_
 		self.redline         = redline_
@@ -26,10 +24,9 @@ class Config():
 		self.label_font_size = label_font_size_
 		self.title_font_size = title_font_size_
 		self.buffer_size     = buffer_size_
-
-		# these defaults are set by the widget at runtime
-		self.position = None
-		self.dimensions = None
+		# these defaults may be set by the widget at runtime:
+		self.position        = None
+		self.dimensions      = None
 
 
 	def clone(self):
