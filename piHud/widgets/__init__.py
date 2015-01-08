@@ -10,23 +10,23 @@ widgets = {}
 
 # find python files in this directory
 for f in os.listdir(os.path.dirname(__file__)):
-	name, ext = os.path.splitext(f)
+    name, ext = os.path.splitext(f)
 
-	if ext != '.py':
-		continue
+    if ext != '.py':
+        continue
 
-	if name == '__init__':
-		continue
+    if name == '__init__':
+        continue
 
-	# import the module
-	module = __import__(name, locals(), globals())
+    # import the module
+    module = __import__(name, locals(), globals())
 
-	# search each modules dict for classes that implement BaseWidget
-	for key in module.__dict__:
-		e = module.__dict__[key]
+    # search each modules dict for classes that implement BaseWidget
+    for key in module.__dict__:
+        e = module.__dict__[key]
 
-		if not inspect.isclass(e):
-			continue
+        if not inspect.isclass(e):
+            continue
 
-		if issubclass(e, QtGui.QWidget):
-			widgets[key] = e
+        if issubclass(e, QtGui.QWidget):
+            widgets[key] = e

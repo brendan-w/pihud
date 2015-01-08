@@ -8,9 +8,9 @@ from PyQt4 import QtGui
 from GlobalConfig import GlobalConfig
 
 try:
-	import RPi.GPIO as GPIO
+    import RPi.GPIO as GPIO
 except:
-	print "[piHud] Warning: RPi.GPIO library not found (not a Raspberry Pi?)"
+    print "[piHud] Warning: RPi.GPIO library not found"
 
 
 
@@ -22,60 +22,60 @@ config_path         = os.path.join(os.path.expanduser('~'), 'pihud.rc')
 
 
 def main():
-	""" entry point """
+    """ entry point """
 
-	# ============================ Config loading =============================
+    # ============================ Config loading =============================
 
-	if not os.path.isfile(config_path):
-		# copy the default config
-		if not os.path.isfile(default_config_path):
-			print "[piHud] Fatal: Missing default config file. Try reinstalling"
-			sys.exit(1)
-		else:
-			shutil.copyfile(default_config_path, config_path)
+    if not os.path.isfile(config_path):
+        # copy the default config
+        if not os.path.isfile(default_config_path):
+            print "[piHud] Fatal: Missing default config file. Try reinstalling"
+            sys.exit(1)
+        else:
+            shutil.copyfile(default_config_path, config_path)
 
-	global_config = GlobalConfig(config_path)
+    global_config = GlobalConfig(config_path)
 
-	# =========================== OBD-II Connection ===========================
+    # =========================== OBD-II Connection ===========================
 
-	if global_config.debug:
-		obd.debug.console = True
+    if global_config.debug:
+        obd.debug.console = True
 
-	connection = obd.Async(global_config.port)
+    connection = obd.Async(global_config.port)
 
-	if global_config.debug:
-		for i in range(32):
-			connection.supported_commands.append(obd.commands[1][i])
+    if global_config.debug:
+        for i in range(32):
+            connection.supported_commands.append(obd.commands[1][i])
 
-	# ============================ QT Application =============================
+    # ============================ QT Application =============================
 
-	app = QtGui.QApplication(sys.argv)
-	pihud = PiHud(global_config, connection)
+    app = QtGui.QApplication(sys.argv)
+    pihud = PiHud(global_config, connection)
 
-	# ============================== GPIO Setup ===============================
+    # ============================== GPIO Setup ===============================
 
-	try:
-		pin = self.config.page_adv_pin
-		GPIO.setmode(GPIO.BCM)
-		GPIO.setup(pin,
-		           GPIO.IN,
-		           pull_up_down=GPIO.PUD_UP)
-		GIO.add_event_detect(pin,
-		                     GPIO.FALLING,
-		                     callback=pihud.next_page,
-		                     bouncetime=200)
-	except:
-		pass
+    try:
+        pin = self.config.page_adv_pin
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(pin,
+                   GPIO.IN,
+                   pull_up_down=GPIO.PUD_UP)
+        GIO.add_event_detect(pin,
+                             GPIO.FALLING,
+                             callback=pihud.next_page,
+                             bouncetime=200)
+    except:
+        pass
 
-	# ================================= Start =================================
+    # ================================= Start =================================
 
-	status = app.exec_() # blocks until application quit
+    status = app.exec_() # blocks until application quit
 
-	# ================================= Exit ==================================
+    # ================================= Exit ==================================
 
-	connection.close()
-	sys.exit(status)
+    connection.close()
+    sys.exit(status)
 
 
 if __name__ == "__main__":
-	main()
+    main()
