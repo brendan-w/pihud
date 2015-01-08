@@ -6,35 +6,32 @@ class PageMarker(QtGui.QWidget):
 	def __init__(self, parent):
 		super(PageMarker, self).__init__(parent)
 
-		height = 10
-		bg_color = QtGui.QColor(255, 255, 255, 50)
-		fg_color = QtGui.QColor(255, 255, 255, 70)
+		self.height     = 10
+		self.bg_color   = QtGui.QColor(255, 255, 255, 50)
+		self.fg_color   = QtGui.QColor(255, 255, 255, 70)
 		self.screenRect = QtGui.QApplication.desktop().screen().rect()
 
 		self.setAutoFillBackground(True)
 		p = self.palette()
-		p.setColor(self.backgroundRole(), bg_color)
+		p.setColor(self.backgroundRole(), self.bg_color)
 		self.setPalette(p)
 
 		# make full width, and move to bottom of screen
 		self.setFixedWidth(self.screenRect.width())
-		self.setFixedHeight(height)
-		self.move(0, self.screenRect.height() - height)
+		self.setFixedHeight(self.height)
+		self.move(0, self.screenRect.height() - self.height)
 
-
-		# the marker itself
-		self.marker = QtGui.QWidget(self)
-
-		self.marker.setAutoFillBackground(True)
-		p = self.marker.palette()
-		p.setColor(self.marker.backgroundRole(), fg_color)
-		self.marker.setPalette(p)
-
-		self.marker.setFixedHeight(height)
 		self.set(1, 0)
 		
 
+	def paintEvent(self, e):
+		painter = QtGui.QPainter()
+		painter.begin(self)
+		# painter.setRenderHint(QtGui.QPainter.Antialiasing)
+		painter.fillRect(self.marker, self.fg_color)
+		painter.end()
+
+
 	def set(self, n, p):
 		inc = self.screenRect.width() / n
-		self.marker.setFixedWidth(inc)
-		self.marker.move(inc * p, 0)
+		self.marker = QtCore.QRect(inc * p, 0, inc, self.height)

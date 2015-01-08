@@ -20,7 +20,7 @@ class PiHud(QtGui.QMainWindow):
 
 		# ================== Init Pages ===================
 
-		#self.pageMarker = PageMarker(self)
+		self.pageMarker = PageMarker(self)
 		self.stack      = QtGui.QStackedWidget(self)
 		self.setCentralWidget(self.stack)
 
@@ -89,11 +89,13 @@ class PiHud(QtGui.QMainWindow):
 	def __delete_page(self):
 		if self.stack.count() > 1:
 			page = self.stack.currentWidget()
-			page.delete_all_widgets()
 			self.stack.removeWidget(page)
-			self.config.delete_page(page.page_config)
+
+			for widget in page:
+				pass
+
 			page.deleteLater()
-			self.config.save()
+			# self.config.save()
 
 			self.__goto_page(self.stack.currentIndex())
 
@@ -102,7 +104,7 @@ class PiHud(QtGui.QMainWindow):
 		p = p % len(self.stack)
 		if p != self.stack.currentIndex:
 			self.stack.setCurrentIndex(p)
-			#self.pageMarker.set(self.stack.count(), self.stack.currentIndex())
+			self.pageMarker.set(self.stack.count(), self.stack.currentIndex())
 
 
 	def next_page(self):

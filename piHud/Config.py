@@ -49,6 +49,11 @@ class Config():
 		self.__global_config.save();
 
 
+	def delete(self):
+		pass
+		# self.__global_config.delete_config(self)
+
+
 	def __getitem__(self, key):
 		return getattr(self, key, None)
 
