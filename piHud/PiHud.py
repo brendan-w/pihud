@@ -48,10 +48,17 @@ class PiHud(QtGui.QMainWindow):
 
         # ===================== Start =====================
 
-        self.__goto_page(0)
-        self.connection.start()
+        self.__goto_page(0) # calls connection.start()
         self.setWindowTitle("PiHud")
         self.showFullScreen()
+
+
+    def page(self):
+        return self.stack.currentWidget()
+
+
+    def index(self):
+        return self.stack.currentIndex()
 
 
     def __add_widget(self, page, config):
@@ -59,11 +66,10 @@ class PiHud(QtGui.QMainWindow):
         page.widgets.append(widget)
 
 
-
     def __add_default_widget(self, command):
         config = self.global_config.make_config(command)
-        page = self.stack.currentWidget()
-        self.global_config.pages[self.stack.currentIndex()].append(config)
+        page = self.page()
+        self.global_config.pages[self.index()].append(config)
         self.__add_widget(page, config)
 
 
@@ -88,28 +94,37 @@ class PiHud(QtGui.QMainWindow):
 
     def __delete_page(self):
         if self.stack.count() > 1:
-            page = self.stack.currentWidget()
+            page = self.page()
             self.stack.removeWidget(page)
 
-            for widget in page:
+            for widget in page.widgets:
                 pass
 
             page.deleteLater()
             # self.config.save()
 
-            self.__goto_page(self.stack.currentIndex())
+            self.__goto_page(self.index())
 
 
     def __goto_page(self, p):
         p = p % len(self.stack)
         if p != self.stack.currentIndex:
+            self.connection.stop()
+            self.connection.unwatch_all()
+
+            # switch page
             self.stack.setCurrentIndex(p)
-            self.pageMarker.set(self.stack.count(), self.stack.currentIndex())
+            self.pageMarker.set(self.stack.count(), self.index())
+
+            for widget in self.page().widgets:
+                pass
+
+            self.connection.start()
 
 
     def next_page(self):
         """ cycle through the screen stack """
-        self.__goto_page(self.stack.currentIndex() + 1)
+        self.__goto_page(self.index() + 1)
 
 
     def contextMenuEvent(self, e):

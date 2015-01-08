@@ -21,7 +21,7 @@ for f in os.listdir(os.path.dirname(__file__)):
     # import the module
     module = __import__(name, locals(), globals())
 
-    # search each modules dict for classes that implement BaseWidget
+    # search each modules dict for classes that implement QWidget
     for key in module.__dict__:
         e = module.__dict__[key]
 
