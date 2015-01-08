@@ -1,7 +1,7 @@
 
 import os
 import inspect
-from BaseWidget import BaseWidget
+from PyQt4 import QtGui
 
 
 # the final dict for storing classes by classname
@@ -10,8 +10,7 @@ widgets = {}
 
 # python modules in this directory to exclude
 exclude = [
-	'__init__',
-	'BaseWidget'
+	'__init__'
 ]
 
 
@@ -35,9 +34,5 @@ for f in os.listdir(os.path.dirname(__file__)):
 		if not inspect.isclass(e):
 			continue
 
-		if e == BaseWidget:
-			continue
-
-		if issubclass(e, BaseWidget):
+		if issubclass(e, QtGui.QWidget):
 			widgets[key] = e
-

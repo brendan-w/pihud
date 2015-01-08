@@ -1,11 +1,10 @@
 
-from BaseWidget import BaseWidget
-from PyQt4 import QtGui
+from PyQt4 import QtCore, QtGui
 
 
-class Text(BaseWidget):
+class Text(QtGui.QWidget):
     def __init__(self, parent, config):
-        super(Text, self).__init__(parent, config)
+        super(Text, self).__init__(parent)
 
         self.label = QtGui.QLabel(self)
         self.label.setText("Label")
@@ -18,10 +17,8 @@ class Text(BaseWidget):
         self.label.setStyleSheet(css)
 
 
-    def default_dimensions(self):
-        """ override default size, called by superclass """
-        super(Text, self).setFixedWidth(200)
-        super(Text, self).setFixedHeight(75)
+    def sizeHint(self):
+        return QtCore.QSize(200, 75)        
 
 
     def render(self, response):

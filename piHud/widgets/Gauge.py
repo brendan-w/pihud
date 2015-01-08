@@ -1,16 +1,14 @@
 
-from BaseWidget import BaseWidget
+from PyQt4 import QtCore, QtGui
 
 
-class Gauge(BaseWidget):
+class Gauge(QtGui.QWidget):
     def __init__(self, parent, config):
-        super(Gauge, self).__init__(parent, config)
+        super(Gauge, self).__init__(parent)
 
 
-    def default_dimensions(self):
-        """ override default size, called by superclass """
-        super(Gauge, self).setFixedWidth(360)
-        super(Gauge, self).setFixedHeight(400)
+    def sizeHint(self):
+        return QtCore.QSize(360, 400)
 
 
     def render(self, response):

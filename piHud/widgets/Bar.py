@@ -1,16 +1,14 @@
 
-from BaseWidget import BaseWidget
+from PyQt4 import QtCore, QtGui
 
 
-class Bar_v(BaseWidget):
+class Bar_v(QtGui.QWidget):
     def __init__(self, parent, config):
-        super(Bar_v, self).__init__(parent, config)
+        super(Bar_v, self).__init__(parent)
 
 
-    def default_dimensions(self):
-        """ override default size, called by superclass """
-        super(Bar_v, self).setFixedWidth(180)
-        super(Bar_v, self).setFixedHeight(400)
+    def sizeHint(self):
+        return QtCore.QSize(180, 400)
 
 
     def render(self, response):
@@ -19,15 +17,13 @@ class Bar_v(BaseWidget):
 
 
 
-class Bar_h(BaseWidget):
+class Bar_h(QtGui.QWidget):
     def __init__(self, parent, config):
-        super(Bar_h, self).__init__(parent, config)
+        super(Bar_h, self).__init__(parent)
 
 
-    def default_dimensions(self):
-        """ override default size, called by superclass """
-        super(Bar_h, self).setFixedWidth(400)
-        super(Bar_h, self).setFixedHeight(100)
+    def sizeHint(self):
+        return QtCore.QSize(400, 100)
 
 
     def render(self, response):
