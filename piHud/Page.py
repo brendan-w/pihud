@@ -1,11 +1,5 @@
 
-import obd
-from widgets import widgets
 from PyQt4 import QtCore, QtGui
-
-import math # used got demo mode
-from obd.utils import Response # used got demo mode
-from util import map_value
 
 
 class Page(QtGui.QWidget):

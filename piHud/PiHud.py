@@ -127,7 +127,7 @@ class PiHud(QtGui.QMainWindow):
 			self.close()
 
 		elif key == QtCore.Qt.Key_Tab:
-			self.__next_page()
+			self.next_page()
 
 
 	def closeEvent(self, e):

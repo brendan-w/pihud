@@ -8,8 +8,10 @@ class Widget(QtGui.QWidget):
         super(Widget, self).__init__(parent)
         self.config = config
 
-        self.setFixedWidth(100)
-        self.setFixedHeight(100)
+        self.move(config.position["x"], config.position["y"])
+
+        self.setFixedWidth(config.dimensions['x'])
+        self.setFixedHeight(config.dimensions['y'])
 
         self.setAutoFillBackground(True)
         palette = self.palette()
@@ -17,6 +19,7 @@ class Widget(QtGui.QWidget):
         self.setPalette(palette)
 
         self.show()
+
 
     def mouseMoveEvent(self, e):
         if e.buttons() == QtCore.Qt.LeftButton:
@@ -37,5 +40,10 @@ class Widget(QtGui.QWidget):
 
             drag.exec_(QtCore.Qt.MoveAction)
 
+
     def mousePressEvent(self, e):
         super(Widget, self).mousePressEvent(e)
+
+
+    def render(self, obd_response):
+        pass
