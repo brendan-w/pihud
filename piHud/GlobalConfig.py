@@ -5,7 +5,7 @@ from collections import OrderedDict
 
 import obd
 from widgets import widgets
-from defaults import default_config
+from defaults import defaults, fallback_default
 
 
 
@@ -23,10 +23,10 @@ class GlobalConfig():
 	def make_config(self, command, class_name=None):
 		""" function for constructing new config objects based on the desired command """
 
-		if command in __defaults__:
-			config = __defaults__[command].clone()
+		if command in defaults:
+			config = defaults[command].clone()
 		else:
-			config = __fallback_default__.clone()
+			config = fallback_default.clone()
 
 		config.command = command
 		config.title   = command.name
