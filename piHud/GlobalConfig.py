@@ -8,11 +8,38 @@ from widgets import widgets
 from defaults import default_config
 
 
-class ConfigFile():
+
+class GlobalConfig():
 	""" manages the structure of the config file """
+
 	def __init__(self, filename):
 		self.filename = filename
 		self.load()
+
+
+	""" functions for GUI interaction """
+
+
+	def make_config(self, command, class_name=None):
+		""" function for constructing new config objects based on the desired command """
+
+		if command in __defaults__:
+			config = __defaults__[command].clone()
+		else:
+			config = __fallback_default__.clone()
+
+		config.command = command
+		config.title   = command.name
+
+		if class_name is not None:
+			config.class_name = class_name
+
+		config.set_global_config(self)
+
+		return config
+
+
+	""" functions for managing the structure of the config file """
 
 
 	def load(self):
@@ -55,6 +82,9 @@ class ConfigFile():
 
 
 			self.pages.append(page)
+
+		if len(self.pages) == 0:
+			self.pages.append([])
 
 
 	def save(self):
@@ -100,8 +130,7 @@ class ConfigFile():
 			return None
 
 		# Make a default config for this command
-		config = default_config(obd.commands[sensor_name])
-		config.post_init(self, class_name)
+		config = self.make_config(obd.commands[sensor_name], class_name)
 
 		# Overwrite default values with user values
 		for key in json_config:

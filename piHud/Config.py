@@ -30,14 +30,11 @@ class Config():
 		self.dimensions      = None
 
 		# private properties
-		self.__config_file   = None
+		self.__global_config   = None
 
 
-	# secondary constructor for loading non-default params
-	def post_init(self, config_file, class_name=None):
-		self.__config_file = config_file
-		if class_name is not None:
-			self.class_name = class_name
+	def set_global_config(self, config_file):
+		self.__global_config = config_file
 
 
 	def clone(self):
@@ -49,7 +46,7 @@ class Config():
 
 
 	def save(self):
-		self.__config_file.save();
+		self.__global_config.save();
 
 
 	def __getitem__(self, key):

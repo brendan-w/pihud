@@ -9,52 +9,12 @@ from util import map_value
 
 
 class Page(QtGui.QWidget):
-    """ manages (and is a factory for) SVGWidgets """
+    """ A container and dropevent catcher for widgets """
 
-    def __init__(self, parent, connection, page_config):
+    def __init__(self, parent):
         super(Page, self).__init__(parent)
-        
-        # enable dragging and dropping of widgets
         self.setAcceptDrops(True)
-
         self.widgets = []
-        self.connection = connection
-        self.page_config = page_config
-
-        # create widgets based on the config file
-        for widget_config in self.page_config.widget_configs:
-            self.__make_widget(widget_config)
-
-        # if in demo mode, start a timer to push values to each widget
-        if page_config.config.demo:
-            self.theta = 0
-            self.timer = QtCore.QBasicTimer()
-            self.timer.start(1000/30, self)
-
-
-    def timerEvent(self, event):
-        """ event loop for demo mode """
-        for widget in self.widgets:
-            self.theta += 0.01
-
-            min_ = widget.config.min
-            max_ = widget.config.max
-
-            # value mapping
-            value = map_value(math.cos(self.theta), -1, 1, min_, max_)
-
-            r = Response()
-            r.raw_data = "00 00 00 00"
-            r.value = int(value)
-            r.unit = "unit"
-
-            widget.render(r)
-
-
-    def render(self):
-        for widget in self.widgets:
-            r = self.connection.query(widget.config.command)
-            widget.render(r)
 
 
     def __make_widget(self, config):
@@ -63,21 +23,6 @@ class Page(QtGui.QWidget):
         widget = widgets[config.class_name](self, config)
         self.connection.watch(config.command)
         self.widgets.append(widget)
-
-
-    def rewatch(self):
-        """ called when switching screens """
-        for widget in self.widgets:
-            command = widget.config.command
-            self.connection.watch(command, widget.render)
-            widget.render(self.connection.query(command)) # perform initial render
-
-
-    def make_default_widget(self, command):
-        """ creates a new widget with a default config """
-        widget_config = self.page_config.add_widget(command)
-        self.__make_widget(widget_config)
-        self.page_config.save()
 
 
     def delete_widget(self, widget):
@@ -90,11 +35,6 @@ class Page(QtGui.QWidget):
         self.page_config.delete_widget(widget.config)
         widget.deleteLater()
         self.page_config.save()
-
-
-    def delete_all_widgets(self):
-        for widget in self.widgets:
-            self.delete_widget(widget)
 
 
     def dragEnterEvent(self, e):

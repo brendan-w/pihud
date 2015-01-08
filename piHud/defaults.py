@@ -5,17 +5,14 @@ from obd import commands as c
 
 
 #                         class_name  min  max  redline  color      label_size  title_size  buffer_size
-__fallback_default__ = Config("Text",     0,   100, None,    "#53B9E8", 20,         20,         60)
+fallback_default = Config("Text",     0,   100, None,    "#53B9E8", 20,         20,         60)
 
-
-for key in __fallback_default__:
-	pass
 
 
 # dict of default configs where key=OBDCommand value=Config
-# all 'Nones's will be filled with values from __fallback_default__
+# all 'Nones's will be filled with values from fallback_default
 # user settings in the config file will override these default values
-__defaults__ = {
+defaults = {
 
 	# c.PIDS_A            : Config(),
 	# c.STATUS            : Config(),
@@ -53,24 +50,10 @@ __defaults__ = {
 }
 
 
-# replace all 'None's with values from the __fallback_default__
-for command in __defaults__:
-	config = __defaults__[command]
+# replace all 'None's with values from the fallback_default
+for command in defaults:
+	config = defaults[command]
 
 	for key in config:
 		if config[key] is None:
-			config[key] = __fallback_default__[key]
-
-
-def default_config(command):
-	""" function for constructing new config objects based on the desired command """
-
-	if command in __defaults__:
-		config = __defaults__[command].clone()
-	else:
-		config = __fallback_default__.clone()
-
-	config.command = command
-	config.title   = command.name
-
-	return config
+			config[key] = fallback_default[key]

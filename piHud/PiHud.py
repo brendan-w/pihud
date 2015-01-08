@@ -7,117 +7,31 @@ from PageMarker import PageMarker
 from PyQt4 import QtGui, QtCore
 
 
-# RPi GPIO 
-try:
-	import RPi.GPIO as GPIO
-except:
-	pass
-
-
-
 
 class PiHud(QtGui.QMainWindow):
-	def __init__(self):
+	def __init__(self, global_config, connection):
 		super(PiHud, self).__init__()
+		self.global_config = global_config
+		self.connection = connection
 
-		self.setWindowTitle("PiHud")
+		# ================= Color Palette =================
 
-		# define the color palette
 		palette = self.palette()
 		palette.setColor(self.backgroundRole(), QtCore.Qt.black)
 		self.setPalette(palette)
-		
-		# read the config file
-		config_path = os.path.join(os.path.expanduser("~"), "pihud.rc")
-		self.config = Config(config_path)
 
+		# ================== Init Pages ===================
 
-		try:
-			pin = self.config.page_adv_pin
-			GPIO.setmode(GPIO.BCM)
-			GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-			GIO.add_event_detect(pin, GPIO.FALLING, callback=self.__next_page, bouncetime=200)
-		except:
-			pass
-
-
-		# init OBD conncetion
-		obd.debug.console = True
-		self.connection = obd.Async(self.config.port)
-		for i in range(26):
-			self.connection.supported_commands.append(obd.commands[1][i])
-
-		# make a screen stack
-		self.stack = QtGui.QStackedWidget(self)
+		#self.pageMarker = PageMarker(self)
+		self.stack      = QtGui.QStackedWidget(self)
 		self.setCentralWidget(self.stack)
-		self.pageMarker = PageMarker(self)
 
 		# read the config and make pages
-		if len(self.config.pages) > 0:
-			for page in self.config.pages:
-				self.__add_page(page)
-		else:
-			self.__add_empty_page()
+		for page in self.global_config.pages:
+			self.__add_page(page)
 
-		# create the context menu for adding widgets and pages
-		self.init_context_menu()
+		# ================= Context Menu ==================
 
-		# save any default data that was missing when the config was imported
-		self.config.save()
-
-		# start python-OBDs event loop going
-		self.connection.start()
-		self.__goto_page(0)
-
-		if not self.config.demo: # this is ugly, but I have a deadline
-			self.timer = QtCore.QBasicTimer()
-			self.timer.start(1000/20, self)
-
-		self.showFullScreen()
-
-
-	def timerEvent(self, event):
-		self.stack.currentWidget().render()
-
-
-	def __add_page(self, page_config):
-		page = Page(self, self.connection, page_config)
-		self.stack.addWidget(page)
-
-
-	def __add_empty_page(self):
-		page_config = self.config.add_page()
-		self.__add_page(page_config)
-		self.__goto_page(self.stack.count() - 1)
-		self.config.save()
-
-
-	def __delete_page(self):
-		if self.stack.count() > 1:
-			page = self.stack.currentWidget()
-			page.delete_all_widgets()
-			self.stack.removeWidget(page)
-			self.config.delete_page(page.page_config)
-			page.deleteLater()
-			self.config.save()
-
-			self.__goto_page(self.stack.currentIndex())
-
-
-	def __goto_page(self, p):
-		if p != self.stack.currentIndex:
-			self.stack.setCurrentIndex(p)
-			self.pageMarker.set(self.stack.count(), self.stack.currentIndex())
-
-
-	def __next_page(self):
-		# cycle through the screen stack
-		next_index = (self.stack.currentIndex() + 1) % len(self.stack)
-		self.__goto_page(next_index)
-
-
-	def init_context_menu(self):
-		# create the context menu
 		self.menu = QtGui.QMenu()
 		subMenu = self.menu.addMenu("Add Widget")
 
@@ -134,6 +48,67 @@ class PiHud(QtGui.QMainWindow):
 		self.menu.addAction("New Page", self.__add_empty_page)
 		self.menu.addAction("Delete Page", self.__delete_page)
 
+		# ===================== Start =====================
+
+		self.__goto_page(0)
+		self.connection.start()
+		self.setWindowTitle("PiHud")
+		self.showFullScreen()
+
+
+	def __add_widget(self, config):
+		pass
+
+
+	def __add_default_widget(self):
+		pass
+
+
+	def __add_page(self, configs):
+		""" adds a page and fills with the given widgets """
+		
+		page = Page(self, self.connection)
+
+		for config in configs:
+			self.__add_widget(config)
+
+		self.stack.addWidget(page)
+
+
+	def __add_empty_page(self):
+		""" adds a new (empty) page to the end of the page stack """
+		self.__add_page(page_config)
+		self.__goto_page(self.stack.count() - 1)
+		self.config.save()
+
+
+
+	def __delete_page(self):
+		if self.stack.count() > 1:
+			page = self.stack.currentWidget()
+			page.delete_all_widgets()
+			self.stack.removeWidget(page)
+			self.config.delete_page(page.page_config)
+			page.deleteLater()
+			self.config.save()
+
+			self.__goto_page(self.stack.currentIndex())
+
+
+	def __goto_page(self, p):
+		p = p % len(self.stack)
+		if p != self.stack.currentIndex:
+			self.stack.setCurrentIndex(p)
+			#self.pageMarker.set(self.stack.count(), self.stack.currentIndex())
+
+
+	def next_page(self):
+		# cycle through the screen stack
+		self.__goto_page(self.stack.currentIndex() + 1)
+
+
+	def __add_widget(self, command):
+		pass
 
 
 	def contextMenuEvent(self, e):
@@ -157,5 +132,4 @@ class PiHud(QtGui.QMainWindow):
 
 
 	def closeEvent(self, e):
-		self.connection.close()
 		quit()
