@@ -9,8 +9,7 @@ class Widget(QtGui.QWidget):
         super(Widget, self).__init__(parent)
         self.config = config
 
-        self.move(config.position["x"], config.position["y"])
-
+        # temporary coloring until display widgets get implemented
         self.setAutoFillBackground(True)
         palette = self.palette()
         palette.setColor(self.backgroundRole(), QtCore.Qt.red)
@@ -75,5 +74,5 @@ class Widget(QtGui.QWidget):
         action = self.menu.exec_(self.mapToGlobal(e.pos()))
 
 
-    def render(self, obd_response):
-        pass
+    def render(self, response):
+        self.graphics.render(response)

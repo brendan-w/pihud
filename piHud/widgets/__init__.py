@@ -8,12 +8,6 @@ from PyQt4 import QtGui
 widgets = {}
 
 
-# python modules in this directory to exclude
-exclude = [
-	'__init__'
-]
-
-
 # find python files in this directory
 for f in os.listdir(os.path.dirname(__file__)):
 	name, ext = os.path.splitext(f)
@@ -21,7 +15,7 @@ for f in os.listdir(os.path.dirname(__file__)):
 	if ext != '.py':
 		continue
 
-	if name in exclude:
+	if name == '__init__':
 		continue
 
 	# import the module
