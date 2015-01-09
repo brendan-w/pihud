@@ -20,14 +20,21 @@ class Widget(QtGui.QWidget):
         self.menu.addAction(self.config.command.name).setDisabled(True)
         self.menu.addAction("Delete Widget", self.delete)
 
+        # make a layout (for graphic widget resizing)
+        # layout = QtGui.QHBoxLayout(self)
+        # layout.setContentsMargins(0,0,0,0)
+
         # make the requested graphics object
         self.graphics = widgets[config.class_name](self, config)
+        # layout.addWidget(self.graphics)
 
         self.move(self.position())
+        # self.setLayout(layout)
         self.show()
 
 
     def sizeHint(self):
+        print "W size"
         if self.config.dimensions is not None:
             return QtCore.QSize(self.config.dimensions['x'], self.config.dimensions['y'])
         else:
