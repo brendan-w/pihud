@@ -45,10 +45,10 @@ class GlobalConfig():
 
     def load(self):
         """ reads a config from a file """
-        self.port = None
+        self.port         = None
         self.page_adv_pin = 18
-        self.debug = False
-        self.pages = []
+        self.debug        = False
+        self.pages        = []
 
         required_keys = ['pages']
         optional_keys = ['debug', 'port', 'page_adv_pin']

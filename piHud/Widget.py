@@ -34,7 +34,6 @@ class Widget(QtGui.QWidget):
 
 
     def sizeHint(self):
-        print "W size"
         if self.config.dimensions is not None:
             return QtCore.QSize(self.config.dimensions['x'], self.config.dimensions['y'])
         else:
@@ -54,7 +53,7 @@ class Widget(QtGui.QWidget):
 
 
     def delete(self):
-        pass
+        self.parent().delete_widget(self)
 
 
     def mouseMoveEvent(self, e):

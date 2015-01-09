@@ -24,3 +24,7 @@ class Page(QtGui.QWidget):
         e.source().move(e.pos() - QtCore.QPoint(x, y))
         e.setDropAction(QtCore.Qt.MoveAction)
         e.accept()
+
+
+    def delete_widget(self, widget):
+        self.parent().delete_widget(self, widget)
