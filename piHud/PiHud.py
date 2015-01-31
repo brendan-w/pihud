@@ -87,7 +87,7 @@ class PiHud(QtGui.QMainWindow):
     def delete_widget(self, page, widget):
         # called by the pages themselves
         page.widgets.remove(widget)
-        p = self.stack.indeOf(page)
+        p = self.stack.indexOf(page)
         self.global_config.pages[p].remove(widget.config)
         widget.deleteLater()
 
@@ -97,7 +97,7 @@ class PiHud(QtGui.QMainWindow):
 
     def __add_existing_page(self, configs=None):
         """ adds a page and fills with the given widgets """
-        page = Page(self)
+        page = Page(self.stack, self)
 
         if configs is not None:
             for config in configs:
