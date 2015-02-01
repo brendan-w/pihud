@@ -8,6 +8,8 @@ class Gauge(QtGui.QWidget):
     def __init__(self, parent, config):
         super(Gauge, self).__init__(parent)
         self.color = QtGui.QColor(config.color)
+        self.pen   = QtGui.QPen(self.color)
+        self.pen.setWidth(2)
 
         # choose a smart scale step
         scale_len   = config.max - config.min
@@ -43,7 +45,7 @@ class Gauge(QtGui.QWidget):
     def draw_marks(self, painter):
         painter.save()
 
-        painter.setPen(self.color)
+        painter.setPen(self.pen)
         painter.translate(self.width() / 2, self.height() / 2)
         painter.rotate(90 + 45)
 
