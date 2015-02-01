@@ -12,7 +12,7 @@ class Widget(QtGui.QWidget):
         # temporary coloring until display widgets get implemented
         self.setAutoFillBackground(True)
         palette = self.palette()
-        palette.setColor(self.backgroundRole(), QtCore.Qt.red)
+        palette.setColor(self.backgroundRole(), QtGui.QColor(255, 255, 255, 50))
         self.setPalette(palette)
 
         # make the context menu
@@ -20,16 +20,11 @@ class Widget(QtGui.QWidget):
         self.menu.addAction(self.config.command.name).setDisabled(True)
         self.menu.addAction("Delete Widget", self.delete)
 
-        # make a layout (for graphic widget resizing)
-        # layout = QtGui.QHBoxLayout(self)
-        # layout.setContentsMargins(0,0,0,0)
-
         # make the requested graphics object
         self.graphics = widgets[config.class_name](self, config)
-        # layout.addWidget(self.graphics)
+        self.title    = QtGui.QLabel(config.title, self)
 
         self.move(self.position())
-        # self.setLayout(layout)
         self.show()
 
 
@@ -50,6 +45,7 @@ class Widget(QtGui.QWidget):
     def moveEvent(self, e):
         pos = e.pos()
         self.config.position = { 'x':pos.x(), 'y':pos.y() }
+        self.config.save()
 
 
     def delete(self):

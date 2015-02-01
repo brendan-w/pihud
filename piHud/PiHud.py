@@ -83,6 +83,8 @@ class PiHud(QtGui.QMainWindow):
         # construct a new widget on this page
         self.__add_existing_widget(self.__page(), config)
 
+        self.global_config.save()
+
 
     def delete_widget(self, page, widget):
         # called by the pages themselves
@@ -90,6 +92,8 @@ class PiHud(QtGui.QMainWindow):
         p = self.stack.indexOf(page)
         self.global_config.pages[p].remove(widget.config)
         widget.deleteLater()
+
+        self.global_config.save()
 
 
     # ========= Page Actions =========
@@ -112,6 +116,8 @@ class PiHud(QtGui.QMainWindow):
         self.global_config.pages.append([])
         self.goto_page(self.__count() - 1)
 
+        self.global_config.save()
+
 
 
     def delete_page(self):
@@ -124,6 +130,8 @@ class PiHud(QtGui.QMainWindow):
             self.stack.removeWidget(page)
             page.deleteLater()
             self.goto_page(self.__index())
+
+            self.global_config.save()
 
 
     def goto_page(self, p):

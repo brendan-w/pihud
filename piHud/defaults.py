@@ -27,7 +27,7 @@ defaults = {
     c.LONG_FUEL_TRIM_2  : Config("Bar_h",    -100, 100,    None,    None,      None,       None,       None),
     c.FUEL_PRESSURE     : Config("Bar_h",    0,    765,    None,    None,      None,       None,       None),
     c.INTAKE_PRESSURE   : Config("Bar_h",    0,    255,    None,    None,      None,       None,       None),
-    c.RPM               : Config("Bar_h",    0,    8000,   6750,    None,      None,       None,       None),
+    c.RPM               : Config("Gauge",    0,    8000,   6750,    None,      None,       None,       None),
     c.SPEED             : Config("Bar_h",    0,    180,    None,    None,      None,       None,       None),
     c.TIMING_ADVANCE    : Config("Bar_h",    -64,  64,     None,    None,      None,       None,       None),
     c.INTAKE_TEMP       : Config("Bar_h",    -40,  215,    None,    None,      None,       None,       None),
