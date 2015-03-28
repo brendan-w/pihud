@@ -76,5 +76,10 @@ class Widget(QtGui.QWidget):
         action = self.menu.exec_(self.mapToGlobal(e.pos()))
 
 
+    def get_command(self):
+        return self.config.command
+
+
     def render(self, response):
-        self.graphics.render(response)
+        pass
+        #self.graphics.render(response)

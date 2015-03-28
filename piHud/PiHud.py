@@ -48,9 +48,11 @@ class PiHud(QtGui.QMainWindow):
 
         # ===================== Start =====================
 
-        self.goto_page(0) # calls connection.start()
+        self.timer = QtCore.QBasicTimer()
         self.setWindowTitle("PiHud")
         self.showFullScreen()
+
+        self.start()
 
 
     def __page(self):
@@ -63,6 +65,32 @@ class PiHud(QtGui.QMainWindow):
 
     def __count(self):
         return self.stack.count()
+
+
+    # ========= Main loop =========
+
+
+    def timerEvent(self, event):
+        page = self.__page()
+
+        for widget in page.widgets:
+            r = self.connection.query(widget.get_command())
+            widget.render(r)
+
+
+    def start(self):
+        # watch the commands on this page
+        for widget in self.__page().widgets:
+            self.connection.watch(widget.get_command())
+
+        self.connection.start()
+        self.timer.start(1000/30, self)
+
+
+    def stop(self):
+        self.timer.stop();
+        self.connection.stop()
+        self.connection.unwatch_all()
 
 
     # ========= Widget Actions =========
@@ -122,32 +150,33 @@ class PiHud(QtGui.QMainWindow):
 
     def delete_page(self):
         if self.__count() > 1:
+
+            self.stop()
+
             page = self.__page()
 
             for widget in page.widgets:
                 self.delete_widget(page, widget)
 
+            # self.global_config.pages[p].remove(widget.config)
+            # self.global_config.save()
+
             self.stack.removeWidget(page)
             page.deleteLater()
-            self.goto_page(self.__index())
+            self.goto_page(self.__index()) # calls start()
 
-            self.global_config.save()
 
 
     def goto_page(self, p):
         p = p % len(self.stack)
-        if p != self.__index():
-            self.connection.stop()
-            self.connection.unwatch_all()
 
-            # switch page
-            self.stack.setCurrentIndex(p)
-            self.pageMarker.set(self.__count(), self.__index())
+        self.stop()
 
-            for widget in self.__page().widgets:
-                pass
+        # switch page
+        self.stack.setCurrentIndex(p)
+        self.pageMarker.set(self.__count(), self.__index())
 
-            self.connection.start()
+        self.start()
 
 
     def next_page(self):
@@ -168,8 +197,8 @@ class PiHud(QtGui.QMainWindow):
                 self.add_widget(command)
 
 
-    def keyPressEvent(self, event):
-        key = event.key()
+    def keyPressEvent(self, e):
+        key = e.key()
 
         if key == QtCore.Qt.Key_Escape:
             self.close()

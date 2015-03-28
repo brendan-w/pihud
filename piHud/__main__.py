@@ -43,9 +43,9 @@ def main():
 
     connection = obd.Async(global_config.port)
 
-    if global_config.debug:
-        for i in range(32):
-            connection.supported_commands.append(obd.commands[1][i])
+    # if global_config.debug:
+    #     for i in range(32):
+    #         connection.supported_commands.append(obd.commands[1][i])
 
     # ============================ QT Application =============================
 

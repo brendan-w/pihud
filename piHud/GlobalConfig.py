@@ -122,7 +122,9 @@ class GlobalConfig():
         class_name  = json_['type']
         json_config = json_['config']
 
-        if sensor_name not in obd.commands.__dict__:
+        # print type(sensor_name)
+
+        if sensor_name not in obd.commands:
             print "sensor '%s' is not a valid OBD command" % sensor_name
             return None
 
