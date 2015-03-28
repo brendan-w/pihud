@@ -201,6 +201,7 @@ class PiHud(QtGui.QMainWindow):
         key = e.key()
 
         if key == QtCore.Qt.Key_Escape:
+            self.stop()
             self.close()
 
         elif key == QtCore.Qt.Key_Tab:

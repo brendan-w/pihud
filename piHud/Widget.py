@@ -10,10 +10,12 @@ class Widget(QtGui.QWidget):
         self.config = config
 
         # temporary coloring until display widgets get implemented
+        '''
         self.setAutoFillBackground(True)
         palette = self.palette()
         palette.setColor(self.backgroundRole(), QtGui.QColor(255, 255, 255, 50))
         self.setPalette(palette)
+        '''
 
         # make the context menu
         self.menu = QtGui.QMenu()
@@ -81,5 +83,4 @@ class Widget(QtGui.QWidget):
 
 
     def render(self, response):
-        pass
-        #self.graphics.render(response)
+        self.graphics.render(response.value)

@@ -9,7 +9,9 @@ from util import map_value
 class Gauge(QWidget):
     def __init__(self, parent, config):
         super(Gauge, self).__init__(parent)
+
         self.config = config
+        self.value = self.config.min
 
         self.color = QColor(config.color)
         self.pen   = QPen(self.color)
@@ -34,18 +36,25 @@ class Gauge(QWidget):
         self.scale += [0]
 
 
+    def render(self, v):
+        # approach the value
+        self.value += (v - self.value) / 4
+        self.update()
+
+
     def sizeHint(self):
         return QSize(300, 300)
 
 
     def paintEvent(self, e):
+        print "render"
         painter = QPainter()
         painter.begin(self)
         painter.setPen(self.pen)
         painter.setRenderHint(QPainter.Antialiasing)
         
         self.draw_marks(painter)
-        self.draw_needle(painter, 1000)
+        self.draw_needle(painter, self.value)
 
         painter.end()
 
