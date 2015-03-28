@@ -13,10 +13,13 @@ class Gauge(QWidget):
         self.config = config
         self.value = self.config.min
 
+        self.font  = QFont()
         self.color = QColor(config.color)
-        self.pen   = QPen(self.color)
         self.brush = QBrush(self.color)
-        self.pen.setWidth(2)
+        self.pen   = QPen(self.color)
+
+        self.font.setPixelSize(self.config.title_font_size)
+        self.pen.setWidth(3)
 
         # choose a smart scale step
         scale_len      = config.max - config.min
@@ -30,10 +33,10 @@ class Gauge(QWidget):
         end_tick    = bool(scale_len % scale_step)
 
         # assemble a list of angle offsets
-        self.scale = [angle_step] * scale_ticks
+        self.scale_angle = [angle_step] * scale_ticks
         if end_tick:
-            self.scale += [270 - (angle_step * scale_ticks)]
-        self.scale += [0]
+            self.scale_angle += [270 - (angle_step * scale_ticks)]
+        self.scale_angle += [0]
 
 
     def render(self, v):
@@ -47,14 +50,16 @@ class Gauge(QWidget):
 
 
     def paintEvent(self, e):
-        print "render"
         painter = QPainter()
         painter.begin(self)
+
+        painter.setFont(self.font)
         painter.setPen(self.pen)
         painter.setRenderHint(QPainter.Antialiasing)
         
         self.draw_marks(painter)
         self.draw_needle(painter, self.value)
+        self.draw_title(painter, self.config.title)
 
         painter.end()
 
@@ -68,7 +73,7 @@ class Gauge(QWidget):
         x_start = (self.width() / 20) * 9
         x_end   = self.width() / 2
 
-        for a in self.scale:
+        for a in self.scale_angle:
             painter.drawLine(x_start, 0, x_end, 0)
             painter.rotate(a)
 
@@ -95,5 +100,14 @@ class Gauge(QWidget):
                 QPoint(-5, 0)
             ])
         )
+
+        painter.restore()
+
+    def draw_title(self, painter, title):
+        painter.save()
+
+        r_height = self.config.title_font_size + 20
+        r = QRect(0, self.height() - r_height, self.width(), r_height)
+        painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, title)
 
         painter.restore()
