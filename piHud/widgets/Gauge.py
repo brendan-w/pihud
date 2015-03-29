@@ -25,7 +25,7 @@ class Gauge(QWidget):
         scale_len      = config.max - config.min
         self.scale_len = scale_len
         scale_order    = round(log10(scale_len))
-        scale_step     = 10 ** (scale_order - 1)        
+        scale_step     = 10 ** (scale_order - 1)
         
         #                       [      Widget Units     ] [Angle]
         angle_step  = map_value(scale_step, config.min, config.max, 0, 270)
@@ -102,6 +102,7 @@ class Gauge(QWidget):
         )
 
         painter.restore()
+
 
     def draw_title(self, painter, title):
         painter.save()
