@@ -2,12 +2,6 @@
 from math import ceil, floor, log10
 
 
-def map_value(x, in_min, in_max, out_min, out_max):
-    """ maps a value from one range to another """
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-
-
-
 def scale(_min, _max):
 
     # handle inverse ranges
@@ -19,36 +13,52 @@ def scale(_min, _max):
         return [ float(_min) ]
 
     # choose a smart scale step
-    scale_len = _max - _min
+    size = _max - _min
 
-    scale_step  = 10 ** floor(log10(scale_len))
-    scale_ticks = int(scale_len // scale_step)
+    step  = 10 ** floor(log10(size))
+    ticks = int(size // step)
 
     # if there are less than 5 ticks, try the next power down.
     # if there are more than 10 ticks, try doubling the step.
     # ensures that there will be between 5-10 ticks in the result
-    while (scale_ticks + 2) <= 5:
-        scale_step /= 10
-        scale_ticks = int(scale_len // scale_step)
+    while (ticks + 2) <= 5:
+        step /= 10
+        ticks = int(size // step)
 
-    while (scale_ticks + 2) >= 11:
-        scale_step *= 2
-        scale_ticks = int(scale_len // scale_step)
+    while (ticks + 2) >= 11:
+        step *= 2
+        ticks = int(size // step)
 
     output = []
     start = _min
 
     # if the starting value is NOT perfectly divided by the scale step
-    if bool(_min % scale_step):
+    if bool(_min % step):
 
         # the first value will be the minimum
         output += [ float(_min) ]
 
         # compute the nearest interval of the scale step
-        start = ceil(_min / scale_step) * scale_step
+        start = ceil(_min / step) * step
 
 
-    output += [ (start + (scale_step * x)) for x in range(scale_ticks) ]
+    output += [ (start + (step * x)) for x in range(ticks) ]
     output += [ float(_max) ]
 
     return output
+
+
+def map_value(x, in_min, in_max, out_min, out_max):
+    """ maps a value from one range to another """
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+
+def map_scale(s, out_min, out_max):
+    in_min = s[0]
+    in_max = s[-1]
+    return [map_value(x, in_min, in_max, out_min, out_max) for x in s]
+
+
+# [10, 20, 30, 50]   --->   [0, 10, 10, 20]
+def scale_offsets(s):
+    return [0] + [(b-a) for a, b in zip(s, s[1:])]

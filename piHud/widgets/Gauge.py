@@ -3,7 +3,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from math import log10
-from util import map_value
+from util import scale, map_scale, map_value, scale_offsets
 
 
 class Gauge(QWidget):
@@ -21,22 +21,9 @@ class Gauge(QWidget):
         self.font.setPixelSize(self.config.title_font_size)
         self.pen.setWidth(3)
 
-        # choose a smart scale step
-        scale_len      = config.max - config.min
-        self.scale_len = scale_len
-        scale_order    = round(log10(scale_len))
-        scale_step     = 10 ** (scale_order - 1)
-        
-        #                       [      Widget Units     ] [Angle]
-        angle_step  = map_value(scale_step, config.min, config.max, 0, 270)
-        scale_ticks = int(scale_len // scale_step)
-        end_tick    = bool(scale_len % scale_step)
-
-        # assemble a list of angle offsets
-        self.scale_angle = [angle_step] * scale_ticks
-        if end_tick:
-            self.scale_angle += [270 - (angle_step * scale_ticks)]
-        self.scale_angle += [0]
+        self.scale = scale(config.min, config.max)
+        self.abs_angles = map_scale(self.scale, 0, 270)
+        self.offset_angles = scale_offsets(self.abs_angles)
 
 
     def render(self, v):
@@ -70,12 +57,12 @@ class Gauge(QWidget):
         painter.translate(self.width() / 2, self.height() / 2)
         painter.rotate(90 + 45)
 
-        x_start = (self.width() / 20) * 9
-        x_end   = self.width() / 2
+        x_start = self.width() / 2
+        x_end   = x_start - (self.width() / 20)
 
-        for a in self.scale_angle:
-            painter.drawLine(x_start, 0, x_end, 0)
+        for a in self.offset_angles:
             painter.rotate(a)
+            painter.drawLine(x_start, 0, x_end, 0)
 
         painter.restore()
 
