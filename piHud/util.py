@@ -10,11 +10,16 @@ def map_value(x, in_min, in_max, out_min, out_max):
 
 def scale(_min, _max):
 
+    # handle inverse ranges
+    if _max < _min:
+        return scale(_max, _min)[::-1]
+
+    # handle null ranges
+    if _max == _min:
+        return [ float(_min) ]
+
     # choose a smart scale step
     scale_len = _max - _min
-
-    if scale_len == 0:
-        return [ float(_min) ]
 
     scale_step  = 10 ** floor(log10(scale_len))
     scale_ticks = int(scale_len // scale_step)
