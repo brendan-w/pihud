@@ -5,29 +5,29 @@ class Config():
 
     # constructor for defining defaults
     def __init__(self,
-                 class_name_      = None,
-                 min_             = None,
-                 max_             = None,
-                 redline_         = None,
-                 color_           = None,
-                 label_font_size_ = None,
-                 title_font_size_ = None,
-                 buffer_size_     = None):
+                 class_name_     = None,
+                 min_            = None,
+                 max_            = None,
+                 redline_        = None,
+                 color_          = None,
+                 font_size_      = None,
+                 note_font_size_ = None,
+                 buffer_size_    = None):
 
         # user definable properties:
-        self.command         = None
-        self.title           = None
-        self.class_name      = class_name_
-        self.min             = min_
-        self.max             = max_
-        self.redline         = redline_
-        self.color           = color_
-        self.label_font_size = label_font_size_
-        self.title_font_size = title_font_size_
-        self.buffer_size     = buffer_size_
+        self.command        = None
+        self.title          = None
+        self.class_name     = class_name_
+        self.min            = min_
+        self.max            = max_
+        self.redline        = redline_
+        self.color          = color_
+        self.font_size      = font_size_
+        self.note_font_size = note_font_size_
+        self.buffer_size    = buffer_size_
         # these defaults may be set by the widget at runtime:
-        self.position        = None
-        self.dimensions      = None
+        self.position       = None
+        self.dimensions     = None
 
         # private properties
         self.__global_config   = None

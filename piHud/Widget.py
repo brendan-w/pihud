@@ -29,7 +29,9 @@ class Widget(QtGui.QWidget):
 
     def sizeHint(self):
         if self.config.dimensions is not None:
-            return QtCore.QSize(self.config.dimensions['x'], self.config.dimensions['y'])
+            size = QtCore.QSize(self.config.dimensions['x'], self.config.dimensions['y'])
+            self.graphics.setFixedSize(size)
+            return size
         else:
             return self.graphics.sizeHint()
 

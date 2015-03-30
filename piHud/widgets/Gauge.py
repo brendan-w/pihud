@@ -2,8 +2,8 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from math import log10
-from util import scale, map_scale, map_value, scale_offsets
+from math import sin, cos
+from util import scale, map_scale, map_value, scale_offsets, str_scale
 
 
 class Gauge(QWidget):
@@ -13,17 +13,21 @@ class Gauge(QWidget):
         self.config = config
         self.value = self.config.min
 
-        self.font  = QFont()
-        self.color = QColor(config.color)
-        self.brush = QBrush(self.color)
-        self.pen   = QPen(self.color)
+        self.font      = QFont()
+        self.note_font = QFont()
+        self.color     = QColor(config.color)
+        self.brush     = QBrush(self.color)
+        self.pen       = QPen(self.color)
 
-        self.font.setPixelSize(self.config.title_font_size)
+        self.font.setPixelSize(self.config.font_size)
+        self.note_font.setPixelSize(self.config.note_font_size)
         self.pen.setWidth(3)
 
-        self.scale = scale(config.min, config.max)
-        self.abs_angles = map_scale(self.scale, 0, 270)
+        s = scale(config.min, config.max)
+
+        self.abs_angles = map_scale(s, 0, 270)
         self.offset_angles = scale_offsets(self.abs_angles)
+        self.str_scale, self.multiplier = str_scale(s)
 
 
     def render(self, v):
@@ -37,6 +41,13 @@ class Gauge(QWidget):
 
 
     def paintEvent(self, e):
+
+        r = self.width() / 2
+        self.__text_r   = r - (r/10)   # radius of the text
+        self.__tick_r   = r - (r/4)    # outer radius of the tick marks
+        self.__tick_l   = (r/10)       # length of each tick, extending inwards
+        self.__needle_l = (r/5) * 3    # length of the needle
+        
         painter = QPainter()
         painter.begin(self)
 
@@ -44,9 +55,10 @@ class Gauge(QWidget):
         painter.setPen(self.pen)
         painter.setRenderHint(QPainter.Antialiasing)
         
+        self.draw_title(painter)
+        self.draw_multiplier(painter)
         self.draw_marks(painter)
-        self.draw_needle(painter, self.value)
-        self.draw_title(painter, self.config.title)
+        self.draw_needle(painter)
 
         painter.end()
 
@@ -57,21 +69,39 @@ class Gauge(QWidget):
         painter.translate(self.width() / 2, self.height() / 2)
         painter.rotate(90 + 45)
 
-        x_start = self.width() / 2
-        x_end   = x_start - (self.width() / 20)
+        end = self.__tick_r - self.__tick_l
 
         for a in self.offset_angles:
             painter.rotate(a)
-            painter.drawLine(x_start, 0, x_end, 0)
+            painter.drawLine(self.__tick_r, 0, end, 0)
 
         painter.restore()
 
+        for a, v in zip(self.abs_angles, self.str_scale):
+            painter.save()
 
-    def draw_needle(self, painter, value):
+            painter.translate(self.width() / 2, self.height() / 2)
+
+            painter.rotate(a)
+            painter.rotate(-45)
+            painter.translate(-self.__text_r, 0)
+            painter.rotate(45)
+            painter.rotate(-a)
+
+            r_width  = self.config.font_size * len(v)
+            r_height = self.config.font_size
+
+            r = QRect(-r_width / 2, -r_height / 2, r_width, r_height)
+            painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, v)
+
+            painter.restore()
+
+
+    def draw_needle(self, painter):
         painter.save()
 
         painter.translate(self.width() / 2, self.height() / 2)
-        angle = map_value(value, self.config.min, self.config.max, 0, 270)
+        angle = map_value(self.value, self.config.min, self.config.max, 0, 270)
         angle -= 90 + 45
         painter.rotate(angle)
 
@@ -82,7 +112,7 @@ class Gauge(QWidget):
         painter.drawPolygon(
             QPolygon([
                 QPoint(-5, 0),
-                QPoint(0,   -(self.width() / 20) * 8),
+                QPoint(0,   -self.__needle_l),
                 QPoint(5,  0),
                 QPoint(-5, 0)
             ])
@@ -91,11 +121,22 @@ class Gauge(QWidget):
         painter.restore()
 
 
-    def draw_title(self, painter, title):
+    def draw_title(self, painter):
         painter.save()
 
-        r_height = self.config.title_font_size + 20
+        r_height = self.config.font_size + 20
         r = QRect(0, self.height() - r_height, self.width(), r_height)
-        painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, title)
+        painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, self.config.title)
+
+        painter.restore()
+
+
+    def draw_multiplier(self, painter):
+        painter.save()
+
+        painter.setFont(self.note_font)
+        s = "x" + str(self.multiplier)
+        r = QRect(0, -self.width() / 6, self.width(), self.height())
+        painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, s)
 
         painter.restore()

@@ -59,6 +59,15 @@ def map_scale(s, out_min, out_max):
     return [map_value(x, in_min, in_max, out_min, out_max) for x in s]
 
 
+def avg_power(s):
+    return sum([1 if x == 0 else floor(log10(x)) for x in s]) / len(s)
+
+
+def str_scale(s):
+    divisor = 10 ** ceil(avg_power(s)) # ceil(): always tend towards fewer decimals
+    return ([str(int(x/divisor)) for x in s], int(divisor))
+
+
 # [10, 20, 30, 50]   --->   [0, 10, 10, 20]
 def scale_offsets(s):
     return [0] + [(b-a) for a, b in zip(s, s[1:])]
