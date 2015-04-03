@@ -38,12 +38,12 @@ def main():
 
     # =========================== OBD-II Connection ===========================
 
-    if global_config.debug:
+    if global_config["debug"]:
         obd.debug.console = True
 
-    connection = obd.Async(global_config.port)
+    connection = obd.Async(global_config["port"])
 
-    # if global_config.debug:
+    # if global_config["debug"]:
     #     for i in range(32):
     #         connection.supported_commands.append(obd.commands[1][i])
 

@@ -1,4 +1,5 @@
 
+import obd
 from widgets import widgets
 from PyQt4 import QtCore, QtGui
 
@@ -17,19 +18,20 @@ class Widget(QtGui.QWidget):
 
         # make the context menu
         self.menu = QtGui.QMenu()
-        self.menu.addAction(self.config.command.name).setDisabled(True)
+        self.menu.addAction(self.config["sensor"]).setDisabled(True)
         self.menu.addAction("Delete Widget", self.delete)
 
-        # make the requested graphics object
-        self.graphics = widgets[config.class_name](self, config)
+        # instantiate the requested graphics object
+        self.graphics = widgets[config["type"]](self, config)
 
         self.move(self.position())
         self.show()
 
 
     def sizeHint(self):
-        if self.config.dimensions is not None:
-            size = QtCore.QSize(self.config.dimensions['x'], self.config.dimensions['y'])
+        if (self.config['w'] is not None) and \
+           (self.config['h'] is not None):
+            size = QtCore.QSize(self.config['w'], self.config['h'])
             self.graphics.setFixedSize(size)
             return size
         else:
@@ -37,16 +39,13 @@ class Widget(QtGui.QWidget):
 
 
     def position(self):
-        if self.config.position is not None:
-            return QtCore.QPoint(self.config.position['x'], self.config.position['y'])
-        else:
-            return QtCore.QPoint(0, 0)
+        return QtCore.QPoint(self.config['x'], self.config['y'])
 
 
     def moveEvent(self, e):
         pos = e.pos()
-        self.config.position = { 'x':pos.x(), 'y':pos.y() }
-        self.config.save()
+        self.config['x'] = pos.x()
+        self.config['y'] = pos.y()
 
 
     def delete(self):
@@ -78,7 +77,11 @@ class Widget(QtGui.QWidget):
 
 
     def get_command(self):
-        return self.config.command
+        s = self.config["sensor"]
+        if s in obd.commands:
+            return obd.commands[s]
+        else:
+            raise KeyError("'%s' is not a valid OBDCommand" % s)
 
 
     def render(self, response):

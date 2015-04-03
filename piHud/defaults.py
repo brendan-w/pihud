@@ -4,8 +4,8 @@ from Config import Config
 from obd import commands as c
 
 
-#                         class_name  min  max  redline  color      font_size   note_size   buffer_size
-fallback_default = Config("Text",     0,   100, None,    "#53B9E8", 30,         20,         60)
+#                         class_name  min  max  redline  buffer_size
+fallback_default = Config("Text",     0,   100, None,    60)
 
 
 
@@ -17,36 +17,36 @@ defaults = {
     # c.PIDS_A            : Config(),
     # c.STATUS            : Config(),
     # c.FREEZE_DTC        : Config(),
-    #                            class_name  min   max     redline  color      font_size   note_size   buffer_size
-    c.FUEL_STATUS       : Config("Text",     None, None,   None,    None,      None,       None,       None),
-    c.ENGINE_LOAD       : Config("Bar_h",    0,    100,    90,      None,      None,       None,       None),
-    c.COOLANT_TEMP      : Config("Bar_h",    -40,  215,    None,    None,      None,       None,       None),
-    c.SHORT_FUEL_TRIM_1 : Config("Bar_h",    -100, 100,    None,    None,      None,       None,       None),
-    c.LONG_FUEL_TRIM_1  : Config("Bar_h",    -100, 100,    None,    None,      None,       None,       None),
-    c.SHORT_FUEL_TRIM_2 : Config("Bar_h",    -100, 100,    None,    None,      None,       None,       None),
-    c.LONG_FUEL_TRIM_2  : Config("Bar_h",    -100, 100,    None,    None,      None,       None,       None),
-    c.FUEL_PRESSURE     : Config("Bar_h",    0,    765,    None,    None,      None,       None,       None),
-    c.INTAKE_PRESSURE   : Config("Bar_h",    0,    255,    None,    None,      None,       None,       None),
-    c.RPM               : Config("Gauge",    0,    8000,   6750,    None,      None,       None,       None),
-    c.SPEED             : Config("Bar_h",    0,    180,    None,    None,      None,       None,       None),
-    c.TIMING_ADVANCE    : Config("Bar_h",    -64,  64,     None,    None,      None,       None,       None),
-    c.INTAKE_TEMP       : Config("Bar_h",    -40,  215,    None,    None,      None,       None,       None),
-    c.MAF               : Config("Bar_h",    0,    655.35, None,    None,      None,       None,       None),
-    c.THROTTLE_POS      : Config("Bar_h",    0,    100,    None,    None,      None,       None,       None),
-    c.AIR_STATUS        : Config("Text",     None, None,   None,    None,      None,       None,       None),
+    #                            class_name  min   max     redline  buffer_size
+    c.FUEL_STATUS       : Config("Text",     None, None,   None,    None),
+    c.ENGINE_LOAD       : Config("Bar_h",    0,    100,    90,      None),
+    c.COOLANT_TEMP      : Config("Bar_h",    -40,  215,    None,    None),
+    c.SHORT_FUEL_TRIM_1 : Config("Bar_h",    -100, 100,    None,    None),
+    c.LONG_FUEL_TRIM_1  : Config("Bar_h",    -100, 100,    None,    None),
+    c.SHORT_FUEL_TRIM_2 : Config("Bar_h",    -100, 100,    None,    None),
+    c.LONG_FUEL_TRIM_2  : Config("Bar_h",    -100, 100,    None,    None),
+    c.FUEL_PRESSURE     : Config("Bar_h",    0,    765,    None,    None),
+    c.INTAKE_PRESSURE   : Config("Bar_h",    0,    255,    None,    None),
+    c.RPM               : Config("Gauge",    0,    8000,   6750,    None),
+    c.SPEED             : Config("Bar_h",    0,    180,    None,    None),
+    c.TIMING_ADVANCE    : Config("Bar_h",    -64,  64,     None,    None),
+    c.INTAKE_TEMP       : Config("Bar_h",    -40,  215,    None,    None),
+    c.MAF               : Config("Bar_h",    0,    655.35, None,    None),
+    c.THROTTLE_POS      : Config("Bar_h",    0,    100,    None,    None),
+    c.AIR_STATUS        : Config("Text",     None, None,   None,    None),
     # c.O2_SENSORS        : Config(),
-    c.O2_B1S1           : Config("Bar_h",    0,    1.275,  None,    None,      None,       None,       None),
-    c.O2_B1S2           : Config("Bar_h",    0,    1.275,  None,    None,      None,       None,       None),
-    c.O2_B1S3           : Config("Bar_h",    0,    1.275,  None,    None,      None,       None,       None),
-    c.O2_B1S4           : Config("Bar_h",    0,    1.275,  None,    None,      None,       None,       None),
-    c.O2_B2S1           : Config("Bar_h",    0,    1.275,  None,    None,      None,       None,       None),
-    c.O2_B2S2           : Config("Bar_h",    0,    1.275,  None,    None,      None,       None,       None),
-    c.O2_B2S3           : Config("Bar_h",    0,    1.275,  None,    None,      None,       None,       None),
-    c.O2_B2S4           : Config("Bar_h",    0,    1.275,  None,    None,      None,       None,       None),
-    c.OBD_COMPLIANCE    : Config("Text",     None, None,   None,    None,      None,       None,       None),
+    c.O2_B1S1           : Config("Bar_h",    0,    1.275,  None,    None),
+    c.O2_B1S2           : Config("Bar_h",    0,    1.275,  None,    None),
+    c.O2_B1S3           : Config("Bar_h",    0,    1.275,  None,    None),
+    c.O2_B1S4           : Config("Bar_h",    0,    1.275,  None,    None),
+    c.O2_B2S1           : Config("Bar_h",    0,    1.275,  None,    None),
+    c.O2_B2S2           : Config("Bar_h",    0,    1.275,  None,    None),
+    c.O2_B2S3           : Config("Bar_h",    0,    1.275,  None,    None),
+    c.O2_B2S4           : Config("Bar_h",    0,    1.275,  None,    None),
+    c.OBD_COMPLIANCE    : Config("Text",     None, None,   None,    None),
     # c.O2_SENSORS_ALT    : Config(),
     # c.AUX_INPUT_STATUS  : Config(),
-    c.RUN_TIME          : Config("Text",     None, None,   None,    None,      None,       None,       None),
+    c.RUN_TIME          : Config("Text",     None, None,   None,    None),
 }
 
 
@@ -57,3 +57,17 @@ for command in defaults:
     for key in config:
         if config[key] is None:
             config[key] = fallback_default[key]
+
+
+# accessor for creating configs based on the defaults listed above
+def default_for(command):
+
+    if command in defaults:
+        config = defaults[command].clone()
+    else:
+        config = fallback_default.clone()
+
+    config["sensor"] = command.name
+    config["title"]  = command.desc
+
+    return config

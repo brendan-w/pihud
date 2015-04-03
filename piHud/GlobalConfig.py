@@ -5,8 +5,7 @@ from collections import OrderedDict
 
 import obd
 from widgets import widgets
-from defaults import defaults, fallback_default
-
+from defaults import default_for
 
 
 class GlobalConfig():
@@ -14,153 +13,117 @@ class GlobalConfig():
 
     def __init__(self, filename):
         self.filename = filename
+        self.decode = json.JSONDecoder(object_pairs_hook=OrderedDict).decode
+        self.data = OrderedDict([
+            ("debug",          False    ),
+            ("port",           None     ),
+            ("page_adv_pin",   18       ),
+            ("color",          "#53B9E8"),
+            ("redline_color",  "#FF0000"),
+            ("font_size",      30       ),
+            ("note_font_size", 20       ),
+
+            ("pages",          [[]]     ),
+        ])
         self.load()
 
 
-    def make_config(self, command, class_name=None):
-        """ function for constructing new config objects based on the desired command """
-
-        if command in defaults:
-            config = defaults[command].clone()
-        else:
-            config = fallback_default.clone()
-
-        config.command = command
-        config.title   = command.name
-
-        if class_name is not None:
-            config.class_name = class_name
-
-        config.set_global_config(self)
-
+    def make_config(self, command):
+        config = default_for(command)
+        config.global_config = self
         return config
 
 
-    def delete_config(self, config):
-        pass
-
-
-    """ functions for managing the structure of the config file """
+    def __load_keys(self, src, dest):
+        """ copies duplicate keys/values from src to dest dictionaries """
+        for key in dest:
+            if key in src:
+                dest[key] = src[key]
 
 
     def load(self):
         """ reads a config from a file """
-        self.port         = None
-        self.page_adv_pin = 18
-        self.debug        = False
-        self.pages        = []
-
-        required_keys = ['pages']
-        optional_keys = ['debug', 'port', 'page_adv_pin']
-
-        json_file = {}
 
         # read the file
+        file_config = None;
+
         if os.path.isfile(self.filename):
             with open(self.filename, 'r') as f:
-                json_file = json.loads(f.read())
+                file_config = self.decode(f.read())
 
-        # check for the required root keys
-        if not all(k in json_file for k in ['pages']):
-            print "Config is missing the 'pages' array"
+        # load the keys/data into the global config
+        self.__load_keys(file_config, self.data)
 
-        # load optional keys
-        for key in optional_keys:
-            if key in json_file:
-                setattr(self, key, json_file[key])
+        # output
+        pages = []
 
-        # process each page definition
-        for page_json in json_file['pages']:
-            page = []
+        for page in self.data['pages']:
 
-            for json_config in page_json:
-                config = self.__json_to_config(json_config)
+            current_page = []
 
-                if config is None:
-                    print "Skipping invalid widget"
-                else:
-                    page.append(config)
+            for widget in page:
+
+                if "sensor" not in widget:
+                    print "widget definition missing 'sensor' attribute"
+                    break
+
+                sensor = widget.pop("sensor").upper()
+
+                if sensor not in obd.commands:
+                    print "unknown sensor name '%s'" % widget["sensor"]
+                    break
+
+                if widget["type"] not in widgets:
+                    print "unknown sensor name '%s'" % widget["sensor"]
+                    break
+
+                config = self.make_config(obd.commands[sensor])
+
+                # load the keys/data into the global config
+                self.__load_keys(widget, config)
+
+                current_page.append(config)
+
+            pages.append(current_page)
+
+        self.data['pages'] = pages
 
 
-            self.pages.append(page)
 
-        if len(self.pages) == 0:
-            self.pages.append([])
-
-
-    def save(self):
+    def save(self, pages_configs):
         """ write the config back to the file """
         
-        json_pages = []
+        pages = []
 
-        for page in self.pages:
-            json_page =  []
+        for page in pages_configs:
+
+            current_page = []
+
             for config in page:
-                json_config = self.__config_to_json(config)
-                json_page.append(json_config)
-            json_pages.append(json_page)
+                # for JSON output, reference the OrderedDict inside the Config
+                current_page.append(config.data)
 
-        output = OrderedDict([
-            ('debug', self.debug),
-            ('port', self.port),
-            ('page_adv_pin', self.page_adv_pin),
-            ('pages', json_pages),
-        ])
+            pages.append(current_page)
+
+        self.data["pages"] = pages
 
         with open(self.filename, 'w') as f:
-            f.write(json.dumps(output, indent=4))
+            f.write(json.dumps(self.data, indent=4))
 
 
-    def __json_to_config(self, json_):
-        """ Constructs a Config out of a JSON structure """
-
-        if not all((k in json_) for k in ['sensor', 'type', 'config']):
-            print "Config is missing required keys"
-            return None
-
-        sensor_name = json_['sensor'].upper()
-        class_name  = json_['type']
-        json_config = json_['config']
-
-        # print type(sensor_name)
-
-        if sensor_name not in obd.commands:
-            print "sensor '%s' is not a valid OBD command" % sensor_name
-            return None
-
-        if class_name not in widgets:
-            print "widget '%s' is not a valid Widget type" % class_name
-            return None
-
-        # Make a default config for this command
-        config = self.make_config(obd.commands[sensor_name], class_name)
-
-        # Overwrite default values with user values
-        for key in json_config:
-
-            # prevent the 'config' section from overriding keys with special handling
-            if key in ['command', 'class_name']:
-                continue
-
-            # overwrite the default config with the user's settings
-            if key in config:
-                config[key] = json_config[key]
-
-        return config
+    def __getitem__(self, key):
+        if key in self.data:
+            return self.data[key]
+        else:
+            raise KeyError("'%s' is not a valid config key" % key)
 
 
-    def __config_to_json(self, config):
-        """ Constructs a JSON output structure for an existing Config """
-        
-        json_config = {}
+    def __setitem__(self, key, value):
+        if key in self.data:
+            self.data[key] = value
+        else:
+            raise KeyError("'%s' is not a valid config key" % key)
 
-        # copy all the keys except for the command and class name        
-        for key in config:
-            if key not in ['command', 'class_name']:
-                json_config[key] = config[key]
 
-        return OrderedDict([
-            ('sensor', config.command.name),
-            ('type',   config.class_name),
-            ('config', json_config)
-        ])
+    def __contains__(self, key):
+        return key in self.data

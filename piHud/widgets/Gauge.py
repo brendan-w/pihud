@@ -11,19 +11,19 @@ class Gauge(QWidget):
         super(Gauge, self).__init__(parent)
 
         self.config = config
-        self.value = self.config.min
+        self.value = config["min"]
 
         self.font      = QFont()
         self.note_font = QFont()
-        self.color     = QColor(config.color)
+        self.color     = QColor(config["color"])
         self.brush     = QBrush(self.color)
         self.pen       = QPen(self.color)
 
-        self.font.setPixelSize(self.config.font_size)
-        self.note_font.setPixelSize(self.config.note_font_size)
+        self.font.setPixelSize(self.config["font_size"])
+        self.note_font.setPixelSize(self.config["note_font_size"])
         self.pen.setWidth(3)
 
-        s = scale(config.min, config.max)
+        s = scale(config["min"], config["max"])
 
         self.abs_angles = map_scale(s, 0, 270)
         self.offset_angles = scale_offsets(self.abs_angles)
@@ -88,8 +88,8 @@ class Gauge(QWidget):
             painter.rotate(45)
             painter.rotate(-a)
 
-            r_width  = self.config.font_size * len(v)
-            r_height = self.config.font_size
+            r_width  = self.config["font_size"] * len(v)
+            r_height = self.config["font_size"]
 
             r = QRect(-r_width / 2, -r_height / 2, r_width, r_height)
             painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, v)
@@ -101,7 +101,7 @@ class Gauge(QWidget):
         painter.save()
 
         painter.translate(self.width() / 2, self.height() / 2)
-        angle = map_value(self.value, self.config.min, self.config.max, 0, 270)
+        angle = map_value(self.value, self.config["min"], self.config["max"], 0, 270)
         angle -= 90 + 45
         painter.rotate(angle)
 
@@ -124,9 +124,9 @@ class Gauge(QWidget):
     def draw_title(self, painter):
         painter.save()
 
-        r_height = self.config.font_size + 20
+        r_height = self.config["font_size"] + 20
         r = QRect(0, self.height() - r_height, self.width(), r_height)
-        painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, self.config.title)
+        painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, self.config["title"])
 
         painter.restore()
 

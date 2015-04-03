@@ -25,7 +25,7 @@ class PiHud(QtGui.QMainWindow):
         self.setCentralWidget(self.stack)
 
         # read the config and make pages
-        for configs in self.global_config.pages:
+        for configs in global_config["pages"]:
             self.__add_existing_page(configs)
 
         # ================= Context Menu ==================
