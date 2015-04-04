@@ -43,8 +43,12 @@ class PiHud(QtGui.QMainWindow):
         
         self.menu.addSeparator()
 
-        self.menu.addAction("New Page", self.add_page)
-        self.menu.addAction("Delete Page", self.delete_page)
+        self.menu.addAction("New Page", self.__add_page)
+        self.menu.addAction("Delete Page", self.__delete_page)
+
+        self.menu.addSeparator()
+
+        self.menu.addAction("Save Layout", self.__save)
 
         # ===================== Start =====================
 
@@ -65,6 +69,19 @@ class PiHud(QtGui.QMainWindow):
 
     def __count(self):
         return self.stack.count()
+
+
+    def __save(self):
+        pages = []
+
+        for i in range(self.__count()):
+            page = self.stack.widget(i)
+            current_page = []
+            for widget in page.widgets:
+                current_page.append(widget.config)
+            pages.append(current_page)
+
+        self.global_config.save(pages)
 
 
     # ========= Main loop =========
@@ -103,7 +120,7 @@ class PiHud(QtGui.QMainWindow):
         page.widgets.append(widget)
 
 
-    def add_widget(self, command):
+    def __add_widget(self, command):
         # make a default config for this command
         config = self.global_config.make_config(command)
         # register the new config with this page of configs
@@ -138,7 +155,7 @@ class PiHud(QtGui.QMainWindow):
         self.stack.addWidget(page)
 
 
-    def add_page(self):
+    def __add_page(self):
         """ adds a new (empty) page to the end of the page stack """
         self.__add_existing_page()
         self.global_config.pages.append([])
@@ -148,7 +165,7 @@ class PiHud(QtGui.QMainWindow):
 
 
 
-    def delete_page(self):
+    def __delete_page(self):
         if self.__count() > 1:
 
             self.stop()
@@ -194,7 +211,7 @@ class PiHud(QtGui.QMainWindow):
             # if this is a command creation action, make the new widget
             # there's got to be a better way to do this...
             if command is not None:
-                self.add_widget(command)
+                self.__add_widget(command)
 
 
     def keyPressEvent(self, e):

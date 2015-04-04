@@ -13,7 +13,6 @@ class GlobalConfig():
 
     def __init__(self, filename):
         self.filename = filename
-        self.decode = json.JSONDecoder(object_pairs_hook=OrderedDict).decode
         self.data = OrderedDict([
             ("debug",          False    ),
             ("port",           None     ),
@@ -49,7 +48,14 @@ class GlobalConfig():
 
         if os.path.isfile(self.filename):
             with open(self.filename, 'r') as f:
-                file_config = self.decode(f.read())
+                raw_config_json = f.read()
+                try:
+                    file_config = json.loads(raw_config_json)
+                except Exception as e:
+                    print "Invalid json in config:"
+                    print str(e)
+                    self.filename = "" # prevents save()ing
+                    return
 
         # load the keys/data into the global config
         self.__load_keys(file_config, self.data)
@@ -93,22 +99,24 @@ class GlobalConfig():
     def save(self, pages_configs):
         """ write the config back to the file """
         
-        pages = []
+        if os.path.isfile(self.filename):
 
-        for page in pages_configs:
+            pages = []
 
-            current_page = []
+            for page in pages_configs:
 
-            for config in page:
-                # for JSON output, reference the OrderedDict inside the Config
-                current_page.append(config.data)
+                current_page = []
 
-            pages.append(current_page)
+                for config in page:
+                    # for JSON output, reference the OrderedDict inside the Config
+                    current_page.append(config.data)
 
-        self.data["pages"] = pages
+                pages.append(current_page)
 
-        with open(self.filename, 'w') as f:
-            f.write(json.dumps(self.data, indent=4))
+            self.data["pages"] = pages
+
+            with open(self.filename, 'w') as f:
+                f.write(json.dumps(self.data, indent=4))
 
 
     def __getitem__(self, key):
