@@ -53,8 +53,15 @@ class Bar_Horizontal(QWidget):
         painter.setRenderHint(QPainter.Antialiasing)
 
         self.draw_title(painter)
-        self.draw_multiplier(painter)
-        self.draw_marks(painter)
-        self.draw_needle(painter)
 
         painter.end()
+
+
+    def draw_title(self, painter):
+        painter.save()
+
+        r_height = self.config["font_size"] + 20
+        r = QRect(0, 0, self.width(), r_height)
+        painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, self.config["title"])
+
+        painter.restore()

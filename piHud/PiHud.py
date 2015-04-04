@@ -123,8 +123,7 @@ class PiHud(QtGui.QMainWindow):
     def __add_widget(self, command):
         # make a default config for this command
         config = self.global_config.make_config(command)
-        # register the new config with this page of configs
-        self.global_config.pages[self.__index()].append(config)
+
         # construct a new widget on this page
         self.__add_existing_widget(self.__page(), config)
 
@@ -135,7 +134,6 @@ class PiHud(QtGui.QMainWindow):
         # called by the pages themselves
         page.widgets.remove(widget)
         p = self.stack.indexOf(page)
-        self.global_config.pages[p].remove(widget.config)
         widget.deleteLater()
 
         self.global_config.save()
@@ -158,7 +156,6 @@ class PiHud(QtGui.QMainWindow):
     def __add_page(self):
         """ adds a new (empty) page to the end of the page stack """
         self.__add_existing_page()
-        self.global_config.pages.append([])
         self.goto_page(self.__count() - 1)
 
         self.global_config.save()
@@ -174,9 +171,6 @@ class PiHud(QtGui.QMainWindow):
 
             for widget in page.widgets:
                 self.delete_widget(page, widget)
-
-            # self.global_config.pages[p].remove(widget.config)
-            # self.global_config.save()
 
             self.stack.removeWidget(page)
             page.deleteLater()
