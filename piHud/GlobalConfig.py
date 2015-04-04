@@ -18,7 +18,7 @@ class GlobalConfig():
             ("port",           None     ),
             ("page_adv_pin",   18       ),
             ("color",          "#53B9E8"),
-            ("redline_color",  "#FF0000"),
+            ("redline_color",  "#FF3643"),
             ("font_size",      30       ),
             ("note_font_size", 20       ),
 

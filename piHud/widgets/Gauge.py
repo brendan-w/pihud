@@ -15,18 +15,22 @@ class Gauge(QWidget):
         self.font      = QFont()
         self.note_font = QFont()
         self.color     = QColor(config["color"])
+        self.red_color = QColor(config["redline_color"])
         self.brush     = QBrush(self.color)
         self.pen       = QPen(self.color)
+        self.red_pen   = QPen(self.red_color)
 
         self.font.setPixelSize(self.config["font_size"])
         self.note_font.setPixelSize(self.config["note_font_size"])
         self.pen.setWidth(3)
+        self.red_pen.setWidth(3)
 
         s = scale(config["min"], config["max"])
 
-        self.abs_angles = map_scale(s, 0, 270)
-        self.offset_angles = scale_offsets(self.abs_angles)
+        self.angles = map_scale(s, 0, 270)
         self.str_scale, self.multiplier = str_scale(s)
+
+        self.red_angle  = map_value(config["redline"], config["min"], config["max"], 0, 270)
 
 
     def render(self, v):
@@ -68,35 +72,53 @@ class Gauge(QWidget):
 
         painter.save()
 
-        # draw the arc
         painter.translate(self.width() / 2, self.height() / 2)
+
+
+        # draw the ticks
+
+        end = self.__tick_r - self.__tick_l
+
+        for a in self.angles:
+            painter.save()
+            painter.rotate(90 + 45 + a)
+
+            if a > self.red_angle:
+                painter.setPen(self.red_pen)
+
+            painter.drawLine(self.__tick_r, 0, end, 0)
+            painter.restore()
+
+
+
+        # draw the arc
 
         p = -self.__tick_r
         d = 2 * self.__tick_r
         r = QRect(p, p, d, d)
 
         # arc angles are in 16th of degrees
-        s = -45 * 16
-        l = 270 * 16
-
+        s = -(90 + 45) * 16
+        l = -self.red_angle * 16
         painter.drawArc(r, s, l)
 
-        # draw the ticks
-        painter.rotate(90 + 45)
+        painter.setPen(self.red_pen)
 
-        end = self.__tick_r - self.__tick_l
+        s += l
+        l = -(270 - self.red_angle) * 16
+        painter.drawArc(r, s, l)
 
-        for a in self.offset_angles:
-            painter.rotate(a)
-            painter.drawLine(self.__tick_r, 0, end, 0)
 
         painter.restore()
 
 
     def draw_numbers(self, painter):
 
-        for a, v in zip(self.abs_angles, self.str_scale):
+        for a, v in zip(self.angles, self.str_scale):
             painter.save()
+
+            if a > self.red_angle:
+                painter.setPen(self.red_pen)
 
             painter.translate(self.width() / 2, self.height() / 2)
 
