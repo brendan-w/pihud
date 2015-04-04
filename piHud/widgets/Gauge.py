@@ -2,7 +2,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from math import sin, cos
 from util import scale, map_scale, map_value, scale_offsets, str_scale
 
 
@@ -47,26 +46,42 @@ class Gauge(QWidget):
         self.__tick_r   = r - (r/4)    # outer radius of the tick marks
         self.__tick_l   = (r/10)       # length of each tick, extending inwards
         self.__needle_l = (r/5) * 3    # length of the needle
-        
+
         painter = QPainter()
         painter.begin(self)
 
         painter.setFont(self.font)
         painter.setPen(self.pen)
+        painter.setBrush(self.brush)
         painter.setRenderHint(QPainter.Antialiasing)
-        
+
         self.draw_title(painter)
         self.draw_multiplier(painter)
         self.draw_marks(painter)
+        self.draw_numbers(painter)
         self.draw_needle(painter)
 
         painter.end()
 
 
     def draw_marks(self, painter):
+
         painter.save()
 
+        # draw the arc
         painter.translate(self.width() / 2, self.height() / 2)
+
+        p = -self.__tick_r
+        d = 2 * self.__tick_r
+        r = QRect(p, p, d, d)
+
+        # arc angles are in 16th of degrees
+        s = -45 * 16
+        l = 270 * 16
+
+        painter.drawArc(r, s, l)
+
+        # draw the ticks
         painter.rotate(90 + 45)
 
         end = self.__tick_r - self.__tick_l
@@ -76,6 +91,9 @@ class Gauge(QWidget):
             painter.drawLine(self.__tick_r, 0, end, 0)
 
         painter.restore()
+
+
+    def draw_numbers(self, painter):
 
         for a, v in zip(self.abs_angles, self.str_scale):
             painter.save()
@@ -105,7 +123,6 @@ class Gauge(QWidget):
         angle -= 90 + 45
         painter.rotate(angle)
 
-        painter.setBrush(self.brush)
 
         painter.drawEllipse(QPoint(0,0), 5, 5)
 

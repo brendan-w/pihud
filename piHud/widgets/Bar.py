@@ -1,12 +1,38 @@
 
-from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+
+from util import scale, map_scale, map_value, scale_offsets, str_scale
 
 
-
-class Bar_h(QtGui.QWidget):
+class Bar_Horizontal(QWidget):
     def __init__(self, parent, config):
-        super(Bar_h, self).__init__(parent)
-        self.color = QtGui.QColor(config.color)
+        super(Bar_Horizontal, self).__init__(parent)
+
+        self.config = config
+        self.value = config["min"]
+
+        self.font      = QFont()
+        self.note_font = QFont()
+        self.color     = QColor(config["color"])
+        self.brush     = QBrush(self.color)
+        self.pen       = QPen(self.color)
+
+        self.font.setPixelSize(self.config["font_size"])
+        self.note_font.setPixelSize(self.config["note_font_size"])
+        self.pen.setWidth(3)
+
+        s = scale(config["min"], config["max"])
+
+        self.abs_angles = map_scale(s, 0, 270)
+        self.offset_angles = scale_offsets(self.abs_angles)
+        self.str_scale, self.multiplier = str_scale(s)
+
+
+    def render(self, v):
+        # approach the value
+        self.value += (v - self.value) / 4
+        self.update()
 
 
     def sizeHint(self):
@@ -14,26 +40,21 @@ class Bar_h(QtGui.QWidget):
 
 
     def paintEvent(self, e):
-        painter = QtGui.QPainter()
+
+        w = self.width()
+        h = self.height()
+
+        painter = QPainter()
         painter.begin(self)
-        painter.fillRect(self.rect(), self.color)
+
+        painter.setFont(self.font)
+        painter.setPen(self.pen)
+        painter.setBrush(self.brush)
+        painter.setRenderHint(QPainter.Antialiasing)
+
+        self.draw_title(painter)
+        self.draw_multiplier(painter)
+        self.draw_marks(painter)
+        self.draw_needle(painter)
+
         painter.end()
-
-    def render(self, response):
-        """ function called by python-OBD with new data to be rendered """
-        pass
-
-
-
-class Bar_v(QtGui.QWidget):
-    def __init__(self, parent, config):
-        super(Bar_v, self).__init__(parent)
-
-
-    def sizeHint(self):
-        return QtCore.QSize(180, 400)
-
-
-    def render(self, response):
-        """ function called by python-OBD with new data to be rendered """
-        pass
