@@ -12,6 +12,8 @@ class Config():
                  _min            = None,
                  _max            = None,
                  _redline        = None,
+                 _scale_step     = None,
+                 _scale_mult     = None,
                  _buffer_size    = None):
 
         # ordered to make the JSON prettier
@@ -26,6 +28,8 @@ class Config():
             ("min",         _min        ),
             ("max",         _max        ),
             ("redline",     _redline    ),
+            ("scale_step",  _scale_step ),
+            ("scale_mult",  _scale_mult ),
             ("buffer_size", _buffer_size),
         ])
 

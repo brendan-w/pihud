@@ -2,7 +2,7 @@
 from math import ceil, floor, log10
 
 
-def scale(_min, _max):
+def scale(_min, _max, step=None):
 
     # handle inverse ranges
     if _max < _min:
@@ -12,22 +12,28 @@ def scale(_min, _max):
     if _max == _min:
         return [ float(_min) ]
 
-    # choose a smart scale step
     size = _max - _min
 
-    step  = 10 ** floor(log10(size))
-    ticks = int(size // step)
+    if step is None:
+        # choose a smart scale step
 
-    # if there are less than 5 ticks, try the next power down.
-    # if there are more than 10 ticks, try doubling the step.
-    # ensures that there will be between 5-10 ticks in the result
-    while (ticks + 2) <= 5:
-        step /= 10
+        step  = 10 ** floor(log10(size))
         ticks = int(size // step)
 
-    while (ticks + 2) >= 11:
-        step *= 2
+        # if there are less than 5 ticks, try the next power down.
+        # if there are more than 10 ticks, try doubling the step.
+        # ensures that there will be between 5-10 ticks in the result
+        while (ticks + 2) <= 5:
+            step /= 10
+            ticks = int(size // step)
+
+        while (ticks + 2) >= 11:
+            step *= 2
+            ticks = int(size // step)
+    else:
+        # use the user-defined scale
         ticks = int(size // step)
+
 
     output = []
     start = _min
@@ -63,9 +69,10 @@ def avg_power(s):
     return sum([1 if x == 0 else floor(log10(x)) for x in s]) / len(s)
 
 
-def str_scale(s):
-    divisor = 10 ** ceil(avg_power(s)) # ceil(): always tend towards fewer decimals
-    return ([str(int(x/divisor)) for x in s], int(divisor))
+def str_scale(s, multiplier=None):
+    if multiplier is None:
+        multiplier = 10 ** floor(avg_power(s))
+    return ([str(int(x/multiplier)) for x in s], int(multiplier))
 
 
 # [10, 20, 30, 50]   --->   [0, 10, 10, 20]

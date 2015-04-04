@@ -35,7 +35,10 @@ class Widget(QtGui.QWidget):
             self.graphics.setFixedSize(size)
             return size
         else:
-            return self.graphics.sizeHint()
+            s = self.graphics.sizeHint()
+            self.config['w'] = s.width()
+            self.config['h'] = s.height()
+            return s
 
 
     def position(self):

@@ -25,17 +25,19 @@ class Gauge(QWidget):
         self.pen.setWidth(3)
         self.red_pen.setWidth(3)
 
-        s = scale(config["min"], config["max"])
+        s = scale(config["min"], config["max"], config["scale_step"])
 
         self.angles = map_scale(s, 0, 270)
-        self.str_scale, self.multiplier = str_scale(s)
+        self.str_scale, self.multiplier = str_scale(s, config["scale_mult"])
 
-        self.red_angle  = map_value(config["redline"], config["min"], config["max"], 0, 270)
+        self.red_angle = 270
+        if config["redline"] is not None:
+            self.red_angle  = map_value(config["redline"], config["min"], config["max"], 0, 270)
 
 
     def render(self, v):
         # approach the value
-        self.value += (v - self.value) / 4
+        self.value += (v - self.value) / 8
         self.update()
 
 
@@ -142,6 +144,7 @@ class Gauge(QWidget):
 
         painter.translate(self.width() / 2, self.height() / 2)
         angle = map_value(self.value, self.config["min"], self.config["max"], 0, 270)
+        angle = min(angle, 270)
         angle -= 90 + 45
         painter.rotate(angle)
 
@@ -171,11 +174,12 @@ class Gauge(QWidget):
 
 
     def draw_multiplier(self, painter):
-        painter.save()
+        if self.multiplier > 1:
+            painter.save()
 
-        painter.setFont(self.note_font)
-        s = "x" + str(self.multiplier)
-        r = QRect(0, -self.width() / 6, self.width(), self.height())
-        painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, s)
+            painter.setFont(self.note_font)
+            s = "x" + str(self.multiplier)
+            r = QRect(0, -self.width() / 6, self.width(), self.height())
+            painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, s)
 
-        painter.restore()
+            painter.restore()
