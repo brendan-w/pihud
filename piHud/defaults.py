@@ -5,7 +5,7 @@ from obd import commands as c
 
 
 #                         class_name  min  max  redline  scale_step  scale_mult  buffer_size
-fallback_default = Config("Text",     0,   100, None,    10,         1,          60)
+fallback_default = Config("Text",     0,   100, None,    None,       1,          60)
 
 
 
@@ -20,7 +20,7 @@ defaults = {
     #                            class_name           min   max     redline  scale_step  scale_mult  buffer_size
     c.FUEL_STATUS       : Config("Text",              None, None,   None,    None,       None,       None),
     c.ENGINE_LOAD       : Config("Bar_Horizontal",    0,    100,    90,      None,       None,       None),
-    c.COOLANT_TEMP      : Config("Bar_Horizontal",    -40,  215,    None,    None,       None,       None),
+    c.COOLANT_TEMP      : Config("Bar_Horizontal",    -40,  215,    None,    50,         None,       None),
     c.SHORT_FUEL_TRIM_1 : Config("Bar_Horizontal",    -100, 100,    None,    None,       None,       None),
     c.LONG_FUEL_TRIM_1  : Config("Bar_Horizontal",    -100, 100,    None,    None,       None,       None),
     c.SHORT_FUEL_TRIM_2 : Config("Bar_Horizontal",    -100, 100,    None,    None,       None,       None),

@@ -42,12 +42,12 @@ class Gauge(QWidget):
 
 
     def sizeHint(self):
-        return QSize(300, 300)
+        return QSize(350, 300)
 
 
     def paintEvent(self, e):
 
-        r = self.width() / 2
+        r = min(self.width(), self.height()) / 2
         self.__text_r   = r - (r/10)   # radius of the text
         self.__tick_r   = r - (r/4)    # outer radius of the tick marks
         self.__tick_l   = (r/10)       # length of each tick, extending inwards
@@ -62,9 +62,10 @@ class Gauge(QWidget):
         painter.setRenderHint(QPainter.Antialiasing)
 
         self.draw_title(painter)
-        self.draw_multiplier(painter)
+        if self.config["numerals"]:
+            self.draw_multiplier(painter)
+            self.draw_numbers(painter)
         self.draw_marks(painter)
-        self.draw_numbers(painter)
         self.draw_needle(painter)
 
         painter.end()

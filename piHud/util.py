@@ -15,7 +15,7 @@ def scale(_min, _max, step=None):
     size = _max - _min
 
     if step is None:
-        # choose a smart scale step
+        # auto scale step
 
         step  = 10 ** floor(log10(size))
         ticks = int(size // step)
@@ -27,29 +27,38 @@ def scale(_min, _max, step=None):
             step /= 10
             ticks = int(size // step)
 
-        while (ticks + 2) >= 11:
-            step *= 2
-            ticks = int(size // step)
+        # while (ticks + 2) >= 11:
+        #     step *= 2
+        #     ticks = int(size // step)
+
     else:
         # use the user-defined scale
         ticks = int(size // step)
 
 
-    output = []
-    start = _min
+    start = _min + step
 
     # if the starting value is NOT perfectly divided by the scale step
     if bool(_min % step):
 
-        # the first value will be the minimum
-        output += [ float(_min) ]
-
         # compute the nearest interval of the scale step
-        start = ceil(_min / step) * step
+        start = ceil(float(_min) / step) * step
 
 
+    output  = [ float(_min) ]
     output += [ (start + (step * x)) for x in range(ticks) ]
     output += [ float(_max) ]
+
+    # if the ends of the scale are two cramped (within a half step)
+    # then ditch the 2nd and/or 2nd-to-last values
+    if len(output) >= 4:
+        diff = output[1] - output[0]
+        if diff < (step / 2):
+            output.pop(1)
+
+        diff = output[-1] - output[-2]
+        if diff < (step / 2):
+            output.pop(-2)
 
     return output
 

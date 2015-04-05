@@ -19,6 +19,12 @@ class Widget(QtGui.QWidget):
         # make the context menu
         self.menu = QtGui.QMenu()
         self.menu.addAction(self.config["sensor"]).setDisabled(True)
+
+        subMenu = self.menu.addMenu("Widget Type")
+        for w in widgets:
+            a = subMenu.addAction(w)
+            a.setData(widgets[w])
+
         self.menu.addAction("Delete Widget", self.delete)
 
         # instantiate the requested graphics object

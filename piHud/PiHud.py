@@ -110,6 +110,11 @@ class PiHud(QtGui.QMainWindow):
         self.connection.unwatch_all()
 
 
+    def restart(self):
+        self.stop()
+        self.start()
+
+
     # ========= Widget Actions =========
 
 
@@ -127,12 +132,19 @@ class PiHud(QtGui.QMainWindow):
         # construct a new widget on this page
         self.__add_existing_widget(self.__page(), config)
 
+        # register the new command
+        self.restart()
+
 
     def delete_widget(self, page, widget):
         # called by the pages themselves
         page.widgets.remove(widget)
         p = self.stack.indexOf(page)
         widget.deleteLater()
+
+        # reload this page again, to unwatch (if neccessary,
+        # since multiple widgets could be using the same command)
+        self.restart()
 
 
     # ========= Page Actions =========

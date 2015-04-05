@@ -28,6 +28,7 @@ class Config():
             ("min",         _min        ),
             ("max",         _max        ),
             ("redline",     _redline    ),
+            ("numerals",    True        ),
             ("scale_step",  _scale_step ),
             ("scale_mult",  _scale_mult ),
             ("buffer_size", _buffer_size),

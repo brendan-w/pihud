@@ -1,53 +1,61 @@
 {
-    "debug": false, 
-    "port": null, 
+    "debug": true, 
+    "port": "/dev/pts/2", 
     "page_adv_pin": 18, 
+    "color": "#53B9E8", 
+    "redline_color": "#FF3643", 
+    "font_size": 30, 
+    "note_font_size": 20, 
     "pages": [
         [
             {
                 "sensor": "RPM", 
-                "type": "Text", 
-                "config": {
-                    "dimensions": {
-                        "y": 60, 
-                        "x": 250
-                    }, 
-                    "min": 0, 
-                    "color": "#53B9E8", 
-                    "max": 8000, 
-                    "title": "RPM", 
-                    "label_font_size": 60, 
-                    "redline": 90, 
-                    "title_font_size": 20, 
-                    "position": {
-                        "y": 53, 
-                        "x": 430
-                    }, 
-                    "buffer_size": 30
-                }
+                "type": "Gauge", 
+                "title": "RPM", 
+                "x": 35, 
+                "y": 35, 
+                "w": 200, 
+                "h": 200, 
+                "min": 0, 
+                "max": 8000, 
+                "redline": 6750, 
+                "numerals": true, 
+                "scale_step": 1000, 
+                "scale_mult": 1000, 
+                "buffer_size": 60
             }, 
             {
                 "sensor": "RPM", 
-                "type": "Bar_h", 
-                "config": {
-                    "dimensions": {
-                        "y": 80, 
-                        "x": 400
-                    }, 
-                    "min": 0, 
-                    "color": "#53B9E8", 
-                    "max": 8000, 
-                    "title": "RPM", 
-                    "label_font_size": 30, 
-                    "redline": 6000, 
-                    "title_font_size": 20, 
-                    "position": {
-                        "y": 32, 
-                        "x": 22
-                    }, 
-                    "buffer_size": 60
-                }
-            }
+                "type": "Gauge", 
+                "title": "RPM", 
+                "x": 250, 
+                "y": 35, 
+                "w": 350, 
+                "h": 350, 
+                "min": 0, 
+                "max": 8000, 
+                "redline": 6750, 
+                "numerals": true, 
+                "scale_step": 1000, 
+                "scale_mult": 1000, 
+                "buffer_size": 60
+            }, 
+            {
+                "sensor": "RPM", 
+                "type": "Gauge", 
+                "title": "RPM", 
+                "x": 620, 
+                "y": 35, 
+                "w": 500, 
+                "h": 500, 
+                "min": 0, 
+                "max": 8000, 
+                "redline": 6750, 
+                "numerals": true, 
+                "scale_step": 1000, 
+                "scale_mult": 1000, 
+                "buffer_size": 60
+            } 
         ]
     ]
 }
