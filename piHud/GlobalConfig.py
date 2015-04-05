@@ -80,7 +80,7 @@ class GlobalConfig():
                     break
 
                 if widget["type"] not in widgets:
-                    print "unknown sensor name '%s'" % widget["sensor"]
+                    print "unknown sensor name '%s'" % widget["type"]
                     break
 
                 config = self.make_config(obd.commands[sensor])
