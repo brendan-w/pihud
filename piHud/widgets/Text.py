@@ -1,31 +1,65 @@
 
-from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+
+from util import map_value, in_range
 
 
-class Text(QtGui.QWidget):
+class Text(QWidget):
     def __init__(self, parent, config):
         super(Text, self).__init__(parent)
 
-        self.label = QtGui.QLabel(self)
-        self.label.setText("Label")
+        self.config = config
+        self.value = config["min"]
 
-        css = """
-            font-size: %ipx;
-            color: %s;
-        """ % (config.label_font_size, config.color)
+        self.font      = QFont()
+        self.note_font = QFont()
+        self.color     = QColor(config["color"])
+        self.red_color = QColor(config["redline_color"])
+        self.no_color  = QColor()
+        self.no_color.setAlpha(0)
 
-        self.label.setStyleSheet(css)
+        self.brush     = QBrush(self.color)
+        self.red_brush = QBrush(self.red_color)
+
+        self.pen       = QPen(self.color)
+        self.red_pen   = QPen(self.red_color)
+        self.no_pen    = QPen(self.no_color)
+
+        self.font.setPixelSize(self.config["font_size"])
+        self.note_font.setPixelSize(self.config["note_font_size"])
+        self.pen.setWidth(3)
+        self.red_pen.setWidth(3)
+
+        self.red_value = config["redline"]
+        if self.red_value is None:
+            self.red_value = config["max"]
 
 
     def sizeHint(self):
-        return QtCore.QSize(200, 75)        
+        return QSize(200, 75)        
 
 
-    def render(self, response):
-        """ function called by python-OBD with new data to be rendered """
+    def render(self, v):
+        self.value = v
+        self.update()
 
-        value = 0
-        if not response.is_null():
-            value = response.value
 
-        self.label.setText(str(value) + " " + str(response.unit))
+    def paintEvent(self, e):
+        painter = QPainter()
+        painter.begin(self)
+
+        painter.setFont(self.font)
+        painter.setPen(self.pen)
+        painter.setRenderHint(QPainter.Antialiasing)
+
+        r = QRect(0, 0, self.width(), self.height())
+        
+        t = ""
+        if len(self.config["title"]) > 0:
+            t = "%s: " % self.config["title"]
+        t += str(int(round(self.value)))
+
+        painter.drawText(r, Qt.AlignVCenter, t)
+
+        painter.end()
