@@ -16,10 +16,15 @@ class Bar_Horizontal(QWidget):
         self.note_font = QFont()
         self.color     = QColor(config["color"])
         self.red_color = QColor(config["redline_color"])
+        self.no_color  = QColor()
+        self.no_color.setAlpha(0)
+
         self.brush     = QBrush(self.color)
         self.red_brush = QBrush(self.red_color)
+
         self.pen       = QPen(self.color)
         self.red_pen   = QPen(self.red_color)
+        self.no_pen    = QPen(self.no_color)
 
         self.font.setPixelSize(self.config["font_size"])
         self.note_font.setPixelSize(self.config["note_font_size"])
@@ -121,20 +126,21 @@ class Bar_Horizontal(QWidget):
     def draw_bar(self, painter):
         painter.save()
         painter.translate(0, self.__t_height)
+        painter.setPen(self.no_pen)
         painter.setBrush(self.brush)
 
         if in_range(self.__red_offset, self.__l, self.__r):
             if self.__value_offset <= self.__red_offset:
                 painter.drawRect(QRect(
                     self.__l,
-                    self.__l,
+                    0,
                     self.__value_offset,
                     self.__bar_height
                 ))
             else:
                 painter.drawRect(QRect(
                     self.__l,
-                    self.__l,
+                    0,
                     self.__red_offset,
                     self.__bar_height
                 ))
@@ -144,14 +150,14 @@ class Bar_Horizontal(QWidget):
 
                 painter.drawRect(QRect(
                     self.__red_offset,
-                    self.__l,
+                    0,
                     self.__value_offset - self.__red_offset,
                     self.__bar_height
                 ))
         else:
             painter.drawRect(QRect(
                     self.__l,
-                    self.__l,
+                    0,
                     self.__value_offset,
                     self.__bar_height
             ))
