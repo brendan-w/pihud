@@ -87,3 +87,8 @@ def str_scale(s, multiplier=None):
 # [10, 20, 30, 50]   --->   [0, 10, 10, 20]
 def scale_offsets(s):
     return [0] + [(b-a) for a, b in zip(s, s[1:])]
+
+# tests that value is in range (a, b)
+#                    NOTE: not [a, b]
+def in_range(v, _min, _max):
+    return ((_min < v) and (v < _max))

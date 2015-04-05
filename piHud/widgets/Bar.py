@@ -2,7 +2,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from util import scale, map_scale, map_value, scale_offsets, str_scale
+from util import map_value, in_range
 
 
 class Bar_Horizontal(QWidget):
@@ -17,6 +17,7 @@ class Bar_Horizontal(QWidget):
         self.color     = QColor(config["color"])
         self.red_color = QColor(config["redline_color"])
         self.brush     = QBrush(self.color)
+        self.red_brush = QBrush(self.red_color)
         self.pen       = QPen(self.color)
         self.red_pen   = QPen(self.red_color)
 
@@ -24,13 +25,6 @@ class Bar_Horizontal(QWidget):
         self.note_font.setPixelSize(self.config["note_font_size"])
         self.pen.setWidth(3)
         self.red_pen.setWidth(3)
-
-        self.scale = scale(config["min"], config["max"], config["scale_step"])
-        self.str_scale, self.multiplier = str_scale(self.scale, config["scale_mult"])
-
-        self.red_offset = self.width()
-        if config["redline"] is not None:
-            self.red_offset  = map_value(config["redline"], config["min"], config["max"], 0, 270)
 
 
     def render(self, v):
@@ -48,9 +42,23 @@ class Bar_Horizontal(QWidget):
         w = self.width()
         h = self.height()
 
-        self.__scale_offsets = map_scale(self.scale, 0, self.width())
+        # recompute new values
+        self.__l = 2            # left X value
+        self.__r = w - self.__l # right X value
         self.__t_height = self.config["font_size"] + 8
-        self.__bar_height = max(0, h - (2 * self.__t_height))
+        self.__bar_height = max(0, h - self.__t_height) - (2 * self.__l)
+        self.__value_offset = map_value(self.value,
+                                        self.config["min"],
+                                        self.config["max"],
+                                        self.__l,
+                                        self.__r)
+        self.__red_offset = w
+        if self.config["redline"] is not None:
+            self.__red_offset = map_value(self.config["redline"],
+                                          self.config["min"],
+                                          self.config["max"],
+                                          self.__l,
+                                          self.__r)
 
         painter = QPainter()
         painter.begin(self)
@@ -60,10 +68,7 @@ class Bar_Horizontal(QWidget):
         painter.setRenderHint(QPainter.Antialiasing)
 
         self.draw_title(painter)
-        self.draw_marks(painter)
-        if self.config["numerals"]:
-            self.draw_multiplier(painter)
-            self.draw_numbers(painter)
+        self.draw_border(painter)
         self.draw_bar(painter)
 
         painter.end()
@@ -78,51 +83,77 @@ class Bar_Horizontal(QWidget):
         painter.restore()
 
 
-    def draw_marks(self, painter):
-
-        # border
+    def draw_border(self, painter):
         painter.save()
+        painter.translate(0, self.__t_height)
 
-        r = QRect(1, self.__t_height, self.width() - 2, self.__bar_height)
-        painter.drawRect(r)
+        if in_range(self.__red_offset, self.__l, self.__r):
+            # non-red zone
+            path = QPainterPath()
+            path.moveTo(self.__red_offset, 0)
+            path.lineTo(self.__l, 0)
+            path.lineTo(self.__l, self.__bar_height)
+            path.lineTo(self.__red_offset, self.__bar_height)
+
+            painter.drawPath(path)
+
+            # red zone
+            path = QPainterPath()
+            path.moveTo(self.__red_offset, 0)
+            path.lineTo(self.__r, 0)
+            path.lineTo(self.__r, self.__bar_height)
+            path.lineTo(self.__red_offset, self.__bar_height)
+
+            painter.setPen(self.red_pen)
+            painter.drawPath(path)
+
+        else:
+            painter.drawRect(QRect(
+                self.__l,
+                self.__l,
+                self.__r - self.__l,
+                self.__bar_height,
+            ))
 
         painter.restore()
-
-        # marks
-        for x in self.__scale_offsets:
-            painter.save()
-
-            painter.translate(x, self.__t_height)
-
-            painter.drawLine(0, 0, 0, self.__bar_height)
-
-            painter.restore()
-
-
-    def draw_multiplier(self, painter):
-        if self.multiplier > 1:
-            painter.save()
-
-            painter.setFont(self.note_font)
-            s = "x" + str(self.multiplier)
-            r = QRect(0, 0, self.width(), self.__t_height)
-            painter.drawText(r, Qt.AlignRight | Qt.AlignVCenter, s)
-
-            painter.restore()
-
-
-    def draw_numbers(self, painter):
-        for x, v in zip(self.__scale_offsets, self.str_scale):
-            pass
 
 
     def draw_bar(self, painter):
         painter.save()
-
+        painter.translate(0, self.__t_height)
         painter.setBrush(self.brush)
 
-        v = map_value(self.value, self.config["min"], self.config["max"], 1, self.width() - 2)
-        r = QRect(1, self.__t_height, v, self.__bar_height)
-        painter.drawRect(r)
+        if in_range(self.__red_offset, self.__l, self.__r):
+            if self.__value_offset <= self.__red_offset:
+                painter.drawRect(QRect(
+                    self.__l,
+                    self.__l,
+                    self.__value_offset,
+                    self.__bar_height
+                ))
+            else:
+                painter.drawRect(QRect(
+                    self.__l,
+                    self.__l,
+                    self.__red_offset,
+                    self.__bar_height
+                ))
+
+                painter.setBrush(self.red_brush)
+                painter.setPen(self.red_pen)
+
+                painter.drawRect(QRect(
+                    self.__red_offset,
+                    self.__l,
+                    self.__value_offset - self.__red_offset,
+                    self.__bar_height
+                ))
+        else:
+            painter.drawRect(QRect(
+                    self.__l,
+                    self.__l,
+                    self.__value_offset,
+                    self.__bar_height
+            ))
 
         painter.restore()
