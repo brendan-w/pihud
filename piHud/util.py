@@ -75,7 +75,7 @@ def map_scale(s, out_min, out_max):
 
 
 def avg_power(s):
-    return sum([1 if x == 0 else floor(log10(x)) for x in s]) / len(s)
+    return sum([1 if x == 0 else floor(log10(abs(x))) for x in s]) / len(s)
 
 
 def str_scale(s, multiplier=None):

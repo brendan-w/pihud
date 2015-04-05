@@ -93,7 +93,6 @@ class Gauge(QWidget):
             painter.restore()
 
 
-
         # draw the arc
 
         p = -self.__tick_r
