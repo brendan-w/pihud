@@ -34,7 +34,7 @@ class Bar_Horizontal(QWidget):
 
 
     def sizeHint(self):
-        return QtCore.QSize(400, 100)
+        return QSize(400, 60)
 
 
     def paintEvent(self, e):
@@ -46,7 +46,7 @@ class Bar_Horizontal(QWidget):
         self.__l = 2            # left X value
         self.__r = w - self.__l # right X value
         self.__t_height = self.config["font_size"] + 8
-        self.__bar_height = max(0, h - self.__t_height) - (2 * self.__l)
+        self.__bar_height = max(0, h - self.__t_height) - self.__l
         self.__value_offset = map_value(self.value,
                                         self.config["min"],
                                         self.config["max"],
