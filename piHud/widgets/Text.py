@@ -37,7 +37,7 @@ class Text(QWidget):
 
 
     def sizeHint(self):
-        return QSize(200, 75)        
+        return QSize(300, 75)
 
 
     def render(self, v):
@@ -49,17 +49,20 @@ class Text(QWidget):
         painter = QPainter()
         painter.begin(self)
 
+        self.t_height = self.config["font_size"] + 8
+
         painter.setFont(self.font)
         painter.setPen(self.pen)
         painter.setRenderHint(QPainter.Antialiasing)
 
-        r = QRect(0, 0, self.width(), self.height())
-        
-        t = ""
-        if len(self.config["title"]) > 0:
-            t = "%s: " % self.config["title"]
-        t += str(int(round(self.value)))
+        h = 0
 
-        painter.drawText(r, Qt.AlignVCenter, t)
+        if len(self.config["title"]) > 0:
+            h += self.t_height
+            r = QRect(0, 0, self.width(), self.t_height)
+            painter.drawText(r, Qt.AlignVCenter, self.config["title"])
+
+        r = QRect(0, h, self.width(), self.t_height)
+        painter.drawText(r, Qt.AlignVCenter, str(int(round(self.value))))
 
         painter.end()
