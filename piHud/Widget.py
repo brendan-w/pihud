@@ -30,8 +30,11 @@ class Widget(QtGui.QWidget):
         # instantiate the requested graphics object
         self.graphics = widgets[config["type"]](self, config)
 
+        self.last_v = 0
+
         self.move(self.position())
         self.show()
+
 
 
     def sizeHint(self):
@@ -93,6 +96,9 @@ class Widget(QtGui.QWidget):
             raise KeyError("'%s' is not a valid OBDCommand" % s)
 
 
-    def render(self, response):
-        if not response.is_null():
+    def render(self, response=None):
+        if (response != None) and (not response.is_null()):
             self.graphics.render(response.value)
+            self.last_v = response.value
+        else:
+            self.graphics.render(self.last_v)

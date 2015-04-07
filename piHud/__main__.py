@@ -34,14 +34,16 @@ def main():
         else:
             shutil.copyfile(default_config_path, config_path)
 
-    global_config = GlobalConfig(config_path)
+    global_config = GlobalConfig("/home/brendan/pihud.rc")
 
     # =========================== OBD-II Connection ===========================
 
     if global_config["debug"]:
         obd.debug.console = True
 
-    connection = obd.Async(global_config["port"])
+    # connection = obd.Async(global_config["port"])
+
+    connection = False
 
     # if global_config["debug"]:
     #     for i in range(32):
@@ -73,7 +75,7 @@ def main():
 
     # ================================= Exit ==================================
 
-    connection.close()
+    # connection.close()
     sys.exit(status)
 
 

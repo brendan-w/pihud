@@ -4,13 +4,14 @@ from Widget import Widget
 from PageMarker import PageMarker
 from PyQt4 import QtGui, QtCore
 
+from obd.utils import Response
 
 
 class PiHud(QtGui.QMainWindow):
     def __init__(self, global_config, connection):
         super(PiHud, self).__init__()
         self.global_config = global_config
-        self.connection = connection
+        # self.connection = connection
 
         # ================= Color Palette =================
 
@@ -33,13 +34,14 @@ class PiHud(QtGui.QMainWindow):
         self.menu = QtGui.QMenu()
         subMenu = self.menu.addMenu("Add Widget")
 
-        if len(self.connection.supported_commands) > 0:
-            for command in self.connection.supported_commands:
-                a = subMenu.addAction(command.name)
-                a.setData(command)
-        else:
-            a = subMenu.addAction("No sensors available")
-            a.setDisabled(True)
+
+        # if len(self.connection.supported_commands) > 0:
+        #     for command in self.connection.supported_commands:
+        #         a = subMenu.addAction(command.name)
+        #         a.setData(command)
+        # else:
+        a = subMenu.addAction("No sensors available")
+        a.setDisabled(True)
         
         self.menu.addSeparator()
 
@@ -55,6 +57,13 @@ class PiHud(QtGui.QMainWindow):
         self.timer = QtCore.QBasicTimer()
         self.setWindowTitle("PiHud")
         self.showFullScreen()
+
+        with open("/home/brendan/output.txt", "r") as f:
+            ls = f.read().split()
+            self.raw = [l.split(":") for l in ls]
+
+        self.curr_index = 0
+        self.cycle = 0
 
         self.start()
 
@@ -90,24 +99,50 @@ class PiHud(QtGui.QMainWindow):
     def timerEvent(self, event):
         page = self.__page()
 
-        for widget in page.widgets:
-            r = self.connection.query(widget.get_command())
-            widget.render(r)
+        self.cycle += 1
+        self.cycle = self.cycle % 1
+
+
+        if self.cycle == 0:
+
+            for widget in page.widgets:
+                c = widget.get_command()
+
+                d = self.raw[self.curr_index]
+
+                print d[0]
+
+                if d[0] == c.get_command():
+                    r = Response(c, [])
+                    r.value = int(d[1])
+                    widget.render(r)
+                    
+                    self.curr_index += 1
+                    self.curr_index = self.curr_index % len(self.raw)
+                else:
+                    widget.render()                    
+
+
+        else:
+
+            for widget in page.widgets:
+                widget.render()
+
 
 
     def start(self):
         # watch the commands on this page
-        for widget in self.__page().widgets:
-            self.connection.watch(widget.get_command())
+        # for widget in self.__page().widgets:
+            # self.connection.watch(widget.get_command())
 
-        self.connection.start()
+        # self.connection.start()
         self.timer.start(1000/30, self)
 
 
     def stop(self):
         self.timer.stop();
-        self.connection.stop()
-        self.connection.unwatch_all()
+        # self.connection.stop()
+        # self.connection.unwatch_all()
 
 
     def restart(self):
