@@ -44,29 +44,11 @@ class Bar_Horizontal(QWidget):
 
     def paintEvent(self, e):
 
-        w = self.width()
-        h = self.height()
-
-        # recompute new values
-        self.__l = 2            # left X value
-        self.__r = w - self.__l # right X value
-        self.__t_height = self.config["font_size"] + 8
-        self.__bar_height = max(0, h - self.__t_height) - self.__l
-        self.__value_offset = map_value(self.value,
-                                        self.config["min"],
-                                        self.config["max"],
-                                        self.__l,
-                                        self.__r)
-        self.__red_offset = w
-        if self.config["redline"] is not None:
-            self.__red_offset = map_value(self.config["redline"],
-                                          self.config["min"],
-                                          self.config["max"],
-                                          self.__l,
-                                          self.__r)
 
         painter = QPainter()
         painter.begin(self)
+
+        self.pre_compute(painter)
 
         painter.setFont(self.font)
         painter.setPen(self.pen)
@@ -79,10 +61,33 @@ class Bar_Horizontal(QWidget):
         painter.end()
 
 
+    def pre_compute(self, painter):
+        w = self.width()
+        h = self.height()
+
+        # recompute new values
+        self.l = 2            # left X value
+        self.r = w - self.l # right X value
+        self.t_height = self.config["font_size"] + 8
+        self.bar_height = max(0, h - self.t_height) - self.l
+        self.value_offset = map_value(self.value,
+                                        self.config["min"],
+                                        self.config["max"],
+                                        self.l,
+                                        self.r)
+        self.red_offset = w
+        if self.config["redline"] is not None:
+            self.red_offset = map_value(self.config["redline"],
+                                          self.config["min"],
+                                          self.config["max"],
+                                          self.l,
+                                          self.r)
+
+
     def draw_title(self, painter):
         painter.save()
 
-        r = QRect(0, 0, self.width(), self.__t_height)
+        r = QRect(0, 0, self.width(), self.t_height)
         painter.drawText(r, Qt.AlignVCenter, self.config["title"])
 
         painter.restore()
@@ -90,34 +95,34 @@ class Bar_Horizontal(QWidget):
 
     def draw_border(self, painter):
         painter.save()
-        painter.translate(0, self.__t_height)
+        painter.translate(0, self.t_height)
 
-        if in_range(self.__red_offset, self.__l, self.__r):
+        if in_range(self.red_offset, self.l, self.r):
             # non-red zone
             path = QPainterPath()
-            path.moveTo(self.__red_offset, 0)
-            path.lineTo(self.__l, 0)
-            path.lineTo(self.__l, self.__bar_height)
-            path.lineTo(self.__red_offset, self.__bar_height)
+            path.moveTo(self.red_offset, 0)
+            path.lineTo(self.l, 0)
+            path.lineTo(self.l, self.bar_height)
+            path.lineTo(self.red_offset, self.bar_height)
 
             painter.drawPath(path)
 
             # red zone
             path = QPainterPath()
-            path.moveTo(self.__red_offset, 0)
-            path.lineTo(self.__r, 0)
-            path.lineTo(self.__r, self.__bar_height)
-            path.lineTo(self.__red_offset, self.__bar_height)
+            path.moveTo(self.red_offset, 0)
+            path.lineTo(self.r, 0)
+            path.lineTo(self.r, self.bar_height)
+            path.lineTo(self.red_offset, self.bar_height)
 
             painter.setPen(self.red_pen)
             painter.drawPath(path)
 
         else:
             painter.drawRect(QRect(
-                self.__l,
-                self.__l,
-                self.__r - self.__l,
-                self.__bar_height,
+                self.l,
+                self.l,
+                self.r - self.l,
+                self.bar_height,
             ))
 
         painter.restore()
@@ -125,41 +130,86 @@ class Bar_Horizontal(QWidget):
 
     def draw_bar(self, painter):
         painter.save()
-        painter.translate(0, self.__t_height)
+        painter.translate(0, self.t_height)
         painter.setPen(self.no_pen)
         painter.setBrush(self.brush)
 
-        if in_range(self.__red_offset, self.__l, self.__r):
-            if self.__value_offset <= self.__red_offset:
+        if in_range(self.red_offset, self.l, self.r):
+            if self.value_offset <= self.red_offset:
                 painter.drawRect(QRect(
-                    self.__l,
+                    self.l,
                     0,
-                    self.__value_offset,
-                    self.__bar_height
+                    self.value_offset,
+                    self.bar_height
                 ))
             else:
                 painter.drawRect(QRect(
-                    self.__l,
+                    self.l,
                     0,
-                    self.__red_offset,
-                    self.__bar_height
+                    self.red_offset,
+                    self.bar_height
                 ))
 
                 painter.setBrush(self.red_brush)
                 painter.setPen(self.red_pen)
 
                 painter.drawRect(QRect(
-                    self.__red_offset,
+                    self.red_offset,
                     0,
-                    self.__value_offset - self.__red_offset,
-                    self.__bar_height
+                    self.value_offset - self.red_offset,
+                    self.bar_height
                 ))
         else:
             painter.drawRect(QRect(
-                    self.__l,
+                    self.l,
                     0,
-                    self.__value_offset,
-                    self.__bar_height
+                    self.value_offset,
+                    self.bar_height
             ))
 
         painter.restore()
+
+
+
+
+class Bar_Vertical(Bar_Horizontal):
+    def __init__(self, parent, config):
+        super(Bar_Vertical, self).__init__(parent, config)
+
+
+    def pre_compute(self, painter):
+
+        painter.rotate(-90)
+        painter.translate(-self.height(), 0)
+
+        # swap the X vs Y
+        h = self.width()
+        w = self.height()
+
+        # recompute new values
+        self.l = 2          # left X value
+        self.r = w - self.l # right X value
+        self.t_height = self.config["font_size"] + 8
+        self.bar_height = max(0, h - self.t_height) - self.l
+        self.value_offset = map_value(self.value,
+                                      self.config["min"],
+                                      self.config["max"],
+                                      self.l,
+                                      self.r)
+        self.red_offset = w
+        if self.config["redline"] is not None:
+            self.red_offset = map_value(self.config["redline"],
+                                        self.config["min"],
+                                        self.config["max"],
+                                        self.l,
+                                        self.r)
+
+
+    def draw_title(self, painter):
+        painter.save()
+
+        r = QRect(0, 0, self.height(), self.t_height)
+        painter.drawText(r, Qt.AlignVCenter, self.config["title"])
+
+        painter.restore()
+
