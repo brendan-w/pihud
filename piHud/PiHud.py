@@ -4,6 +4,7 @@ from Widget import Widget
 from PageMarker import PageMarker
 from PyQt4 import QtGui, QtCore
 
+import obd
 from obd.utils import Response
 
 
@@ -29,19 +30,42 @@ class PiHud(QtGui.QMainWindow):
         for configs in global_config["pages"]:
             self.__add_existing_page(configs)
 
+
+        # ============== output.txt playback ==============
+
+
+        with open("/home/brendan/output.txt", "r") as f:
+            ls = f.read().split()
+            self.raw = [l.split(":") for l in ls]
+
+        self.curr_index = 0
+        self.cycle = 0
+
+        commands = {}
+        for d in self.raw:
+            if d[0] not in commands:
+
+                m = int(d[0][:2], 16)
+                p = int(d[0][2:], 16)
+
+                if obd.commands.has_pid(m, p):
+                    commands[d[0]] = obd.commands[m][p]
+
+        supported_commands = [commands[c] for c in commands]
+
+
         # ================= Context Menu ==================
 
         self.menu = QtGui.QMenu()
         subMenu = self.menu.addMenu("Add Widget")
 
-
-        # if len(self.connection.supported_commands) > 0:
-        #     for command in self.connection.supported_commands:
-        #         a = subMenu.addAction(command.name)
-        #         a.setData(command)
-        # else:
-        a = subMenu.addAction("No sensors available")
-        a.setDisabled(True)
+        if len(supported_commands) > 0:
+            for command in supported_commands:
+                a = subMenu.addAction(command.name)
+                a.setData(command)
+        else:
+            a = subMenu.addAction("No sensors available")
+            a.setDisabled(True)
         
         self.menu.addSeparator()
 
@@ -58,12 +82,6 @@ class PiHud(QtGui.QMainWindow):
         self.setWindowTitle("PiHud")
         self.showFullScreen()
 
-        with open("/home/brendan/output.txt", "r") as f:
-            ls = f.read().split()
-            self.raw = [l.split(":") for l in ls]
-
-        self.curr_index = 0
-        self.cycle = 0
 
         self.start()
 
