@@ -96,6 +96,16 @@ class Widget(QtGui.QWidget):
             raise KeyError("'%s' is not a valid OBDCommand" % s)
 
 
+    def contextMenuEvent(self, e):
+        action = self.menu.exec_(self.mapToGlobal(e.pos()))
+        if action is not None:
+            widget = action.data().toPyObject()
+            # if this is a command creation action, make the new widget
+            # there's got to be a better way to do this...
+            if widget is not None:
+                self.graphics = widget(self, self.config)
+
+
     def render(self, response=None):
         if (response != None) and (not response.is_null()):
             self.graphics.render(response.value)

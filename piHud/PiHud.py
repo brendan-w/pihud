@@ -118,7 +118,7 @@ class PiHud(QtGui.QMainWindow):
         page = self.__page()
 
         self.cycle += 1
-        self.cycle = self.cycle % 4
+        self.cycle = self.cycle % 3
 
 
         if self.cycle == 0:
@@ -132,12 +132,11 @@ class PiHud(QtGui.QMainWindow):
                     r = Response(c, [])
                     r.value = float(d[1])
                     widget.render(r)
-                    
-                    self.curr_index += 1
-                    self.curr_index = self.curr_index % len(self.drive_data)
                 else:
                     widget.render()                    
 
+            self.curr_index += 1
+            self.curr_index = self.curr_index % max(1, len(self.drive_data))
 
         else:
 

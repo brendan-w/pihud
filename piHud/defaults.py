@@ -47,6 +47,10 @@ defaults = {
     # c.O2_SENSORS_ALT    : Config(),
     # c.AUX_INPUT_STATUS  : Config(),
     c.RUN_TIME          : Config("Text",              None, None,   None,    None,       None,       None),
+
+
+
+    c.FUEL_LEVEL        : Config("Bar_Horizontal",    0,    100,    None,    None,       None,       None),
 }
 
 
