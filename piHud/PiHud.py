@@ -100,7 +100,7 @@ class PiHud(QtGui.QMainWindow):
         page = self.__page()
 
         self.cycle += 1
-        self.cycle = self.cycle % 1
+        self.cycle = self.cycle % 4
 
 
         if self.cycle == 0:
@@ -108,17 +108,15 @@ class PiHud(QtGui.QMainWindow):
             for widget in page.widgets:
                 c = widget.get_command()
 
-                d = self.raw[self.curr_index]
-
-                print d[0]
+                d = self.drive_data[self.curr_index]
 
                 if d[0] == c.get_command():
                     r = Response(c, [])
-                    r.value = int(d[1])
+                    r.value = float(d[1])
                     widget.render(r)
                     
                     self.curr_index += 1
-                    self.curr_index = self.curr_index % len(self.raw)
+                    self.curr_index = self.curr_index % len(self.drive_data)
                 else:
                     widget.render()                    
 
@@ -132,8 +130,16 @@ class PiHud(QtGui.QMainWindow):
 
     def start(self):
         # watch the commands on this page
-        # for widget in self.__page().widgets:
+
+        commands = {}
+
+        for widget in self.__page().widgets:
+            commands[widget.get_command().get_command()] = True
             # self.connection.watch(widget.get_command())
+
+        print commands
+
+        self.drive_data = [d for d in self.raw if (d[0] in commands)]
 
         # self.connection.start()
         self.timer.start(1000/30, self)
