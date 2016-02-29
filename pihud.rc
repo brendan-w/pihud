@@ -1,0 +1,45 @@
+{
+    "debug": true, 
+    "port": null, 
+    "page_adv_pin": 18, 
+    "color": "#53B9E8", 
+    "redline_color": "#FF3643", 
+    "font_size": 30, 
+    "note_font_size": 20, 
+    "pages": [
+        [
+            {
+                "sensor": "RPM", 
+                "type": "Gauge", 
+                "title": "RPM", 
+                "x": 59, 
+                "y": 153, 
+                "w": 400, 
+                "h": 400, 
+                "min": 0, 
+                "max": 8000, 
+                "redline": 6250, 
+                "numerals": true, 
+                "scale_step": 1000, 
+                "scale_mult": 1000, 
+                "buffer_size": 30
+            }, 
+            {
+                "sensor": "SPEED", 
+                "type": "Gauge", 
+                "title": "Speed (kmh)", 
+                "x": 468, 
+                "y": -10, 
+                "w": 800, 
+                "h": 700, 
+                "min": 0, 
+                "max": 180, 
+                "redline": 120, 
+                "numerals": true, 
+                "scale_step": 20, 
+                "scale_mult": 1, 
+                "buffer_size": 60
+            }
+        ]
+    ]
+}

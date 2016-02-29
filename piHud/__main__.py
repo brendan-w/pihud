@@ -17,7 +17,7 @@ except:
 # file paths
 running_dir         = os.path.dirname(os.path.realpath(__file__))
 default_config_path = os.path.join(running_dir, 'default.rc')
-config_path         = os.path.join(os.path.expanduser('~'), 'pihud.rc')
+config_path         = 'pihud.rc'
 
 
 
@@ -34,7 +34,7 @@ def main():
         else:
             shutil.copyfile(default_config_path, config_path)
 
-    global_config = GlobalConfig("/home/pi/pihud.rc")
+    global_config = GlobalConfig("pihud.rc")
 
     # =========================== OBD-II Connection ===========================
 
