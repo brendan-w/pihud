@@ -46,6 +46,8 @@ class GlobalConfig():
         # read the file
         file_config = None;
 
+        print self.filename
+
         if os.path.isfile(self.filename):
             with open(self.filename, 'r') as f:
                 raw_config_json = f.read()
@@ -56,6 +58,9 @@ class GlobalConfig():
                     print str(e)
                     self.filename = "" # prevents save()ing
                     return
+        else:
+            print "No config found"
+            return
 
         # load the keys/data into the global config
         self.__load_keys(file_config, self.data)

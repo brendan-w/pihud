@@ -34,7 +34,7 @@ def main():
         else:
             shutil.copyfile(default_config_path, config_path)
 
-    global_config = GlobalConfig("/home/brendan/pihud.rc")
+    global_config = GlobalConfig("/home/pi/pihud.rc")
 
     # =========================== OBD-II Connection ===========================
 

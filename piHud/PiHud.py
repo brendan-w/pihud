@@ -34,7 +34,7 @@ class PiHud(QtGui.QMainWindow):
         # ============== output.txt playback ==============
 
 
-        with open("/home/brendan/output.txt", "r") as f:
+        with open("/home/pi/output.txt", "r") as f:
             ls = f.read().split()
             self.raw = [l.split(":") for l in ls]
 
