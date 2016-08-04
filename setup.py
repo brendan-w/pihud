@@ -1,5 +1,5 @@
 #!/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
 
@@ -18,11 +18,11 @@ setup(
     ],
     keywords="obd car heads-up display Hud vehicle diagnostic",
     author="Brendan Whitfield",
-    author_email="brendanw@windworksdesign.com",
-    url="http://github.com/brendanwhitfield/piHud",
+    author_email="me@brendan-w.com",
+    url="http://github.com/brendan-w/piHud",
     license="GNU LGPLv2.1",
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=["pygal", "obd",],
+    install_requires=["obd"],
 )
