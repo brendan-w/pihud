@@ -5,19 +5,19 @@ Configurable heads up display fit for the Raspberry Pi
 
 Warning: This project is still in the very early stages of development.
 
-Turning you Pi into a PiHud
----------------------------
+Turning your Pi into a PiHud
+----------------------------
 
 For installation instructions on different platforms, see the [GitHub wiki](https://github.com/brendan-w/piHud/wiki)
 
 First, it is recommended that you start with a clean install of [Raspbian](http://www.raspberrypi.org/downloads/). On first boot, it will prompt you with a setup screen. After you have expanded the filesystem and set your password, enter the listing named `Enable Boot to Desktop/Scratch`. In this option, make sure to select the console only option, in order to prevent the Pi from starting its desktop environment on boot `Console Text console, requiring login`. You can now click finish, and boot your Pi.
 
-After loging in, you will be presented with a terminal. Please install the following dependencies
+After loging in, you will be presented with a terminal. Please install the following dependencies, and clone the repo
 
 ```shell
 sudo apt-get install python-qt4
 sudo apt-get install python-pip
-sudo pip install pihud
+git clone <this repo>
 ```
 
 In order to run PiHud on boot, you will need to tweak a few config files (note: most of the following was taken from [this post](http://www.raspberrypi.org/forums/viewtopic.php?p=344408)). Open the file /etc/rc.local in a text editor of your choice. Add the following line just before the exit 0
