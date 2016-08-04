@@ -2,7 +2,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from util import map_value, in_range
+from pihud.util import map_value, in_range
 
 
 class Text(QWidget):
