@@ -32,9 +32,9 @@ class Bar_Horizontal(QWidget):
         self.red_pen.setWidth(3)
 
 
-    def render(self, v):
+    def render(self, response):
         # approach the value
-        self.value += (v - self.value) / 4
+        self.value += (response.value.magnitude - self.value) / 4
         self.update()
 
 

@@ -35,9 +35,9 @@ class Gauge(QWidget):
             self.red_angle  = map_value(config["redline"], config["min"], config["max"], 0, 270)
 
 
-    def render(self, v):
+    def render(self, response):
         # approach the value
-        self.value += (v - self.value) / 8
+        self.value += (response.value.magnitude - self.value) / 8
         self.update()
 
 

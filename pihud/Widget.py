@@ -95,4 +95,4 @@ class Widget(QtGui.QWidget):
 
     def render(self, response):
         if not response.is_null():
-            self.graphics.render(response.value)
+            self.graphics.render(response)

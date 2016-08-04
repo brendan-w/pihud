@@ -40,8 +40,8 @@ class Text(QWidget):
         return QSize(300, 75)
 
 
-    def render(self, v):
-        self.value = v
+    def render(self, response):
+        self.value = response.value.magnitude
         self.update()
 
 
