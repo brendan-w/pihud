@@ -39,7 +39,7 @@ def main():
     # =========================== OBD-II Connection ===========================
 
     if global_config["debug"]:
-        obd.debug.console = True
+        obd.logger.setLevel(obd.logging.DEBUG) # enables all debug information
 
     connection = obd.Async(global_config["port"])
 
