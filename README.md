@@ -1,4 +1,4 @@
-piHud
+PiHud
 =====
 
 Configurable heads up display fit for the Raspberry Pi
@@ -17,7 +17,9 @@ After loging in, you will be presented with a terminal. Please install the follo
 ```shell
 sudo apt-get install python-qt4
 sudo apt-get install python-pip
-git clone <this repo>
+git clone https://github.com/brendan-w/piHud.git pihud
+cd pihud/
+sudo python setup.py install
 ```
 
 In order to run PiHud on boot, you will need to tweak a few config files (note: most of the following was taken from [this post](http://www.raspberrypi.org/forums/viewtopic.php?p=344408)). Open the file /etc/rc.local in a text editor of your choice. Add the following line just before the exit 0
