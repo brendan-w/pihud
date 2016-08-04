@@ -10,7 +10,7 @@ from GlobalConfig import GlobalConfig
 try:
     import RPi.GPIO as GPIO
 except:
-    print "[piHud] Warning: RPi.GPIO library not found"
+    print "[pihud] Warning: RPi.GPIO library not found"
 
 
 
@@ -29,7 +29,7 @@ def main():
     if not os.path.isfile(config_path):
         # copy the default config
         if not os.path.isfile(default_config_path):
-            print "[piHud] Fatal: Missing default config file. Try reinstalling"
+            print "[pihud] Fatal: Missing default config file. Try reinstalling"
             sys.exit(1)
         else:
             shutil.copyfile(default_config_path, config_path)
