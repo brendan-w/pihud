@@ -1,5 +1,5 @@
 {
-    "debug": true, 
+    "debug": false, 
     "port": "/dev/pts/2", 
     "page_adv_pin": 18, 
     "color": "#53B9E8", 

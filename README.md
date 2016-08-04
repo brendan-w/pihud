@@ -3,7 +3,7 @@ PiHud
 
 Configurable heads up display fit for the Raspberry Pi
 
-Warning: This project is still in the very early stages of development.
+*Warning: This project is mostly for experimenting with the underlying [OBD library](https://github.com/brendan-w/python-OBD).*
 
 Turning your Pi into a PiHud
 ----------------------------
@@ -55,12 +55,13 @@ sudo shutdown -r 0
 Configuring
 -----------
 
-PiHud is configured by modifying a file named pihud.rc in your home directory. This file will be created the first time piHud runs. However, a few settings are accessable through the piHud app itself. To move widgets, simply click and drag them around the screen. Right clicking on widgets will tell you which sensor they are tied to, and allow you to delete them. Right clicking on the black background (not on a widget), will let you add widgets or pages to your HUD. To switch pages, simply press the TAB key on your keyboard.
+PiHud is configured by modifying a file named `pihud.rc` in your home directory. This file will be created the first time piHud runs. However, a few settings are accessable through the piHud app itself. To move widgets, simply click and drag them around the screen. Right clicking on widgets will tell you which sensor they are tied to, and allow you to delete them. Right clicking on the black background (not on a widget), will let you add widgets or pages to your HUD. By default, page switching can be done with the `TAB` key.
 
-All other settings are available in the pihud.rc file, which is merely json. A few items of note in this file:
+All other settings are available in the pihud.rc file, which is structured in `json`. A few items of note in this file:
 
--   Each widget is an object containing a key for sensor, type, and config
--   The sensor field is the string name for any sensor your car supports. A full list can be found in the [python-OBD wiki](http://python-obd.readthedocs.io/en/latest/Command%20Tables/)
+-   The `sensor` field is the string name for any sensor your car supports. A full list can be found in the [python-OBD wiki](http://python-obd.readthedocs.io/en/latest/Command%20Tables/)
+-   The `type` field selects the way data is displayed. Values can be: `Gauge`, `Bar`, or `Text`.
 -   All color attributes accept CSS color values
--   The page\_adv\_pin setting is used to tie the page cycling to any of the Pi’s GPIO pins. Simply wire a button that grounds the set pin while pressed.
--   The demo key is used to feed a sin() curve into all widgets. It is used primarily for testing
+-   The `page_adv_pin` setting is used to tie the page cycling to any of the Pi’s GPIO pins. Simply wire a button that grounds the set pin while pressed.
+-   The `demo` key is used to feed a sin() curve into all widgets for testing.
+-   The `debug` key is used to turn python-OBD's debug printing on and off. If enabled, you will see OBD debug information being printed to `stderr`.
